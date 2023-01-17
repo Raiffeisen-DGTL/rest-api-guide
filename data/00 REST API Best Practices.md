@@ -9,11 +9,15 @@
 Паттерны для даты-времени **YYYY-MM-DDThh:mm:ssZ** / **YYYY-MM-DDThh:mm:ss±hh:mm**.
 Паттер для даты **YYYY-MM-DD**.
 
-Хоршие примеры:
->"qrExpirationDate": "2023-07-22T09:14:38+03:00"
+$`\textcolor{green}{\text{Хорошие примеры:}}`$  
+```json
+"qrExpirationDate": "2023-07-22T09:14:38+03:00"
 "dateTime": "2019-08-24T14:15:22Z"
-"transactionDate": "2022-12-08T13:21:04.631543+03:00" `#F00`
+"transactionDate": "2022-12-08T13:21:04.631543+03:00" 
+```
 
-Плохие примеры:
-> "birthday": "1980.01.30"
+$`\textcolor{red}{\text{Плохие примеры:}}`$  
+```json
+"birthday": "1980.01.30"
 "dateTime": "2020-01-15T16:01:49.043924"
+```
