@@ -40,9 +40,9 @@ $`\textcolor{red}{\text{Плохие примеры:}}`$
 
 **_NOTE:_** Этот раздел в процессе обсуждения
 
-Формат стран ISO 3166, UPPER ALPHA-2 [ISO_3166-1](https://en.wikipedia.org/wiki/ISO_3166-1).
+Формат стран [ISO 3166, UPPER ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1).
 
-Формат валют ISO 4217, UPPER ALPHA-3 [ISO_4217](https://en.wikipedia.org/wiki/ISO_4217).
+Формат валют [ISO 4217, UPPER ALPHA-3](https://en.wikipedia.org/wiki/ISO_4217).
 
 Суммы указываются как строка с дробным числом (если количество разрядов >0 ), разделитель точка, количество разрядов зависит от валюты.
 
