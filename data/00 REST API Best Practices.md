@@ -51,7 +51,7 @@ $`\textcolor{red}{\text{Плохие примеры:}}`$
 
 Необходимо всегда указывать код валюты.
 
-![Yes](/data_images/yes.svg) **Хорошие примеры:**
+![Yes](/data_images/yes.svg | width=15) **Хорошие примеры:**
 
 ```json
 "currency": "RUB"
@@ -59,7 +59,7 @@ $`\textcolor{red}{\text{Плохие примеры:}}`$
 "amount": 1110.11
 ```
 
-![Yes](/data_images/no.svg) **ХПлохие примеры:**
+![Yes](/data_images/no.svg | width=15) **ХПлохие примеры:**
 
 ```json
 "currency": "643"
