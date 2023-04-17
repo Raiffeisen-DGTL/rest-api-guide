@@ -6,10 +6,6 @@ variables:
   APP_NAME: rest-api-guide
   VERSION: 1.1.$CI_PIPELINE_IID
 
-checkmarx:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-
 push:
   stage: deploy
   script:
