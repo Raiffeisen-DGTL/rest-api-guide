@@ -2,11 +2,6 @@ stages:
   - verify
   - deploy
 
-include:
-  - project: 'acquiring/devops/pipelines'
-    ref: master
-    file: '.checkmarx.yml'
-
 variables:
   APP_NAME: rest-api-guide
   VERSION: 1.1.$CI_PIPELINE_IID
