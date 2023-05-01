@@ -90,7 +90,7 @@ $`\textcolor{red}{\text{Плохие примеры:}}`$
 
 ```json
 "currency": "643"
-currency": "Ruble"
+"currency": "Ruble"
 "country": "RUS"
 "country": "Belarus"
 "sum": 1200.1
