@@ -171,9 +171,9 @@ $`\textcolor{red}{\text{Плохие примеры:}}`$
 
 **Среды разделены по доменам:**
 
-<https://service-dev.domain.ru> - тестовая среда. Для внутренних тестов.\
-<https://service-test.domain.ru> - превью, песочница для партнеров.\
-<https://service.domain.ru> - прод.
+<https://pay-dev.raif.ru> - тестовая среда. Для внутренних тестов.\
+<https://pay-test.raif.ru> - превью, песочница для партнеров.\
+<https://pay.raif.ru> - прод.
 
 **URL path состоит из следующих частей:**
 
@@ -186,7 +186,7 @@ $`\textcolor{red}{\text{Плохие примеры:}}`$
 В результате URL может выглядеть так:
 
 ```
-https://service.domain.ru/api/fiscal/v2/receipts
+https://pay.raif.ru/api/fiscal/v2/receipts
 ```
 
 ## Версионирование
@@ -194,7 +194,7 @@ https://service.domain.ru/api/fiscal/v2/receipts
 В начале пути указывается версия API продукта, и она не меняется, пока не выпустили новую версию продукта целиком:
 
 ```
-https://service.domain.ru/api/sbp/v1/companies/Romashka/...
+https://pay.raif.ru/api/sbp/v1/companies/Romashka/...
 ```
 
 Логически несвязанные API продуктов версионируются раздельно.
@@ -206,7 +206,7 @@ https://service.domain.ru/api/sbp/v1/companies/Romashka/...
 $`\textcolor{green}{\text{Хороший пример:}}`$  
 
 ```
-https://service.domain.ru/api/sbp/v1/companies/Romashka/orders?version=2
+https://pay.raif.ru/api/sbp/v1/companies/Romashka/orders?version=2
 ```
 
 Если версия в строке запроса не указана, подразумевается первая версия ресурса (version=1).
@@ -216,7 +216,7 @@ https://service.domain.ru/api/sbp/v1/companies/Romashka/orders?version=2
 $`\textcolor{red}{\text{Плохой пример:}}`$
 
 ```
-https://service.domain.ru/api/sbp/v1/companies/Romashka/orders?version=2.1
+https://pay.raif.ru.ru/api/sbp/v1/companies/Romashka/orders?version=2.1
 ```
 
 ### Обработка ошибок версионирования
