@@ -1,5 +1,4 @@
 # REST API Best Practices
-
 - [REST API Best Practices](#rest-api-best-practices)
   - [Общие рекомендации](#общие-рекомендации)
     - [Формат URL](#формат-url)
