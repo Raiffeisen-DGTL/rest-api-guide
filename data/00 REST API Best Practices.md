@@ -72,7 +72,7 @@ https://pay.raif.ru/api/fiscal/v2/receipts
 
 $`\textcolor{green}{\text{Хорошие примеры:}}`$  
 
-```json
+```
 GET /api/sbp/v1/products?ids=1,2,3
 
 GET /api/sbp/v1/products?ids=1&ids=2&ids=3
@@ -80,7 +80,7 @@ GET /api/sbp/v1/products?ids=1&ids=2&ids=3
 
 $`\textcolor{red}{\text{Плохие примеры:}}`$  
 
-```json
+```
 GET  /api/sbp/v1/products?ids=["1", "2", "3"]
 
 GET /api/sbp/v1/products
@@ -300,8 +300,6 @@ Authorization: Bearer <token>
 ```
 
 ## Формат стран, валют и сумм <a name="Формат_стран_валют"></a>
-
-***NOTE:*** Этот раздел в процессе обсуждения
 
 Формат стран [ISO 3166, UPPER ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1).
 
