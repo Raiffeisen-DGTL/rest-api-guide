@@ -72,7 +72,7 @@ https://pay.raif.ru/api/fiscal/v2/receipts
 
 $`\textcolor{green}{\text{Хорошие примеры:}}`$  
 
-```
+```json
 GET /api/sbp/v1/products?ids=1,2,3
 
 GET /api/sbp/v1/products?ids=1&ids=2&ids=3
@@ -80,7 +80,7 @@ GET /api/sbp/v1/products?ids=1&ids=2&ids=3
 
 $`\textcolor{red}{\text{Плохие примеры:}}`$  
 
-```
+```json
 GET  /api/sbp/v1/products?ids=["1", "2", "3"]
 
 GET /api/sbp/v1/products
