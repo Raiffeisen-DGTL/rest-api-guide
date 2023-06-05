@@ -8,6 +8,7 @@
   - [Версионирование](#Версионирование)
     - [Обработка ошибок версионирования](#Обработка-ошибок-версионирования)
   - [Обратно-совместимые и ломающие изменения](#Обратно-совместимые-и-ломающие-изменения)
+  - [Фильтрация, сортировка и пагинация](#Фильтрация-сортировка-и-пагинация)
 
 Цель гайда - улучшить разработку **новых** версий API и сделать его более единообразным для удобства потребителей.
 
@@ -21,7 +22,7 @@
 
 Для передачи массива параметров в запросе GET рекомендуем передавать параметры через запятую либо через повторяющиеся переменные.
 
-$`\textcolor{green}{\text{Хорошие примеры:}}`$  
+$`\textcolor{green}{\text{Хорошие примеры:}}`$
 
 ```http
 GET /api/sbp/v1/products?ids=1,2,3
@@ -29,7 +30,7 @@ GET /api/sbp/v1/products?ids=1,2,3
 GET /api/sbp/v1/products?ids=1&ids=2&ids=3
 ```
 
-$`\textcolor{red}{\text{Плохие примеры:}}`$  
+$`\textcolor{red}{\text{Плохие примеры:}}`$
 
 ```http
 GET  /api/sbp/v1/products?ids=["1", "2", "3"]
@@ -65,7 +66,7 @@ GET  /api/sbp/v1/products?ids=1-3
 "transactionDate": "2022-12-08T13:21:04.631543+03:00" 
 ```
 
-<span style="color:red">Плохие примеры:</span> 
+<span style="color:red">Плохие примеры:</span>
 
 ```json
 "birthday": "1980.01.30"
@@ -85,7 +86,7 @@ GET  /api/sbp/v1/products?ids=1-3
 
 Необходимо всегда указывать код валюты.
 
-<span style="color:green">Хорошие примеры:</span> 
+<span style="color:green">Хорошие примеры:</span>
 
 ```json
 "currency": "RUB"
@@ -120,7 +121,7 @@ GET  /api/sbp/v1/products?ids=1-3
 
 Рекомендуем возвращать traceId для трассировки в теле ответа, чтобы упростить поиск ошибки при взаимодействии с внешними контрагентами. Предпочительный формат [B3](https://github.com/openzipkin/b3-propagation).
 
-<span style="color:green">Хорошие примеры:</span> 
+<span style="color:green">Хорошие примеры:</span>
 
 ```json
 {
@@ -314,3 +315,83 @@ Authorization: Bearer <token>
 ## Фильтрация, сортировка и пагинация
 
 **_NOTE:_** Этот раздел в процессе обсуждения
+
+### Пагинация
+
+Для небольших объемах данных, которые редко изменяются, рекомендуется использовать offset-пагинацию.
+
+Запрос:
+```
+GET /api/sbp/v1/products?page=12&size=20
+```
+Или
+```
+POST /api/sbp/v1/products
+```
+```json
+{
+    "filter": "some filter",
+    "paging": {
+        "page": 12,
+        "size": 20
+    }
+}
+```
+
+Ответ:
+```json
+{
+    "products": [],
+    "paging": {
+        "total": 183,
+        "page": 10,
+        "pages": 10
+    }
+}
+```
+
+Для больших или быстро меняющихся наборов данных, лучше использовать курсор-пагинацию. Для значения курсора следует использовать уникальный индексированный набор полей, который безопасно возвращать клиенту.
+Например, дату создания записи. Для унификации значение курсора кодируется в base64.
+
+Запрос первой страницы:
+```
+GET /api/sbp/v1/products?size=20
+```
+
+Ответ:
+```json
+{
+    "products": [],
+    "nextCursor": "ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6MzgrMDM6MDAiCn0="
+}
+```
+
+Запрос следующей страницы:
+```
+GET /api/sbp/v1/products?cursor=ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6MzgrMDM6MDAiCn0%3D&size=20
+```
+
+Ответ (когда данных больше нет):
+```json
+{
+    "products": [{
+        "id": 123
+    }],
+    "nextCursor": ""
+}
+```
+
+При необходимости сортировки данных, их следует добавлять в курсор.
+Запрос:
+```
+GET /api/sbp/v1/products?sort=price,name&size=20
+```
+Ответ:
+```json
+{
+    "products": [{
+        "id": 123
+    }],
+    "nextCursor": "ewogICJwcmljZSI6IDEyLjAxLAogICJuYW1lIiwgInBvdGF0byIsCiAgImNyZWF0ZWQiOiAiMjAyMy0wNy0yMlQwOToxNDozOCswMzowMCIKfQ"
+}
+```
