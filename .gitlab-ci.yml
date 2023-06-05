@@ -10,6 +10,8 @@ push:
   script:
     - git config --global user.email $OPEN_SOURCE_GITHUB_EMAIL
     - git config --global user.name $OPEN_SOURCE_GITHUB_LOGIN
+    - git config --global http.https://github.com.proxy http://sys-proxy.raiffeisen.ru:8080
+    - git config --global http.https://github.com.sslVerify true
     - git push https://$OPEN_SOURCE_GITHUB_LOGIN:$OPEN_SOURCE_GITHUB_TOKEN@github.com/Raiffeisen-DGTL/$APP_NAME.git HEAD:main --force
   only:
     - master
