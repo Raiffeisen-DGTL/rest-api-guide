@@ -326,7 +326,7 @@ GET /api/sbp/v1/products?page=12&size=20
 ```
 Или
 ```
-POST /api/sbp/v1/products
+POST /api/sbp/v1/search-products
 ```
 ```json
 {
