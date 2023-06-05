@@ -379,7 +379,7 @@ GET /api/sbp/v1/products?limit=20
 GET /api/sbp/v1/products?cursor=ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6MzgrMDM6MDAiCn0%3D&limit=20
 ```
 
-Если записей больше нет, ответ должен быть пустым:
+Если записей больше нет, nextCursor должен быть пустым:
 ```json
 {
     "products": [{
