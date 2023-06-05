@@ -325,7 +325,7 @@ Authorization: Bearer <token>
 ```
 GET /api/sbp/v1/products?offset=50&limit=20
 ```
-Для больших или сложных фильтров следует ресур типа контроллер:
+В случае сложных фильтров:
 ```
 POST /api/sbp/v1/search-products
 ```
