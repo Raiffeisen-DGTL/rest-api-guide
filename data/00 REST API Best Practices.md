@@ -318,13 +318,14 @@ Authorization: Bearer <token>
 
 ### Пагинация
 
-Для небольших объемов данных, которые редко изменяются, рекомендуется использовать offset-пагинацию.
+Для небольших объемов данных, которые редко изменяются, рекомендуется использовать offset-пагинацию. 
+Параметр запроса "offset" указывает на zero-based номер строки, "limit" - на максимальный размер возвращаемого массива.
 
 Запрос:
 ```
-GET /api/sbp/v1/products?page=12&size=20
+GET /api/sbp/v1/products?offset=50&limit=20
 ```
-Или
+Для больших или сложных фильтров следует ресур типа контроллер:
 ```
 POST /api/sbp/v1/search-products
 ```
@@ -332,30 +333,37 @@ POST /api/sbp/v1/search-products
 {
     "filter": "some filter",
     "paging": {
-        "page": 12,
-        "size": 20
+        "offset": 50,
+        "limit": 20
     }
 }
 ```
 
-Ответ:
+Ответ содержит общее число записей, подходящих под фильтр, zero-based номер страницы и общее число страниц:
 ```json
 {
     "products": [],
     "paging": {
         "total": 183,
-        "page": 10,
+        "page": 9,
         "pages": 10
     }
 }
 ```
 
-Для больших или быстро меняющихся наборов данных, лучше использовать курсор-пагинацию. Для значения курсора следует использовать уникальный индексированный набор полей, который безопасно возвращать клиенту.
+Не рекомендуется использовать page+size, т.к. изменение размера страницы повлияет на номер текущей страницы.
+$`\textcolor{red}{\text{Плохой пример:}}`$
+```http
+GET /api/sbp/v1/products?page=12&size=20
+```
+
+Для больших или быстро меняющихся наборов данных, лучше использовать курсор-пагинацию. 
+Для значения курсора следует использовать уникальный индексированный набор полей.
 Например, дату создания записи. Для унификации значение курсора кодируется в base64.
 
 Запрос первой страницы может быть без явного указания курсора:
 ```
-GET /api/sbp/v1/products?size=20
+GET /api/sbp/v1/products?limit=20
 ```
 
 Ответ должен содержать значение курсора следующей записи:
@@ -368,7 +376,7 @@ GET /api/sbp/v1/products?size=20
 
 Запрос следующей страницы со значеним курсора:
 ```
-GET /api/sbp/v1/products?cursor=ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6MzgrMDM6MDAiCn0%3D&size=20
+GET /api/sbp/v1/products?cursor=ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6MzgrMDM6MDAiCn0%3D&limit=20
 ```
 
 Если записей больше нет, ответ должен быть пустым:
@@ -384,7 +392,7 @@ GET /api/sbp/v1/products?cursor=ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6Mzgr
 При необходимости сортировки данных, их следует добавлять в курсор.
 Запрос:
 ```
-GET /api/sbp/v1/products?sort=price,name&size=20
+GET /api/sbp/v1/products?sort=price,name&limit=20
 ```
 Ответ:
 ```json
@@ -395,3 +403,4 @@ GET /api/sbp/v1/products?sort=price,name&size=20
     "nextCursor": "ewogICJwcmljZSI6IDEyLjAxLAogICJuYW1lIiwgInBvdGF0byIsCiAgImNyZWF0ZWQiOiAiMjAyMy0wNy0yMlQwOToxNDozOCswMzowMCIKfQ"
 }
 ```
+Не рекомендуется комбинировать offset- и cursor-пагинации, т.к. это усложняет API.
