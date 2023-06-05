@@ -13,3 +13,4 @@ push:
     - git push https://$OPEN_SOURCE_GITHUB_LOGIN:$OPEN_SOURCE_GITHUB_TOKEN@github.com/Raiffeisen-DGTL/$APP_NAME.git HEAD:main --force
   only:
     - master
+  image: artifactory.raiffeisen.ru/pos-acquiring-docker/cli-tools:latest
