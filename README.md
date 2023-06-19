@@ -57,7 +57,7 @@ URL формируется по шаблону  https://{FQDN}/api/{product}/{ve
 **В результате URL может выглядеть так:**
 
 ```
-https://pay.raif.ru/api/fiscal/v2/receipts
+https://pay.raif.ru/api/fiscal/v2/customer-receipts
 ```
 
 ### HTTP methods
