@@ -33,7 +33,8 @@ REST ([Representational State Transfer](https://en.wikipedia.org/wiki/Representa
 
 ### Формат URL
 
-URL формируется по шаблону  https://{FQDN}/api/{product}/{version}/{path}
+URL формируется по шаблону  https://{FQDN}/api/{product}/{version}/{path}.
+Рекомендуем использовать [kebab case](https://en.wiktionary.org/wiki/kebab_case) в наименовании пути.
 
 **URL состоит из следующих частей:**
 
@@ -377,7 +378,54 @@ GET  /api/sbp/v1/products?ids=1-3
 
 ## Сортировка
 
-***NOTE:*** Этот раздел в процессе обсуждения
+В общем случае, клиент не должен полагаться на сортировку результата сервером, за исключением случаев, когда документация на API явно описывает сортировку по-умолчанию.
+
+В случаях когда запрос возвращает небольшую выборка, более предпочтительным вариантом может оказаться сортировка на стороне клиента.
+
+Если требуется сортировка по одному полю, то рекомендуем указывать поле для сортировки в параметре **sortby** и порядок сортировки в параметре **orderby** (asc/desc).
+
+$`\textcolor{green}{\text{Рекомендуем:}}`$  
+
+```
+GET /api/v1/products?sortby=price&orderby=desc
+```
+
+$`\textcolor{red}{\text{Не рекомендуем:}}`$  
+
+```
+GET /api/v1/users?sort=-created_at,+username
+
+GET /api/v1/products?sortby=price_asc&date_desc
+
+GET /api/v1/users?sort={"created_at":"desc","username":"asc"}
+```
+
+Если параметр **orderby** не указан, то по-умолчанию предполагается сортировка по возрастанию (*asc*).
+
+В сложных случаях, когда требуется сортировка по нескольким полях, сочетание со сложными фильтрами и(или) пагинацией, рекомендуем использовать метод POST.
+
+$`\textcolor{green}{\text{Рекомендуем:}}`$  
+
+```
+POST /api/v1/users/search
+{
+    "filter": "some filter",
+    "paging": {
+        "offset": 50,
+        "limit": 20
+    },
+    "order": [
+      {  "priority": 1,
+         "sortBy": "created_at",
+         "orderBy": "desc"
+      },
+      {  "priority": 2,
+         "sortBy": "username",
+         "orderBy": "asc"
+      }
+    ]
+}
+```
 
 ## Пагинация
 
