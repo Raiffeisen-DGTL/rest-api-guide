@@ -33,7 +33,8 @@ REST ([Representational State Transfer](https://en.wikipedia.org/wiki/Representa
 
 ### Формат URL
 
-URL формируется по шаблону  https://{FQDN}/api/{product}/{version}/{path}
+URL формируется по шаблону  https://{FQDN}/api/{product}/{version}/{path}.
+Рекомендуем использовать [kebab case](https://en.wiktionary.org/wiki/kebab_case) в наименовании пути.
 
 **URL состоит из следующих частей:**
 
@@ -56,7 +57,7 @@ URL формируется по шаблону  https://{FQDN}/api/{product}/{ve
 **В результате URL может выглядеть так:**
 
 ```
-https://pay.raif.ru/api/fiscal/v2/receipts
+https://pay.raif.ru/api/fiscal/v2/customer-receipts
 ```
 
 ### HTTP methods
@@ -86,7 +87,7 @@ https://pay.raif.ru/api/fiscal/v2/receipts
 
 Рекомендуем возвращать traceId для трассировки в теле ответа, чтобы упростить поиск ошибки при взаимодействии с внешними контрагентами. Предпочительный формат [B3](https://github.com/openzipkin/b3-propagation).
 
-$`\textcolor{green}{\text{Хорошие примеры:}}`$  
+$`\textcolor{green}{\text{Рекомендуем:}}`$  
 
 ```json
 {
@@ -120,7 +121,7 @@ $`\textcolor{green}{\text{Хорошие примеры:}}`$
 }
 ```
 
-$`\textcolor{red}{\text{Плохие примеры:}}`$  
+$`\textcolor{red}{\text{Не рекомендуем:}}`$  
 
 ```json
 {
@@ -189,7 +190,7 @@ https://pay.raif.ru/api/sbp/v1/companies/Romashka/...
 
 Версии ресурсов указываются в строке запроса с ключом "version":
 
-$`\textcolor{green}{\text{Хороший пример:}}`$  
+$`\textcolor{green}{\text{Рекомендуем:}}`$  
 
 ```
 https://pay.raif.ru/api/sbp/v1/companies/Romashka/orders?version=2
@@ -199,7 +200,7 @@ https://pay.raif.ru/api/sbp/v1/companies/Romashka/orders?version=2
 
 Версии нумеруются только натуральными числами. Без разбиения на major, minor, patch и release.
 
-$`\textcolor{red}{\text{Плохой пример:}}`$  
+$`\textcolor{red}{\text{Не рекомендуем:}}`$  
 
 ```
 https://pay.raif.ru.ru/api/sbp/v1/companies/Romashka/orders?version=2.1
@@ -258,7 +259,7 @@ https://pay.raif.ru.ru/api/sbp/v1/companies/Romashka/orders?version=2.1
 
 Используем названия полей вида someData как для даты, так и для даты-времени.
 
-$`\textcolor{green}{\text{Хорошие примеры:}}`$  
+$`\textcolor{green}{\text{Рекомендуем:}}`$  
 
 ```json
 "birthDate": "1980-01-30"
@@ -267,7 +268,7 @@ $`\textcolor{green}{\text{Хорошие примеры:}}`$
 "transactionDate": "2022-12-08T13:21:04.631543+03:00" 
 ```
 
-$`\textcolor{red}{\text{Плохие примеры:}}`$  
+$`\textcolor{red}{\text{Не рекомендуем:}}`$  
 
 ```json
 "birthday": "1980.01.30"
@@ -285,7 +286,7 @@ $`\textcolor{red}{\text{Плохие примеры:}}`$
 
 Необходимо всегда указывать код валюты.
 
-$`\textcolor{green}{\text{Хорошие примеры:}}`$  
+$`\textcolor{green}{\text{Рекомендуем:}}`$  
 
 ```json
 "currency": "RUB"
@@ -293,7 +294,7 @@ $`\textcolor{green}{\text{Хорошие примеры:}}`$
 "amount": 1110.11
 ```
 
-$`\textcolor{red}{\text{Плохие примеры:}}`$  
+$`\textcolor{red}{\text{Не рекомендуем:}}`$  
 
 ```json
 "currency": "643"
@@ -307,7 +308,7 @@ $`\textcolor{red}{\text{Плохие примеры:}}`$
 
 Фильтры рекомендуем делать в виде строки запроса GET
 
-$`\textcolor{green}{\text{Хороший пример:}}`$  
+$`\textcolor{green}{\text{Рекомендуем:}}`$  
 
 ```
 GET /api/sbp/v1/products?name=product&price=50&category=electronics
@@ -315,7 +316,7 @@ GET /api/sbp/v1/products?name=product&price=50&category=electronics
 
 Если список аргументов в фильтре слишком длинный (URL может превысить 2048 символов), то рекомендуем использовать для реализации фильтров запрос POST с передачей аргументов в теле запроса.
 
-$`\textcolor{green}{\text{Хороший пример:}}`$  
+$`\textcolor{green}{\text{Рекомендуем:}}`$  
 
 ```
 POST /api/sbp/v1/search-products
@@ -329,7 +330,7 @@ POST /api/sbp/v1/search-products
 
 Не рекомендуем передавать аргументы в теле запроса GET.
 
-$`\textcolor{red}{\text{Плохой пример:}}`$  
+$`\textcolor{red}{\text{Не рекомендуем:}}`$  
 
 ```
 GET /api/sbp/v1/products
@@ -342,7 +343,7 @@ GET /api/sbp/v1/products
 
 Реализация фильтров с логическими операциями or / not / ... по усмотрению исполнителя, общая рекомендация - избегать необходимости в таких фильтрах.
 
-$`\textcolor{red}{\text{Плохой пример:}}`$  
+$`\textcolor{red}{\text{Не рекомендуем:}}`$  
 
 ```
 GET /api/sbp/v1/products?or_label=A&or_label=B&label_not=C
@@ -352,7 +353,7 @@ GET /api/sbp/v1/products?or_label=A&or_label=B&label_not=C
 
 Для передачи массива параметров в запросе GET рекомендуем передавать параметры через запятую либо через повторяющиеся переменные.
 
-$`\textcolor{green}{\text{Хорошие примеры:}}`$  
+$`\textcolor{green}{\text{Рекомендуем:}}`$  
 
 ```
 GET /api/sbp/v1/products?ids=1,2,3
@@ -360,7 +361,7 @@ GET /api/sbp/v1/products?ids=1,2,3
 GET /api/sbp/v1/products?ids=1&ids=2&ids=3
 ```
 
-$`\textcolor{red}{\text{Плохие примеры:}}`$  
+$`\textcolor{red}{\text{Не рекомендуем:}}`$  
 
 ```
 GET  /api/sbp/v1/products?ids=["1", "2", "3"]
@@ -377,11 +378,133 @@ GET  /api/sbp/v1/products?ids=1-3
 
 ## Сортировка
 
-***NOTE:*** Этот раздел в процессе обсуждения
+В общем случае, клиент не должен полагаться на сортировку результата сервером, за исключением случаев, когда документация на API явно описывает сортировку по-умолчанию.
+
+В случаях когда запрос возвращает небольшую выборку, более предпочтительным вариантом может оказаться сортировка на стороне клиента.
+
+Если требуется сортировка по одному полю, то рекомендуем указывать поле для сортировки в параметре **sortby** и порядок сортировки в параметре **orderby** (asc/desc).
+
+$`\textcolor{green}{\text{Рекомендуем:}}`$  
+
+```
+GET /api/v1/products?sortby=price&orderby=desc
+```
+
+$`\textcolor{red}{\text{Не рекомендуем:}}`$  
+
+```
+GET /api/v1/users?sort=-created_at,+username
+
+GET /api/v1/products?sortby=price_asc&date_desc
+
+GET /api/v1/users?sort={"created_at":"desc","username":"asc"}
+```
+
+Если параметр **orderby** не указан, то по-умолчанию предполагается сортировка по возрастанию (*asc*).
+
+В сложных случаях, когда требуется сортировка по нескольким полях в сочетании со сложными фильтрами и(или) пагинацией, рекомендуем использовать метод POST.
+
+$`\textcolor{green}{\text{Рекомендуем:}}`$  
+
+```
+POST /api/v1/users/search
+{
+    "filter": "some filter",
+    "paging": {
+        "offset": 50,
+        "limit": 20
+    },
+    "order": [
+      {  "priority": 1,
+         "sortBy": "created_at",
+         "orderBy": "desc"
+      },
+      {  "priority": 2,
+         "sortBy": "username",
+         "orderBy": "asc"
+      }
+    ]
+}
+```
 
 ## Пагинация
 
-***NOTE:*** Этот раздел в процессе обсуждения
+Для небольших объемов данных, которые редко изменяются, рекомендуется использовать offset-пагинацию.
+Параметр запроса "page" указывает на zero-based номер страницы, "size" - на максимальный размер возвращаемого массива.
+
+Запрос:
+```
+GET /api/sbp/v1/products?page=2&size=20
+```
+В случае сложных фильтров:
+```
+POST /api/sbp/v1/search-products
+```
+```json
+{
+    "filter": "some filter",
+    "paging": {
+        "page": 2,
+        "size": 20
+    }
+}
+```
+
+Ответ содержит общее число записей, подходящих под фильтр, zero-based номер страницы и общее число страниц:
+```json
+{
+    "content": ["foo", "bar"],
+    "totalPages": 2,
+    "totalElements": 21,
+    "last": true
+}
+```
+Для больших или быстро меняющихся наборов данных, лучше использовать курсор-пагинацию.
+Для значения курсора следует использовать уникальный индексированный набор полей.
+Например, дату создания записи. Для унификации значение курсора кодируется в base64.
+
+Запрос первой страницы может быть без явного указания курсора:
+```
+GET /api/sbp/v1/products?limit=20
+```
+
+Ответ должен содержать значение курсора начала следующей страницы:
+```json
+{
+    "products": [],
+    "nextCursor": "ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6MzgrMDM6MDAiCn0="
+}
+```
+
+Запрос следующей страницы со значеним курсора:
+```
+GET /api/sbp/v1/products?cursor=ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6MzgrMDM6MDAiCn0%3D&limit=20
+```
+
+Если записей больше нет, nextCursor должен быть пустым:
+```json
+{
+    "products": [{
+        "id": 123
+    }],
+    "nextCursor": ""
+}
+```
+
+При необходимости сортировки данных, их следует добавлять в курсор.
+Запрос:
+```
+GET /api/sbp/v1/products?sort=price,name&limit=20
+```
+Ответ:
+```json
+{
+    "products": [{
+        "id": 123
+    }],
+    "nextCursor": "ewogICJwcmljZSI6IDEyLjAxLAogICJuYW1lIiwgInBvdGF0byIsCiAgImNyZWF0ZWQiOiAiMjAyMy0wNy0yMlQwOToxNDozOCswMzowMCIKfQ"
+}
+```
 
 ## Логирование
 
