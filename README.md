@@ -340,12 +340,13 @@ $`\textcolor{green}{\text{Рекомендуем:}}`$
 GET /api/sbp/v1/products?name=product&price=50&category=electronics
 ```
 
-Если список аргументов в фильтре слишком длинный (URL может превысить 2048 символов), то рекомендуем использовать для реализации фильтров запрос POST с передачей аргументов в теле запроса.
+Если список аргументов в фильтре слишком длинный (URL может превысить 2048 символов), 
+то рекомендуем использовать для реализации фильтров запрос POST с передачей аргументов в теле запроса.
 
 $`\textcolor{green}{\text{Рекомендуем:}}`$  
 
 ```
-POST /api/sbp/v1/search-products
+POST /api/sbp/v1/products/search
 
 {
    dateFrom="...",
@@ -460,11 +461,11 @@ POST /api/v1/users/search
 
 Запрос:
 ```
-GET /api/sbp/v1/products?page=2&size=20
+GET /api/sbp/v1/products?name=potato&page=2&size=20
 ```
 В случае сложных фильтров:
 ```
-POST /api/sbp/v1/search-products
+POST /api/sbp/v1/products/search
 ```
 ```json
 {
@@ -476,7 +477,7 @@ POST /api/sbp/v1/search-products
 }
 ```
 
-Ответ содержит общее число записей, подходящих под фильтр, zero-based номер страницы и общее число страниц:
+Ответ кроме самих данных содержит общее число страниц, число элементов и флаг наличия следующей страницы:
 ```json
 {
     "content": ["foo", "bar"],
