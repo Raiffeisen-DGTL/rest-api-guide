@@ -33,6 +33,10 @@ REST ([Representational State Transfer](https://en.wikipedia.org/wiki/Representa
 
 В качество формата тела запроса/ответа рекомендуется использовать только JSON. Использование других форматов (XML/TXT) возможно в исключительных случаях.
 
+Мы ориентируемся на [Richardson Maturity Model](https://martinfowler.com/articles/richardsonMaturityModel.html), но считаем избыточным Level 3
+
+Используем для именования параметров [camelCase](https://en.wiktionary.org/wiki/CamelCase)
+
 ### Формат URL
 
 URL формируется по шаблону  https://{FQDN}/api/{product}/{version}/{path}.
@@ -457,7 +461,7 @@ POST /api/v1/users/search
 ## Пагинация
 
 Для небольших объемов данных, которые редко изменяются, рекомендуется использовать offset-пагинацию.
-Параметр запроса "page" указывает на zero-based номер страницы, "size" - на максимальный размер возвращаемого массива.
+Параметр запроса "page" указывает на 1-based номер страницы, "size" - на максимальный размер возвращаемого массива.
 
 Запрос:
 ```
