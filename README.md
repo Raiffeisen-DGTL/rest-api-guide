@@ -29,3 +29,4 @@
 2. [Гайд где собраны лучшие практики и договоренности создания Restful API](rest-api-guide.md)
 3. [Процесс работы над API](api-before-impl.md)
 4. [Процесс кросскомандного ревью API](api-review-process.md)
+5. [Глоссарий RaifPay](glossary.md)
