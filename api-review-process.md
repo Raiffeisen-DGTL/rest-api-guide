@@ -1,1 +1,2 @@
-![Diagram](api-revie-process.png)
+
+![Diagram](img/api-review-process.png)
