@@ -1,1 +1,1 @@
-![Diagram](api-first-process.png)
+![Diagram](img/api-first-process.png)
