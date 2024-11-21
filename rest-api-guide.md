@@ -16,6 +16,10 @@
     - [Передача массива параметров в запросе GET](#передача-массива-параметров-в-запросе-get)
   - [Сортировка](#сортировка)
   - [Пагинация](#пагинация)
+  - [Структура API](#структура-api)
+    - [Методы](#методы)
+    - [Объекты](#объекты)
+    - [Enum и mapping для discriminator](#enum-и-mapping-для-discriminator)
 
 Цель гайда - улучшить разработку **новых** версий API и сделать его более единообразным для удобства потребителей.
 
@@ -153,6 +157,9 @@ Authorization: Bearer <token>
 
 Если для сервиса критична надежная аутентификация, то рекомендуем использовать взаимную аутентификацию TLS с длинной ключа не менее 2048 бит.
 В отдельных случаях, допустимо ограничивать доступ к сервису по белому списку IP-адресов.
+
+Для OpenAPI авторизация должна быть определена на уровне [Security Scheme](https://spec.openapis.org/oas/v3.1.0#security-scheme-object), если это возможно.
+
 
 ### Коды ответов при неудачной аутентификации/авторизации
 
@@ -476,3 +483,16 @@ GET /api/sbp/v1/products?sortBy=price,name&limit=20
     "nextCursor": "ewogICJwcmljZSI6IDEyLjAxLAogICJuYW1lIiwgInBvdGF0byIsCiAgImNyZWF0ZWQiOiAiMjAyMy0wNy0yMlQwOToxNDozOCswMzowMCIKfQ"
 }
 ```
+
+## Структура API
+
+### Методы
+- `operationId` - lowerCamelCase, содержит в себе короткое название метода (например, `createOrder` или `getPaymentStatus`).
+- Тело запроса и ответа должны быть вынесены в блок [Components Object](https://spec.openapis.org/oas/v3.1.0#components-object) как [Schema](https://spec.openapis.org/oas/v3.1.0#schema).
+
+### Объекты
+- Объекты запросов и ответов именуются стилем CamelCase с постфиксами `Request/Response` (например, `CreateOrderRequest`). Исключение составляет случай, когда модель присутствует и в запросе, и в ответе. Тогда постфикс опускается.
+- Все объекты, которые используются больше одного раза, должны быть вынесены как отдельные модели/параметры. Их использование происходит с помощью [ссылок](https://spec.openapis.org/oas/v3.1.0#reference-object) `$ref`.
+
+### Enum и mapping для discriminator
+- Перечисления и значения маппинга для дискриминатора именуются UPPER_SNAKE_CASE
