@@ -264,6 +264,25 @@ $`\textcolor{red}{\text{Не рекомендуем:}}`$
 "createDateTime": "2011-03-01T14:15:22Z"
 ```
 
+## Формат поля "Статус"
+Рекомендуется делать поле "Статус" объектом, который включает в себя:
+ - value - значение
+ - updateDate - дата и время обновления
+
+ $`\textcolor{green}{\text{Рекомендуем:}}`$  
+ ```json
+"status": {
+  "value": "PAID",
+  "updateDate": "2024-12-12T09:14:38+03:00"
+}
+ ```
+
+ $`\textcolor{red}{\text{Не рекомендуем:}}`$  
+
+```json
+"status": "PAID"
+```
+
 ## Формат стран, валют и сумм <a name="Формат_стран_валют"></a>
 
 Формат стран [ISO 3166, UPPER ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1).
