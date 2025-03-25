@@ -1,6 +1,6 @@
-# API Best Practices 
+# API Guide
 
-- [API Best Practices](#api-best-practices)
+- [API Guide](#api-guide)
 - [Введение](#введение)
 - [Общие рекомендации](#общие-рекомендации)
 - [Правила](#правила)
@@ -1675,4 +1675,5 @@ components:
 [RFC](https://datatracker.ietf.org/doc/html/rfc6585#section-7.4) <span style="background-color: #B22222; color: white; padding: 2px 5px; border-radius: 3px;">❌  Не используй</span> `<all>`
 
 Клиенту необходимо пройти аутентификацию, чтобы получить доступ к сети. Технический код ответа, который не используется в RESTful API.
+
 
