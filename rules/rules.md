@@ -554,7 +554,7 @@ POST /api/sbp/v1/products/search
 Для значения курсора следует использовать уникальный индексированный набор полей.
 Например, дату создания записи. Для унификации значение курсора кодируется в base64.
 
-Запрос первой страницы должен быть без явного указания курсора:
+Запрос без явного указания курсора вернет первые n записей по заданному порядку сортировки:
 ```
 GET /api/sbp/v1/products?limit=20
 ```
@@ -576,11 +576,11 @@ GET /api/sbp/v1/products?limit=20
 GET /api/sbp/v1/products?cursor=ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6MzgrMDM6MDAiCn0%3D&limit=20
 ```
 
-Если записей больше нет, content должен быть пустым, nextCursor возвращается всегда:
+Если записей больше нет, content должен быть пустым, а nextCursor null:
 ```json
 {
   "content": [],
-  "nextCursor": "ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6MzgrMDM6MDAiCn0="
+  "nextCursor": null
 }
 ```
 
