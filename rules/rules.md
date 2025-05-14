@@ -634,10 +634,11 @@ GET /sbp/v1/products?sortBy=price,name&limit=20
 {
   "content": [
     {
-      "id": 123
+      "id": 123,
+      "createdAt": "2023-07-22T09:14:38+03:00"
     }
   ],
-  "nextCursor": "ewogICJwcmljZSI6IDEyLjAxLAogICJuYW1lIiwgInBvdGF0byIsCiAgImNyZWF0ZWQiOiAiMjAyMy0wNy0yMlQwOToxNDozOCswMzowMCIKfQ"
+  "nextCursor": "ewogICJpZCI6IDEyNCwKICAiY3JlYXRlZEF0IjogIjIwMjMtMDctMjJUMTA6MTQ6MzgrMDM6MDAiCn0="
 }
 ```
 
