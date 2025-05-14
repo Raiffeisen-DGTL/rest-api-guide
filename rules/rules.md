@@ -588,15 +588,34 @@ GET /sbp/v1/products?limit=20
       "id": 122
     }
   ],
-  "nextCursor": "ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6MzgrMDM6MDAiCn0="
+  "nextCursor": "ewogICAgICAiaWQiOiAxMjMKfQ=="
+  // Содержит 
+  // {
+  //       "id": 123
+  // }
 }
 ```
 
 Запрос следующей страницы со значеним курсора:
 ```
-GET /sbp/v1/products?cursor=ewogICJjcmVhdGVkIjogIjIwMjMtMDctMjJUMDk6MTQ6MzgrMDM6MDAiCn0%3D&limit=20
+GET /sbp/v1/products?cursor=ewogICAgICAiaWQiOiAxMjMKfQ==&limit=1
 ```
 
+В ответ вернет:
+```json
+{
+  "content": [
+    {
+      "id": 123
+    }
+  ],
+  "nextCursor": "ewogICAgICAiaWQiOiAxMjQKfQ=="
+  // Содержит 
+  // {
+  //       "id": 124
+  // }
+}
+```
 Если записей больше нет, content должен быть пустым, а nextCursor null:
 ```json
 {
