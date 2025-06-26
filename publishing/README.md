@@ -29,7 +29,7 @@
 - **Уровень API**: Внешнее API (Public API)
 
 ### Внутренний API Portal
-- **URL**: В работе - 30 июня 2025
+- **URL**: https://private-api-portal.raiffeisen.ru/
 - **Аудитория**: Команды внутри банка
 - **Цель**: Переиспользование API между командами
 - **Уровень API**: Внутреннее API (Private API) 
@@ -37,13 +37,15 @@
 
 ## Процесс публикации
 
+### [Где публиковать API](https://docs.cdci.raiffeisen.ru/raif-api-public-doc/raif-api)
+
 ### Внутренний портал
 
 - [Публикация внутреннего API](https://docs.cdci.raiffeisen.ru/raif-api-public-doc/raif-api-private/publikaciya-api)
 
 ### Внешний портал
 
-- [Публикация Public API (Ручной процесс)](https://docs.cdci.raiffeisen.ru/raif-api-public-doc/raif-api/publikaciya-api/publikaciya-vneshnikh-api)
+- [Публикация Public API (Ручной процесс)](https://docs.cdci.raiffeisen.ru/raif-api-public-doc/publikaciya-api/publikaciya-vneshnikh-api)
 - Work in Progress - [Публикация Public API](https://docs.cdci.raiffeisen.ru/raif-api-public-doc/raif-api/publikaciya-api/process-publikacii-api)
 
 
