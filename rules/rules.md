@@ -435,6 +435,102 @@ properties:
 
 ### Пагинация
 
+#### Структура пагинации в отдельном объекте
+| ID                        | Severity | Дата принятия |
+|---------------------------|----------|---------------|
+| pagination-separate-object| MUST     | 20.05.2025    |
+
+#### Описание правила
+Все параметры пагинации должны быть вынесены в отдельный объект paging для четкого разделения данных и метаинформации о пагинации.
+
+Правильно:
+
+```json
+{
+  "data": [
+    {
+      "id": 124,
+      "name": "Product Name"
+    }
+  ],
+  "paging": {
+    "offset": 0,
+    "limit": 20,
+    "totalCount": 35
+  }
+}
+```
+
+```json
+{
+  "data": [
+    {
+      "id": 456,
+      "title": "Article Title"
+    }
+  ],
+  "paging": {
+    "offset": 20,
+    "limit": 10,
+    "totalCount": 157
+  },
+  "metadata": {
+    "requestId": "req-123",
+    "timestamp": "2025-08-20T20:50:00Z"
+  }
+}
+```
+
+Неправильно:
+```json
+{
+  "data": [
+    {
+      "id": 124
+    }
+  ],
+  "offset": 0,        // Параметры пагинации смешаны с другими полями
+  "limit": 20,
+  "totalCount": 35
+}
+```
+
+```json
+{
+  "data": [
+    {
+      "id": 124
+    }
+  ],
+  "offset": 0,
+  "limit": 20,
+  "totalCount": 35,
+  "metadata": {       // Сложно отличить пагинацию от других метаданных
+    "requestId": "req-123"
+  }
+}
+
+```
+
+##### Обоснование
+
+1. **Четкое разделение ответственности**: Данные (`data`) отделены от метаинформации о пагинации (`paging`)
+2. **Расширяемость**: Легко добавлять новые поля пагинации без загрязнения корневого уровня
+3. **Читаемость**: Разработчикам проще понимать структуру ответа
+4. **Совместимость с другими метаданными**: Не конфликтует с полями типа `metadata`, `errors`, `warnings`
+
+##### Альтернативы
+
+- **Оставить параметры пагинации на корневом уровне**
+  - Создает путаницу при добавлении других метаданных, усложняет парсинг
+**Использовать объект `meta` для всех метаданных включая пагинацию**
+  - Слишком общий подход, пагинация имеет специфичную семантику и заслуживает отдельного объекта
+
+##### Ссылки на стандарты
+- [JSON:API](https://jsonapi.org/format/#fetching-pagination) использует объект `meta` для метаинформации, но выделяет пагинацию в `links`
+
+---
+
 #### offset-пагинация
 | ID                 | Severity | Дата принятия |
 |--------------------|----------|---------------|
@@ -454,16 +550,18 @@ properties:
 GET /v1/documents?limit=20
 ```
 
-```
+```json
 {
   "data": [
     {
       "id": 124
     }
   ],
-  "offset": 0,
-  "limit": 20,
-  "totalCount": 35
+  "paging": {
+    "offset": 0,
+    "limit": 20,
+    "totalCount": 35
+  }
 }
 ```
 
@@ -475,16 +573,18 @@ GET /v1/documents?limit=20&offset=20
 
 Если записей больше нет, totalCount будет меньше или равен offset + limit:
 
-```
+```json
 {
   "data": [
     {
       "id": 304
     }
   ],
-  "offset": 20,
-  "limit": 20,
-  "totalCount": 35
+  "paging": {
+    "offset": 20,
+    "limit": 20,
+    "totalCount": 35
+  }
 }
 ```
 
@@ -516,7 +616,9 @@ GET /sbp/v1/products?limit=20
       "id": 122
     }
   ],
-  "nextCursor": "ewogICAgICAiaWQiOiAxMjMKfQ=="
+  "paging": {
+    "nextCursor": "ewogICAgICAiaWQiOiAxMjMKfQ=="
+  }
   // Содержит 
   // {
   //       "id": 123
@@ -537,7 +639,9 @@ GET /sbp/v1/products?cursor=ewogICAgICAiaWQiOiAxMjMKfQ==&limit=1
       "id": 123
     }
   ],
-  "nextCursor": "ewogICAgICAiaWQiOiAxMjQKfQ=="
+  "paging": {
+    "nextCursor": "ewogICAgICAiaWQiOiAxMjQKfQ=="
+  }
   // Содержит 
   // {
   //       "id": 124
@@ -548,7 +652,9 @@ GET /sbp/v1/products?cursor=ewogICAgICAiaWQiOiAxMjMKfQ==&limit=1
 ```json
 {
   "content": [],
-  "nextCursor": null
+  "paging": {
+    "nextCursor": null
+  }
 }
 ```
 
@@ -566,7 +672,9 @@ GET /sbp/v1/products?sortBy=price,name&limit=20
       "createdAt": "2023-07-22T09:14:38+03:00"
     }
   ],
-  "nextCursor": "ewogICJpZCI6IDEyNCwKICAiY3JlYXRlZEF0IjogIjIwMjMtMDctMjJUMTA6MTQ6MzgrMDM6MDAiCn0="
+  "paging": {
+    "nextCursor": "ewogICJpZCI6IDEyNCwKICAiY3JlYXRlZEF0IjogIjIwMjMtMDctMjJUMTA6MTQ6MzgrMDM6MDAiCn0="
+  }
 }
 ```
 
