@@ -1,0 +1,11 @@
+rules:
+  openapi-tags-alphabetical:
+    description: Tags должны быть в алфавитном порядке
+    severity: info
+    resolved: false
+    given: '$'
+    then:
+      field: 'tags'
+      function: alphabetical
+      functionOptions:
+        keyedBy: 'name'

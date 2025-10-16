@@ -1,0 +1,8 @@
+rules:
+  info-contact:
+    description: Блок info должен содержать раздел contact
+    severity: error
+    given: '$'
+    then:
+      field: 'info.contact'
+      function: truthy

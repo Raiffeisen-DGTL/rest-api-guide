@@ -1,0 +1,8 @@
+rules:
+  tag-description:
+    description: Блок tags должен содержать description
+    severity: warn
+    given: '$.tags[*]'
+    then:
+      field: 'description'
+      function: truthy

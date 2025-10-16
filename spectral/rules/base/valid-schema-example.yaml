@@ -1,0 +1,13 @@
+functions:
+  - validSchemaExample
+functionsDir: "../../functions"
+rules:
+  valid-schema-example:
+    description: Все схемы должны иметь example
+    severity: error
+    given:
+    - "$..content.*.schema"
+    - "$..headers.*.schema"
+    - "$..parameters.*.schema"
+    then:
+      function: validSchemaExample

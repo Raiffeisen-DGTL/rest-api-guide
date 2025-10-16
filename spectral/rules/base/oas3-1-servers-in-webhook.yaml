@@ -1,0 +1,8 @@
+rules:
+  oas3-1-servers-in-webhook:
+    description: Webhooks не должны включать в себя servers
+    severity: error
+    formats: [ oas3_1 ]
+    given: [ '$.webhooks.servers', '$.webhooks[*][*].servers' ]
+    then:
+      function: undefined

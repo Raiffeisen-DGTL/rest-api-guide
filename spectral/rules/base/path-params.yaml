@@ -1,0 +1,11 @@
+functions:
+  - oasPathParam
+functionsDir: "../../functions"
+rules:
+  path-params:
+    description: Параметры пути должны быть описаны и использованы
+    severity: error
+    resolved: false
+    given: '$.paths'
+    then:
+      function: oasPathParam

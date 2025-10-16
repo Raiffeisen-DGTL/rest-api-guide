@@ -1,0 +1,14 @@
+rules:
+  empty-objects-forbidden:
+    description: Запрещены пустые объекты
+    severity: error
+    given:
+      - '$'
+      - '$..*'
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          not:
+            type: object
+            maxProperties: 0

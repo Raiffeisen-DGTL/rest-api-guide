@@ -1,0 +1,11 @@
+rules:
+  url-versioning:
+    description: Версия должна быть указана в пути запроса, в начале метода, в формате /beta, /v1, /v2 и т.д.
+    severity: error
+    given: 
+      - "$.paths.*~"
+    then:
+      field: '@key'
+      function: pattern
+      functionOptions:
+        match: "^/(beta|v\\d+)(?:/.*)?$"

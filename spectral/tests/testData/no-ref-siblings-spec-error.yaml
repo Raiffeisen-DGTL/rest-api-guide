@@ -1,0 +1,39 @@
+openapi: 3.0.3
+info:
+  contact:
+    url: https://sometestserver.ru/198
+  title: Test Spec
+  version: 0.0.2
+servers:
+  - description: test
+    url: https://test.sometestserver.ru/
+  - description: prod
+    url: https://prod.sometestserver.ru/
+paths:
+  /v1/api/test:
+    get:
+      tags:
+        - testing endpoint
+      summary: Для тестирования правил
+      operationId: getTest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TheBadModel'
+                description: This is a description that should not be here with $ref
+components:
+  schemas:
+    TheBadModel:
+      type: object
+      properties:
+        number_of_connectors:
+          type: integer
+          description: The number of extension points.
+          enum:
+            - 1
+            - 2
+            - 4
+            - 5

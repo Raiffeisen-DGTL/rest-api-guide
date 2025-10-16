@@ -1,0 +1,12 @@
+rules:
+  not-use-redirection-codes:
+    description: Не используйте коды перенаправления в responses
+    severity: error
+    given:
+      - '$.paths.*.*.responses.*~'
+      - '$.paths.*.responses.*~'
+      - '$.webhooks.*.*.responses.*~'
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: '^3(?!04$)(?:\d{2}|XX)$'

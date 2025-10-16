@@ -1,0 +1,17 @@
+rules:
+  oas3-examples-value-or-externalValue:
+    description: Examples должен содержать value или externalValue
+    severity: warn
+    resolved: false
+    formats: [oas3]
+    given:
+      - '$.components.examples[*]'
+      - '$.paths[*][*]..content[*].examples[*]'
+      - '$.paths[*][*]..parameters[*].examples[*]'
+      - '$.components.parameters[*].examples[*]'
+      - '$.paths[*][*]..headers[*].examples[*]'
+      - '$.components.headers[*].examples[*]'
+    then:
+      function: xor
+      functionOptions:
+        properties: ['externalValue', 'value']

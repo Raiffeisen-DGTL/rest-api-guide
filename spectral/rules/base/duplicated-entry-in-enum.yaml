@@ -1,0 +1,14 @@
+rules:
+  duplicated-entry-in-enum:
+    description: Значения в ENUM должны быть уникальны.
+    documentationUrl: 'https://gitlabci.raiffeisen.ru/cib/api-guide'
+    message: "Duplicate entry '{{value}}' in enum."
+    severity: error
+    given: "$..enum"
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          uniqueItems: true
+

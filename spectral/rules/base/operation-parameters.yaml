@@ -1,0 +1,16 @@
+aliases:
+  PathItem:
+    - '$.paths[*]'
+  OperationObject:
+    - '#PathItem[get,put,post,delete,options,head,patch,trace]'
+functions:
+  - oasOpParams
+functionsDir: "../../functions"
+rules:
+  operation-parameters:
+    description: Параметры в методах должны быть уникальными
+    severity: error
+    resolved: false
+    given: '#OperationObject.parameters'
+    then:
+      function: oasOpParams

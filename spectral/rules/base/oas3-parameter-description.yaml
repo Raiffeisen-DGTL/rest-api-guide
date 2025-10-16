@@ -1,0 +1,18 @@
+aliases:
+  PathItem:
+    - '$.paths[*]'
+  OperationObject:
+    - '#PathItem[get,put,post,delete,options,head,patch,trace]'
+rules:
+  oas3-parameter-description:
+    description: Параметры должны иметь заполненный description
+    severity: warn
+    resolved: false
+    formats: [ oas3 ]
+    given:
+      - '#PathItem.parameters[?(@ && @.in)]'
+      - '#OperationObject.parameters[?(@ && @.in)]'
+      - '$.components.parameters[?(@ && @.in)]'
+    then:
+      field: 'description'
+      function: truthy

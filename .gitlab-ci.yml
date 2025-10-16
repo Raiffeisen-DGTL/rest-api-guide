@@ -1,12 +1,111 @@
+include:
+  - project: 'cdc-integrations/devops/ci-cd'
+    file:
+      - images.yml
 stages:
-  - deploy
+  - test
+  - package
+  - publish
+  - release
+  - mirror
 
 variables:
   APP_NAME: rest-api-guide
   VERSION: 1.1.$CI_PIPELINE_IID
 
-push:
-  stage: deploy
+.npm_job:
+  image: !reference [.image, node22]
+  before_script:
+    - cat $NPMRC > ~/.npmrc
+    - npm set cache .npm
+    - cd ./spectral
+    - npm install -D concurrently
+
+test:
+  stage: test
+  extends: .npm_job
+  script:
+   - npm run check
+   - npm run lint
+   - npm run test-junit
+  artifacts:
+   when: always
+   reports:
+     junit:
+       - ./spectral/junit.xml
+
+package:
+  stage: package
+  extends: .npm_job
+  needs:
+    - test
+  script:
+    - npm pack
+  artifacts:
+    when: on_success
+    paths:
+      - ./spectral/rapi-spectral-rulesets-*
+  rules:
+  - if: $CI_COMMIT_TAG
+
+publish:
+  stage: publish
+  extends: .npm_job
+  script:
+    - npm version $CI_COMMIT_TAG
+    - npm publish
+  dependencies:
+    - package
+  needs:
+    - package
+  rules:
+  - if: $CI_COMMIT_TAG
+
+release:
+ stage: release
+ image: 'artifactory.raiffeisen.ru/ext-devops-community-docker/release-cli:v0.16.0'
+ dependencies:
+   - package
+   - publish
+ script:
+    - |
+      if [ -z "$CI_COMMIT_TAG" ]; then
+        echo "No tag found, skipping release creation"
+        exit 1
+      fi
+
+      echo "Preparing release for tag $CI_COMMIT_TAG"
+
+      # Получаем предыдущий тег (для release notes)
+      PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+      if [ -n "$PREV_TAG" ]; then
+        echo "Release notes:" > release_notes.md
+        echo "" >> release_notes.md
+        git log --pretty=format:"* %h - %an, %ar : %s" "$PREV_TAG..HEAD" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "Commit message:" >> release_notes.md
+        echo "$CI_COMMIT_MESSAGE" >> release_notes.md
+      else
+        echo "No previous tag found. Using all commits since beginning of repository:" > release_notes.md
+        git log --pretty=format:"* %h - %an, %ar : %s" >> release_notes.md
+      fi
+
+      echo "Release notes prepared:"
+      cat release_notes.md
+ release:
+    tag_name: "$CI_COMMIT_TAG"
+    name: "$CI_COMMIT_TAG"
+    description: "$(cat release_notes.md)"
+    assets:
+      links:
+        - name: "spectral-rulesets-$CI_COMMIT_TAG"
+          url: "https://artifactory.raiffeisen.ru/artifactory/cdci-public-npm/@rapi/spectral-rulesets/-/@rapi/spectral-rulesets-$CI_COMMIT_TAG.tgz"
+ rules:
+ - if: $CI_COMMIT_TAG
+
+
+github-mirror:
+  stage: mirror
   script:
     - git config --global user.email $OPEN_SOURCE_GITHUB_EMAIL
     - git config --global user.name $OPEN_SOURCE_GITHUB_LOGIN

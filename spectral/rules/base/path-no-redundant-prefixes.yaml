@@ -1,0 +1,10 @@
+rules:
+  path-no-redundant-prefixes:
+    description: В paths запрещено использовать сегменты api, openapi, http, service
+    severity: error
+    given:
+      - '$.paths.*~'
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: '(?:^|/)(?:api|openapi|http|service)(?:/|$)'

@@ -1,0 +1,10 @@
+rules:
+  openapi-tags:
+    description: Массив tags не должен быть пустым
+    severity: error
+    given: '$'
+    then:
+      field: 'tags'
+      function: length
+      functionOptions:
+        min: 1

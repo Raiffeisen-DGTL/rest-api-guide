@@ -1,0 +1,11 @@
+functions:
+  - provideHeadMethod
+functionsDir: "../../functions"
+rules:
+  provide-head-method:
+    description: API для скачивания какого-либо файла должно поддерживать метод **HEAD**
+    severity: error
+    given:
+      - "$.paths.*"
+    then:
+      function: provideHeadMethod
