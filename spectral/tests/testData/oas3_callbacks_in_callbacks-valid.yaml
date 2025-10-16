@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: Test Spec
+  version: 0.0.2
+paths:
+  /test:
+    post:
+      callbacks:
+        myCallback:
+          'https://example.com/callback':
+            post:
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+              responses:
+                '200':
+                  description: OK
+      responses:
+        '200':
+          description: OK

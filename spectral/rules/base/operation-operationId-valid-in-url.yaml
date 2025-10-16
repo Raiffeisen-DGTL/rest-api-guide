@@ -1,0 +1,16 @@
+aliases:
+  PathItem:
+    - '$.paths[*]'
+  OperationObject:
+    - '#PathItem[get,put,post,delete,options,head,patch,trace]'
+rules:
+  operation-operationId-valid-in-url:
+    description: OperationId не должен содержать запрещенных символов
+    severity: error
+    resolved: false
+    given: '#OperationObject'
+    then:
+      field: 'operationId'
+      function: pattern
+      functionOptions:
+        match: "^[A-Za-z0-9-._~:/?#\\[\\]@!\\$&'()*+,;=]*$"

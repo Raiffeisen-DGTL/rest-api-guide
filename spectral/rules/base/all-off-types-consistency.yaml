@@ -1,0 +1,10 @@
+functions:
+  - allOffTypesConsistency
+functionsDir: "../../functions"
+rules:
+  all-off-types-consistency:
+    description: Все элементы allOf должны иметь одинаковый тип
+    given: $..[?(@ && @.allOf)]
+    severity: error
+    then:
+      function: allOffTypesConsistency

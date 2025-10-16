@@ -1,0 +1,8 @@
+rules:
+  oas3_1-callbacks-in-webhook:
+    description: Webhooks не должны включать в себя callbacks
+    severity: error
+    formats: [oas3_1]
+    given: '$.webhooks[*][*].callbacks'
+    then:
+      function: undefined

@@ -1,0 +1,18 @@
+functions:
+  - oasExample
+functionsDir: "../../functions"
+rules:
+  oas3-valid-media-example:
+    description: Examples должны соответствовать объявленной схеме
+    formats: [ oas3_0 ]
+    severity: error
+    given:
+      - '$..content..[?(@ && @.schema && (@.example !== void 0 || @.examples))]'
+      - '$..headers..[?(@ && @.schema && (@.example !== void 0 || @.examples))]'
+      - '$..parameters..[?(@ && @.schema && (@.example !== void 0 || @.examples))]'
+    then:
+      function: oasExample
+      functionOptions:
+        schemaField: 'schema'
+        oasVersion: 3
+        type: 'media'

@@ -1,0 +1,10 @@
+rules:
+  path-not-include-query:
+    description: Path не должен содержать символов "?"
+    severity: error
+    given: '$.paths'
+    then:
+      field: '@key'
+      function: pattern
+      functionOptions:
+        notMatch: '\?.+'

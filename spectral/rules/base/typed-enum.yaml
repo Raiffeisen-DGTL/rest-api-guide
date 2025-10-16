@@ -1,0 +1,10 @@
+functions:
+  - typedEnum
+functionsDir: "../../functions"
+rules:
+  typed-enum:
+    description: Каждый элемент Enum должен соответствовать указанному типу
+    severity: error
+    given: '$..[?(@ && @.enum && @.type)]'
+    then:
+      function: typedEnum

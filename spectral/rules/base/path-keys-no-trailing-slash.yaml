@@ -1,0 +1,10 @@
+rules:
+  path-keys-no-trailing-slash:
+    description: Path не должен заканчиваться на символ /
+    severity: info
+    given: '$.paths'
+    then:
+      field: '@key'
+      function: pattern
+      functionOptions:
+        notMatch: './$'

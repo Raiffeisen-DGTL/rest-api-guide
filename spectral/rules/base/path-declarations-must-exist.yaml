@@ -1,0 +1,10 @@
+rules:
+  path-declarations-must-exist:
+    description: Параметры пути не должны записываться пустыми элементами, например "/given/{}"
+    severity: error
+    given: '$.paths'
+    then:
+      field: '@key'
+      function: pattern
+      functionOptions:
+        notMatch: '{}'

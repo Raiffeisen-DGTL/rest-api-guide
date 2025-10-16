@@ -1,0 +1,11 @@
+functions:
+  - uniquenessTags
+functionsDir: "../../functions"
+rules:
+  openapi-tags-uniqueness:
+    description: Названия тегов должны быть уникальными
+    severity: error
+    resolved: false
+    given: '$.tags'
+    then:
+      function: uniquenessTags

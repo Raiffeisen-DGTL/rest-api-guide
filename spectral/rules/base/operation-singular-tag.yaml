@@ -1,0 +1,16 @@
+aliases:
+  PathItem:
+    - '$.paths[*]'
+  OperationObject:
+    - '#PathItem[get,put,post,delete,options,head,patch,trace]'
+rules:
+  operation-singular-tag:
+    description: Метод должен иметь не более одного тега
+    severity: error
+    resolved: false
+    given: '#OperationObject'
+    then:
+      field: 'tags'
+      function: length
+      functionOptions:
+        max: 1

@@ -1,0 +1,8 @@
+rules:
+  oas3-callbacks-in-callbacks:
+    description: Callbacks не должны включать в себя callbacks
+    severity: error
+    formats: [ oas3 ]
+    given: '$.paths[*][get,put,post,delete,options,head,patch,trace].callbacks[*][*][*].callbacks'
+    then:
+      function: undefined

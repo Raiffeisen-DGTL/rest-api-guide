@@ -1,0 +1,12 @@
+functions:
+  - oasUnusedComponent
+functionsDir: "../../functions"
+rules:
+  oas3-unused-component:
+    description: Спецификация не должна содержать неиспользуемые компоненты
+    formats: [ oas3_0 ]
+    severity: error
+    resolved: false
+    given: '$'
+    then:
+      function: oasUnusedComponent

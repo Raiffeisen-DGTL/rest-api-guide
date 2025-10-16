@@ -1,0 +1,11 @@
+functions:
+  - methodRequestResponseComponents
+functionsDir: "../../functions"
+rules:
+  method-request-response-components:
+    description: Тело запроса и ответа должны быть вынесены в блок components как schema
+    severity: error
+    given: $.paths
+    resolved: false
+    then:
+      function: methodRequestResponseComponents

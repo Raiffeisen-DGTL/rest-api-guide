@@ -1,0 +1,76 @@
+{
+  "name": "@rapi/spectral-rulesets",
+  "version": "0.1.0",
+  "description": "Spectral ruleset for API documentation validation",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "files": [
+    "required-ruleset.yaml",
+    "base-ruleset.yaml",
+    "functions/**/*.js"
+  ],
+  "publishConfig": {
+    "registry": "https://artifactory.raiffeisen.ru/artifactory/api/npm/cdci-public-npm/"
+  },
+  "scripts": {
+    "test": "npx jest",
+    "test-junit": "npx jest --ci --reporters=default --reporters=jest-junit --verbose",
+    "format": "prettier --write \"./tests/*.{ts,tsx,json,css}\"",
+    "check": "prettier --check \"./tests/*.{ts,tsx,json,css}\"",
+    "lint": "eslint \"./tests/*.{ts,tsx}\"",
+    "lint fix": "eslint --fix \"./tests/*.{ts,tsx}\"",
+    "prepare": "cd .. && husky spectral/.husky"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "testMatch": [
+      "**/?(*.)+(spec|test).ts"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    }
+  },
+  "prettier":{
+    "arrowParens": "always",
+    "bracketSameLine": false,
+    "bracketSpacing": true,
+    "semi": false,
+    "experimentalTernaries": false,
+    "singleQuote": true,
+    "jsxSingleQuote": true,
+    "quoteProps": "as-needed",
+    "trailingComma": "all",
+    "singleAttributePerLine": false,
+    "htmlWhitespaceSensitivity": "css",
+    "vueIndentScriptAndStyle": false,
+    "proseWrap": "preserve",
+    "insertPragma": false,
+    "printWidth": 100,
+    "requirePragma": false,
+    "tabWidth": 2,
+    "useTabs": false,
+    "embeddedLanguageFormatting": "auto"
+  },
+  "devDependencies": {
+    "@stoplight/spectral-ruleset-bundler": "^1.6.3",
+    "@types/jest": "^30.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.44.1",
+    "@typescript-eslint/parser": "^8.44.1",
+    "json-schema-traverse":"^1.0.0",
+    "eslint": "9.36.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
+    "jest": "^30.1.3",
+    "jest-junit": "^16.0.0",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.4",
+    "typescript": "^5.9.2"
+  }
+}

@@ -1,0 +1,12 @@
+functions:
+  - refSiblings
+functionsDir: "../../functions"
+rules:
+  no-ref-siblings:
+    description: Рядом с $ref не должно быть property
+    formats: [ oas3_0 ]
+    severity: error
+    resolved: false
+    given: "$..[?(@property === '$ref')]"
+    then:
+      function: refSiblings

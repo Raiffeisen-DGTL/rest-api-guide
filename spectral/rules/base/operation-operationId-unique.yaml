@@ -1,0 +1,10 @@
+functions:
+  - oasOpIdUnique
+functionsDir: "../../functions"
+rules:
+  operation-operationId-unique:
+    description: OperationId должен быть уникальным
+    severity: error
+    given: '$.paths'
+    then:
+      function: oasOpIdUnique

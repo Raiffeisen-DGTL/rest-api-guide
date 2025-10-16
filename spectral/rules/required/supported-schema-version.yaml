@@ -1,0 +1,13 @@
+rules:
+  supported-schema-version:
+    description: Спецификация должна быть версии 3+
+    given: '$'
+    message: "Схема документа не равна 3+"
+    severity: error
+    then:
+      - field: "openapi"
+        function: truthy
+      - field: "openapi"
+        function: pattern
+        functionOptions:
+          match: '^3\.\d{1}\.\d{1}$'

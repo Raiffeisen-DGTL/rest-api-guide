@@ -1,0 +1,17 @@
+rules:
+  body-fields-camel-case:
+    description: Поля в requestBody и responseBody должны быть в camelCase
+    resolved: false
+    severity: error
+    given:
+      - '$.paths.*.*.requestBody.content.*.schema..properties.*~'
+      - '$.paths.*.requestBody.content.*.schema..properties.*~'
+      - '$.paths.*.*.responses.*.content.*.schema..properties.*~'
+      - '$.paths.*.responses.*.content.*.schema..properties.*~'
+      - '$.components.schemas.*..properties.*~'
+      - '$.components.requestBodies.*.content.*.schema..properties.*~'
+      - '$.components.responses.*.content.*.schema..properties.*~'
+    then:
+      function: casing
+      functionOptions:
+        type: camel

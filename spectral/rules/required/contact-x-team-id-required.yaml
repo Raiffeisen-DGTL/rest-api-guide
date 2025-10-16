@@ -1,0 +1,9 @@
+rules:
+  contact-x-team-id-required:
+    description: Поле info.contact.x-team-id является обязательным
+    message: Отсутствует поле info.contact.x-team-id
+    severity: error
+    given: $.info
+    then:
+      field: contact.x-team-id
+      function: truthy

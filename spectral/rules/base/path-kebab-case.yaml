@@ -1,0 +1,10 @@
+rules:
+  path-kebab-case:
+    description: Path должны быть в kebabCase формате
+    severity: error
+    given: '$.paths.*~'
+    then:
+      field: '@key'
+      function: pattern
+      functionOptions:
+        match: '^/(?:[a-z][a-z0-9]*(?:-[a-z0-9]+)*|\{[A-Za-z0-9_]+\})(?:/(?:[a-z][a-z0-9]*(?:-[a-z0-9]+)*|\{[A-Za-z0-9_]+\}))*$'

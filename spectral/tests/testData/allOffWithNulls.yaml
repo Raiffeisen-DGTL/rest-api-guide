@@ -1,0 +1,3724 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: factoring_it_teams@raiffeisen.ru
+    x-team-id: 125
+    x-short-team-name: DigFin
+  description: API specification for the Raiffeisen Factoring Online application (Deprecated
+    system)
+  x-raif-api-title-en: Raiffeisen Factoring Online API
+  title: Raiffeisen Factoring Online API
+  version: 1.0.0
+servers:
+- description: Prod стенд
+  url: https://factor.raiffeisen.ru/fis
+- description: Test стенд
+  url: https://s-msk-v-fct-ws1.raiffeisen.ru/fis
+paths:
+  /api/v1/agreement/list:
+    get:
+      deprecated: true
+      description: Retrieves a list of agreements for the current user
+      operationId: GetAgreementList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgreementDataListResponse"
+          description: Successful response
+      summary: Get agreements
+  /api/v1/agreement/agent:
+    get:
+      deprecated: true
+      description: Retrieves the agent agreement for the current user
+      operationId: GetAgreementAgent
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgreementDataResponse"
+          description: Successful response
+      summary: Get agent agreement
+  /api/v1/agreement/select-options:
+    get:
+      deprecated: true
+      description: Retrieves select options for agreements
+      operationId: GetAgreementSelectOptions
+      parameters:
+      - explode: true
+        in: query
+        name: partnerId
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SelectOptionListResponse"
+          description: Successful response
+      summary: Get agreements options
+  /api/v1/auth/back-channel:
+    post:
+      deprecated: true
+      description: Handles user logout through back channel
+      operationId: PostAuthBackChannel
+      responses:
+        "200":
+          description: Successful logout
+      summary: Logout user
+  /api/v1/bill/list:
+    get:
+      deprecated: true
+      description: Retrieves a list of bills based on search parameters
+      operationId: GetBillList
+      parameters:
+      - explode: true
+        in: query
+        name: from
+        required: true
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortField
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortType
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: paid
+        required: true
+        schema:
+          type: boolean
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 150
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BillListResponse"
+          description: Successful response
+      summary: Get bills
+  /api/v1/bill/export-to-csv:
+    get:
+      deprecated: true
+      description: Exports bills to CSV format
+      operationId: GetBillExportToCsv
+      parameters:
+      - explode: true
+        in: query
+        name: from
+        required: true
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: paid
+        required: true
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            text/csv:
+              schema:
+                format: binary
+                type: string
+          description: CSV file download
+      summary: Export bills to CSV
+  /api/v1/bill/{id}/details:
+    get:
+      deprecated: true
+      description: Retrieves detailed information about a specific bill
+      operationId: GetBillByIdDetails
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BillDetailResponse"
+          description: Successful response
+      summary: Get bill details
+  /api/v1/catalog:
+    get:
+      deprecated: true
+      description: Retrieves all catalogs
+      operationId: GetCatalog
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogListResponse"
+          description: Successful response
+      summary: Get all catalogs
+  /api/v1/catalog/by-name:
+    get:
+      deprecated: true
+      description: Retrieves catalogs by catalog name
+      operationId: GetCatalogByName
+      parameters:
+      - explode: true
+        in: query
+        name: catalogName
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogListResponse"
+          description: Successful response
+      summary: Get catalogs by name
+  /api/v1/client/debtors:
+    get:
+      deprecated: true
+      description: Retrieves debtors associated with a specific agreement ID
+      operationId: GetClientDebtors
+      parameters:
+      - explode: true
+        in: query
+        name: agreementId
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientListResponse"
+          description: Successful response
+      summary: Get debtors by agreement ID
+  /api/v1/client/partners:
+    get:
+      deprecated: true
+      description: Retrieves all partners for the current client
+      operationId: GetClientPartners
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientListResponse"
+          description: Successful response
+      summary: Get partners
+  /api/v1/client-request/search:
+    get:
+      deprecated: true
+      description: Searches for client requests based on various parameters
+      operationId: GetClientRequestSearch
+      parameters:
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: in_progress
+        required: true
+        schema:
+          type: boolean
+        style: form
+      - explode: true
+        in: query
+        name: agreementId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortField
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortType
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 20
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientRequestListResponse"
+          description: Successful response
+      summary: Search client requests
+  /api/v1/client-request/create:
+    post:
+      deprecated: true
+      description: Creates a new client request with attached files
+      operationId: PostClientRequestCreate
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/_api_v1_client_request_create_post_request"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientRequestResponse"
+          description: Successful response
+      summary: Create new client request
+  /api/v1/client-request/accounts:
+    get:
+      deprecated: true
+      description: Retrieves bank accounts associated with a specific agreement ID
+      operationId: GetClientRequestAccounts
+      parameters:
+      - explode: true
+        in: query
+        name: agreementId
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankAccountListResponse"
+          description: Successful response
+      summary: Get accounts by agreement ID
+  /api/v1/client-request/agreements:
+    get:
+      deprecated: true
+      description: Retrieves select options for agreements
+      operationId: GetClientRequestAgreements
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SelectOptionListResponse"
+          description: Successful response
+      summary: Get agreements
+  /api/v1/client-request/info:
+    get:
+      deprecated: true
+      description: Retrieves detailed information about a specific client request
+      operationId: GetClientRequestInfo
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientRequestDetailsResponse"
+          description: Successful response
+      summary: Get client request info
+  /api/v1/client-request/is-number-exists:
+    get:
+      deprecated: true
+      description: Checks if a client request with the specified number already exists
+      operationId: GetClientRequestIsNumberExists
+      parameters:
+      - explode: true
+        in: query
+        name: type
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: agreementId
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: number
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: Successful response
+      summary: Check if request number exists
+  /api/v1/client-request/available-types:
+    get:
+      deprecated: true
+      description: Retrieves the list of available client request types for the current
+        user
+      operationId: GetClientRequestAvailableTypes
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StringListResponse"
+          description: Successful response
+      summary: Get available request types
+  /api/v1/client-request/{id}/sign:
+    post:
+      deprecated: true
+      description: Signs a client request with the provided signatures
+      operationId: PostClientRequestByIdSign
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties:
+                type: string
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientRequestResponse"
+          description: Successful response
+      summary: Sign client request
+  /api/v1/client-request/{id}/delete:
+    get:
+      deprecated: true
+      description: Deletes a client request
+      operationId: GetClientRequestByIdDelete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: Successful deletion
+      summary: Delete client request
+  /api/v1/client-request/{id}/content-for-sign:
+    get:
+      deprecated: true
+      description: Retrieves the content of unsigned documents for signing
+      operationId: GetClientRequestByIdContentForSign
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContentForSignResponse"
+          description: Successful response
+      summary: Get content for signing
+  /api/v1/client-request/download:
+    get:
+      deprecated: true
+      description: Downloads a client request file
+      operationId: GetClientRequestDownload
+      parameters:
+      - explode: true
+        in: query
+        name: fileId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/octet-stream:
+              schema:
+                format: binary
+                type: string
+          description: File download
+      summary: Download file
+  /api/v1/client-request/history:
+    get:
+      deprecated: true
+      description: Retrieves the history of a client request
+      operationId: GetClientRequestHistory
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientRequestHistoryListResponse"
+          description: Successful response
+      summary: Get client request history
+  /api/v1/client-request/config-for-notice:
+    get:
+      deprecated: true
+      description: Retrieves the configuration for notices
+      operationId: GetClientRequestConfigForNotice
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoticeConfigResponse"
+          description: Successful response
+      summary: Get notice configuration
+  /api/v1/client-request/user-cert:
+    get:
+      deprecated: true
+      description: Retrieves the user's certificate for signing
+      operationId: GetClientRequestUserCert
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CryptoProProfileResponse"
+          description: Successful response
+      summary: Get user certificate
+  /api/v1/commission/list:
+    get:
+      deprecated: true
+      description: Retrieves a list of commissions based on search parameters
+      operationId: GetCommissionList
+      parameters:
+      - explode: true
+        in: query
+        name: inputObjectId
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: inputObjectType
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: inputType
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: inputPayPeriod
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommissionListResponse"
+          description: Successful response
+      summary: Get commissions
+  /api/v1/commission/by-invoice-registry:
+    get:
+      deprecated: true
+      description: Retrieves grouped commissions for an invoice registry
+      operationId: GetCommissionByInvoiceRegistry
+      parameters:
+      - explode: true
+        in: query
+        name: invoiceRegistryId
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommissionListResponse"
+          description: Successful response
+      summary: Get commissions for invoice registry
+  /api/v1/config/oidc:
+    get:
+      deprecated: true
+      description: Retrieves the OIDC configuration settings
+      operationId: GetConfigOidc
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OidcConfig"
+          description: Successful response
+      summary: Get OIDC configuration
+  /api/v1/contract/by-sdlinkid:
+    get:
+      deprecated: true
+      description: Retrieves contracts associated with a specific supplier-debtor
+        link ID
+      operationId: GetContractBySdlinkid
+      parameters:
+      - explode: true
+        in: query
+        name: sdLinkId
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FullContractDataListResponse"
+          description: Successful response
+      summary: Get contracts by SD link ID
+  /api/v1/contract/{contractId}/terms:
+    get:
+      deprecated: true
+      description: Retrieves terms associated with a specific contract ID
+      operationId: GetContractByContractIdTerms
+      parameters:
+      - explode: false
+        in: path
+        name: contractId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TermsListResponse"
+          description: Successful response
+      summary: Get contract terms
+  /api/v1/contract/select-options:
+    get:
+      deprecated: true
+      description: Retrieves select options for contracts based on various parameters
+      operationId: GetContractSelectOptions
+      parameters:
+      - explode: true
+        in: query
+        name: sdLinkId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: partnerId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: agreementId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: registryId
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SelectOptionListResponse"
+          description: Successful response
+      summary: Get contract select options
+  /api/v1/contract/get-all:
+    get:
+      deprecated: true
+      description: Retrieves all contracts for the current client
+      operationId: GetContractGetAll
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContractListResponse"
+          description: Successful response
+      summary: Get all contracts
+  /api/v1/event/events:
+    get:
+      deprecated: true
+      description: Retrieves events for the current client based on search parameters
+      operationId: GetEventEvents
+      parameters:
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 20
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: all
+        required: true
+        schema:
+          type: boolean
+        style: form
+      - explode: true
+        in: query
+        name: sortField
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortType
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventListResponse"
+          description: Successful response
+      summary: Get events
+  /api/v1/event/export-to-csv:
+    get:
+      deprecated: true
+      description: Exports events to CSV format
+      operationId: GetEventExportToCsv
+      parameters:
+      - explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: all
+        required: true
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            text/csv:
+              schema:
+                format: binary
+                type: string
+          description: CSV file download
+      summary: Export events to CSV
+  /api/v1/event/financing-events:
+    get:
+      deprecated: true
+      description: Retrieves financing events for an invoice
+      operationId: GetEventFinancingEvents
+      parameters:
+      - explode: true
+        in: query
+        name: objectId
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceEventGroupListResponse"
+          description: Successful response
+      summary: Get financing events
+  /api/v1/invoice/list:
+    get:
+      deprecated: true
+      description: Searches for invoices based on various parameters
+      operationId: GetInvoiceList
+      parameters:
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: agreementId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: invoiceRegistryId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: contractId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: debtorId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: supplierId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortType
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortField
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: groupBy
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          default: all
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 150
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: debtorApproveOnly
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceDataResponse"
+          description: Successful response
+      summary: Search invoices
+  /api/v1/invoice/export-invoice-to-csv:
+    get:
+      deprecated: true
+      description: Exports invoices to CSV format
+      operationId: GetInvoiceExportInvoiceToCsv
+      parameters:
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: agreementId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: invoiceRegistryId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: contractId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: debtorId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/csv:
+              schema:
+                format: binary
+                type: string
+          description: CSV file download
+      summary: Export invoices to CSV
+  /api/v1/invoice/grouped-by-registry:
+    get:
+      deprecated: true
+      description: Retrieves invoices grouped by invoice registry
+      operationId: GetInvoiceGroupedByRegistry
+      parameters:
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: active
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - explode: true
+        in: query
+        name: sortType
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortField
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 150
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupedInvoiceDataListResponse"
+          description: Successful response
+      summary: Get invoices grouped by registry
+  /api/v1/invoice/export-invoice-registry-to-csv:
+    get:
+      deprecated: true
+      description: Exports invoice registry to CSV format
+      operationId: GetInvoiceExportInvoiceRegistryToCsv
+      parameters:
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: active
+        required: true
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            text/csv:
+              schema:
+                format: binary
+                type: string
+          description: CSV file download
+      summary: Export invoice registry to CSV
+  /api/v1/invoice/grouped-by-debtors:
+    get:
+      deprecated: true
+      description: Retrieves invoices grouped by debtors
+      operationId: GetInvoiceGroupedByDebtors
+      parameters:
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupedInvoiceDataListResponse"
+          description: Successful response
+      summary: Get invoices grouped by debtors
+  /api/v1/invoice/grouped-by-agreement:
+    get:
+      deprecated: true
+      description: Retrieves invoices grouped by agreement
+      operationId: GetInvoiceGroupedByAgreement
+      parameters:
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupedInvoiceDataListResponse"
+          description: Successful response
+      summary: Get invoices grouped by agreement
+  /api/v1/invoice/grouped-by-contract:
+    get:
+      deprecated: true
+      description: Retrieves invoices grouped by contract
+      operationId: GetInvoiceGroupedByContract
+      parameters:
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupedInvoiceDataListResponse"
+          description: Successful response
+      summary: Get invoices grouped by contract
+  /api/v1/invoice/{id}/detail:
+    get:
+      deprecated: true
+      description: Retrieves detailed information about a specific invoice
+      operationId: GetInvoiceByIdDetail
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceDetailResponse"
+          description: Successful response
+      summary: Get invoice detail
+  /api/v1/invoice/grouped-by-supplier:
+    get:
+      deprecated: true
+      description: Retrieves invoices grouped by supplier
+      operationId: GetInvoiceGroupedBySupplier
+      parameters:
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupedInvoiceDataListResponse"
+          description: Successful response
+      summary: Get invoices grouped by supplier
+  /api/v1/limit/common:
+    get:
+      deprecated: true
+      description: Retrieves the common limit for the current client
+      operationId: GetLimitCommon
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommonLimitResponse"
+          description: Successful response
+      summary: Get common limit
+  /api/v1/limit/by-sdlinkid/{sdLinkId}/history:
+    get:
+      deprecated: true
+      description: Retrieves the history of limits for a specific supplier-debtor
+        link
+      operationId: GetLimitBySdlinkidBySdLinkIdHistory
+      parameters:
+      - explode: false
+        in: path
+        name: sdLinkId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitListResponse"
+          description: Successful response
+      summary: Get limit history by SD link ID
+  /api/v1/limit/by-sdlinkid:
+    get:
+      deprecated: true
+      description: Retrieves the limit for a specific supplier-debtor link
+      operationId: GetLimitBySdlinkid
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitResponse"
+          description: Successful response
+      summary: Get limit by SD link ID
+  /api/v1/limit/by-agreement:
+    get:
+      deprecated: true
+      description: Retrieves the limit for a specific agreement
+      operationId: GetLimitByAgreement
+      parameters:
+      - explode: true
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitResponse"
+          description: Successful response
+      summary: Get limit by agreement ID
+  /api/v1/limit/fact-limit:
+    get:
+      deprecated: true
+      description: Retrieves the actual fact limit for the current client
+      operationId: GetLimitFactLimit
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LimitResponse"
+          description: Successful response
+      summary: Get fact limit
+  /api/v1/load-data/bills:
+    get:
+      deprecated: true
+      description: Loads bill data for the current client
+      operationId: GetLoadDataBills
+      responses:
+        "200":
+          description: Successful data loading
+      summary: Load bills
+  /api/v1/load-data/payments:
+    get:
+      deprecated: true
+      description: Loads payment data for the current client
+      operationId: GetLoadDataPayments
+      responses:
+        "200":
+          description: Successful data loading
+      summary: Load payments
+  /api/v1/load-data/invoices:
+    get:
+      deprecated: true
+      description: Loads invoice data for the current client
+      operationId: GetLoadDataInvoices
+      responses:
+        "200":
+          description: Successful data loading
+      summary: Load invoices
+  /api/v1/manager:
+    get:
+      deprecated: true
+      description: Retrieves managers associated with the current client
+      operationId: GetManager
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ManagerListResponse"
+          description: Successful response
+      summary: Get client managers
+  /api/v1/payment/list:
+    get:
+      deprecated: true
+      description: Retrieves a list of payments based on search parameters
+      operationId: GetPaymentList
+      parameters:
+      - explode: true
+        in: query
+        name: affiliation
+        required: false
+        schema:
+          default: mine
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: from
+        required: true
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: distributed
+        required: true
+        schema:
+          type: boolean
+        style: form
+      - explode: true
+        in: query
+        name: sortField
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortType
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 150
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentSearchResultResponse"
+          description: Successful response
+      summary: Get payment list
+  /api/v1/payment/export-to-csv:
+    get:
+      deprecated: true
+      description: Exports payments to CSV format
+      operationId: GetPaymentExportToCsv
+      parameters:
+      - explode: true
+        in: query
+        name: affiliation
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: from
+        required: true
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: searchIndex
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: distributed
+        required: true
+        schema:
+          type: boolean
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 150
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            text/csv:
+              schema:
+                format: binary
+                type: string
+          description: CSV file download
+      summary: Export payments to CSV
+  /api/v1/payment/{id}/details:
+    get:
+      deprecated: true
+      description: Retrieves detailed information about a specific payment
+      operationId: GetPaymentByIdDetails
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentDetailResponse"
+          description: Successful response
+      summary: Get payment details
+  /api/v1/repayment/list:
+    get:
+      deprecated: true
+      description: Searches for repayments based on various parameters
+      operationId: GetRepaymentList
+      parameters:
+      - explode: true
+        in: query
+        name: sortType
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortField
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 150
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RepaymentDataResponse"
+          description: Successful response
+      summary: Search repayments
+  /api/v1/reports/request-list:
+    get:
+      deprecated: true
+      description: Retrieves a list of report requests based on search parameters
+      operationId: GetReportsRequestList
+      parameters:
+      - explode: true
+        in: query
+        name: reportType
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortField
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sortType
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 150
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportRequestListResponse"
+          description: Successful response
+      summary: Get report request list
+  /api/v1/reports/get-by-ids:
+    post:
+      deprecated: true
+      description: Checks the status of reports by their UUIDs
+      operationId: PostReportsGetByIds
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                format: uuid
+                type: string
+              type: array
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportRequestListResponse"
+          description: Successful response
+      summary: Check report status
+  /api/v1/reports/create-request:
+    post:
+      deprecated: true
+      description: Creates a new report request
+      operationId: PostReportsCreateRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportRequest"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportRequestResponse"
+          description: Successful response
+      summary: Create report request
+  /api/v1/reports/download:
+    get:
+      deprecated: true
+      description: Downloads a report file
+      operationId: GetReportsDownload
+      parameters:
+      - explode: true
+        in: query
+        name: reportId
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/octet-stream:
+              schema:
+                format: binary
+                type: string
+          description: Report file download
+      summary: Download report
+  /api/v1/reports/get-select-options/{selectName}:
+    post:
+      deprecated: true
+      description: Retrieves select options for reports
+      operationId: PostReportsGetSelectOptionsBySelectName
+      parameters:
+      - explode: false
+        in: path
+        name: selectName
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties:
+                type: string
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SelectOptionListResponse"
+          description: Successful response
+      summary: Get select options
+  /api/v1/reports/get-report-types:
+    get:
+      deprecated: true
+      description: Retrieves available report types
+      operationId: GetReportsGetReportTypes
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportTypeListResponse"
+          description: Successful response
+      summary: Get report types
+  /api/v1/reports/find-duplicate:
+    post:
+      deprecated: true
+      description: Finds duplicate report requests
+      operationId: PostReportsFindDuplicate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportRequest"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportRequestListResponse"
+          description: Successful response
+      summary: Find duplicate reports
+  /api/v1/sd-link/by-agreement-id:
+    get:
+      deprecated: true
+      description: Retrieves supplier-debtor links associated with a specific agreement
+        ID
+      operationId: GetSdLinkByAgreementId
+      parameters:
+      - explode: true
+        in: query
+        name: agreementId
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SdLinkInfoListResponse"
+          description: Successful response
+      summary: Get SD links by agreement ID
+  /api/v1/sd-link/select-options:
+    get:
+      deprecated: true
+      description: Retrieves select options for supplier-debtor links
+      operationId: GetSdLinkSelectOptions
+      parameters:
+      - explode: true
+        in: query
+        name: agreementId
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SdLinkInfoListResponse"
+          description: Successful response
+      summary: Get SD link select options
+  /api/v1/sd-link/for-debtor:
+    get:
+      deprecated: true
+      description: Retrieves supplier-debtor links for the current debtor
+      operationId: GetSdLinkForDebtor
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SdLinkInfoListResponse"
+          description: Successful response
+      summary: Get debtor links
+  /api/v1/sd-link/all:
+    get:
+      deprecated: true
+      description: Retrieves all supplier-debtor links for the current agent
+      operationId: GetSdLinkAll
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupplierDebtorLinkListResponse"
+          description: Successful response
+      summary: Get all agent links
+  /api/v1/terms/debtor/list:
+    get:
+      deprecated: true
+      description: Retrieves supplier-debtor links for the current debtor
+      operationId: GetTermsDebtorList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SdLinkInfoListResponse"
+          description: Successful response
+      summary: Get debtor links
+  /api/v1/terms/supplier/list:
+    get:
+      deprecated: true
+      description: Retrieves agreements and related information for the current supplier
+      operationId: GetTermsSupplierList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgreementDataListResponse"
+          description: Successful response
+      summary: Get supplier links
+  /api/v1/user/info:
+    get:
+      deprecated: true
+      description: Retrieves information about the current user
+      operationId: GetUserInfo
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInfoResponse"
+          description: Successful response
+      summary: Get user info
+  /api/v1/user/contacts:
+    get:
+      deprecated: true
+      description: Retrieves contacts (managers and offices) for the current client
+      operationId: GetUserContacts
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientContactsResponse"
+          description: Successful response
+      summary: Get client contacts
+  /api/v1/user/choose-role:
+    post:
+      deprecated: true
+      description: "Allows the user to choose their role (supplier, debtor, or principal)"
+      operationId: PostUserChooseRole
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/_api_v1_user_choose_role_post_request"
+      responses:
+        "200":
+          description: Successful response
+      summary: Choose user role
+  /api/v1/user/session-info:
+    get:
+      deprecated: true
+      description: Retrieves information about the current session
+      operationId: GetUserSessionInfo
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionInfoResponse"
+          description: Successful response
+      summary: Get session info
+  /api/v1/user/survey-id:
+    get:
+      deprecated: true
+      description: Retrieves the survey ID for the current user
+      operationId: GetUserSurveyId
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StringResponse"
+          description: Successful response
+      summary: Get survey ID
+  /api/v1/user/survey:
+    get:
+      deprecated: true
+      description: Retrieves the survey state for the current user
+      operationId: GetUserSurvey
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StringResponse"
+          description: Successful response
+      summary: Get survey state
+    put:
+      deprecated: true
+      description: Updates the survey state for the current user
+      operationId: PutUserSurvey
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StringResponse"
+          description: Successful response
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StringResponse"
+          description: Survey state created
+      summary: Update survey state
+  /api/v1/statistic:
+    post:
+      deprecated: true
+      description: Saves a new user statistic record
+      operationId: PostStatistic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserStatisticsRequest"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserStatisticsResponse"
+          description: Successful response
+      summary: Write user statistic
+components:
+  schemas:
+    Response:
+      properties:
+        error:
+          type: boolean
+        errorMessage:
+          type: string
+        errorCode:
+          type: string
+      type: object
+    AgreementDataListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/AgreementData"
+            type: array
+      example:
+        data:
+        - agreement:
+            supplierId: supplierId
+            id: id
+          commonLimit:
+            sum: 0.8008281904610115
+          links:
+          - agreement:
+              supplierId: supplierId
+              id: id
+            limit:
+              sum: 6.027456183070403
+              id: id
+            client:
+              id: id
+              shortName: shortName
+            commissionSettings:
+            - id: id
+            - id: id
+            contracts:
+            - null
+            - null
+          - agreement:
+              supplierId: supplierId
+              id: id
+            limit:
+              sum: 6.027456183070403
+              id: id
+            client:
+              id: id
+              shortName: shortName
+            commissionSettings:
+            - id: id
+            - id: id
+            contracts:
+            - null
+            - null
+          commissionSettings:
+          - id: id
+          - id: id
+        - agreement:
+            supplierId: supplierId
+            id: id
+          commonLimit:
+            sum: 0.8008281904610115
+          links:
+          - agreement:
+              supplierId: supplierId
+              id: id
+            limit:
+              sum: 6.027456183070403
+              id: id
+            client:
+              id: id
+              shortName: shortName
+            commissionSettings:
+            - id: id
+            - id: id
+            contracts:
+            - null
+            - null
+          - agreement:
+              supplierId: supplierId
+              id: id
+            limit:
+              sum: 6.027456183070403
+              id: id
+            client:
+              id: id
+              shortName: shortName
+            commissionSettings:
+            - id: id
+            - id: id
+            contracts:
+            - null
+            - null
+          commissionSettings:
+          - id: id
+          - id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    AgreementDataResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/AgreementData"
+        type: object
+      example:
+        data:
+          agreement:
+            supplierId: supplierId
+            id: id
+          commonLimit:
+            sum: 0.8008281904610115
+          links:
+          - agreement:
+              supplierId: supplierId
+              id: id
+            limit:
+              sum: 6.027456183070403
+              id: id
+            client:
+              id: id
+              shortName: shortName
+            commissionSettings:
+            - id: id
+            - id: id
+            contracts:
+            - null
+            - null
+          - agreement:
+              supplierId: supplierId
+              id: id
+            limit:
+              sum: 6.027456183070403
+              id: id
+            client:
+              id: id
+              shortName: shortName
+            commissionSettings:
+            - id: id
+            - id: id
+            contracts:
+            - null
+            - null
+          commissionSettings:
+          - id: id
+          - id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    SelectOptionListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/SelectOption"
+            type: array
+      example:
+        data:
+        - description: description
+          value: value
+        - description: description
+          value: value
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    AgreementData:
+      example:
+        agreement:
+          supplierId: supplierId
+          id: id
+        commonLimit:
+          sum: 0.8008281904610115
+        links:
+        - agreement:
+            supplierId: supplierId
+            id: id
+          limit:
+            sum: 6.027456183070403
+            id: id
+          client:
+            id: id
+            shortName: shortName
+          commissionSettings:
+          - id: id
+          - id: id
+          contracts:
+          - null
+          - null
+        - agreement:
+            supplierId: supplierId
+            id: id
+          limit:
+            sum: 6.027456183070403
+            id: id
+          client:
+            id: id
+            shortName: shortName
+          commissionSettings:
+          - id: id
+          - id: id
+          contracts:
+          - null
+          - null
+        commissionSettings:
+        - id: id
+        - id: id
+      properties:
+        agreement:
+          $ref: "#/components/schemas/Agreement"
+        commonLimit:
+          $ref: "#/components/schemas/CommonLimit"
+        links:
+          items:
+            $ref: "#/components/schemas/SDLink"
+          type: array
+        commissionSettings:
+          items:
+            $ref: "#/components/schemas/CommissionSettings"
+          type: array
+    Agreement:
+      example:
+        supplierId: supplierId
+        id: id
+      properties:
+        id:
+          type: string
+        supplierId:
+          type: string
+      type: object
+    CommonLimit:
+      example:
+        sum: 0.8008281904610115
+      properties:
+        sum:
+          format: double
+          type: number
+      type: object
+    SDLink:
+      example:
+        agreement:
+          supplierId: supplierId
+          id: id
+        limit:
+          sum: 6.027456183070403
+          id: id
+        client:
+          id: id
+          shortName: shortName
+        commissionSettings:
+        - id: id
+        - id: id
+        contracts:
+        - null
+        - null
+      properties:
+        client:
+          $ref: "#/components/schemas/Client"
+        limit:
+          $ref: "#/components/schemas/Limit"
+        contracts:
+          items:
+            $ref: "#/components/schemas/FullContractData"
+          type: array
+        commissionSettings:
+          items:
+            $ref: "#/components/schemas/CommissionSettings"
+          type: array
+        agreement:
+          $ref: "#/components/schemas/Agreement"
+      type: object
+    Client:
+      example:
+        id: id
+        shortName: shortName
+      properties:
+        id:
+          type: string
+        shortName:
+          type: string
+      type: object
+    Limit:
+      example:
+        sum: 6.027456183070403
+        id: id
+      properties:
+        id:
+          type: string
+        sum:
+          format: double
+          type: number
+      type: object
+    FullContractData:
+      type: object
+    CommissionSettings:
+      example:
+        id: id
+      properties:
+        id:
+          type: string
+      type: object
+    SelectOption:
+      example:
+        description: description
+        value: value
+      properties:
+        value:
+          type: string
+        description:
+          type: string
+      type: object
+    BillListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/Bill"
+            type: array
+        type: object
+      example:
+        data:
+        - payerId: payerId
+          id: id
+        - payerId: payerId
+          id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    BillDetailResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/BillDetail"
+        type: object
+      example:
+        data:
+          commissions:
+          - id: id
+          - id: id
+          bill:
+            payerId: payerId
+            id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    Bill:
+      example:
+        payerId: payerId
+        id: id
+      properties:
+        id:
+          type: string
+        payerId:
+          type: string
+      type: object
+    BillDetail:
+      example:
+        commissions:
+        - id: id
+        - id: id
+        bill:
+          payerId: payerId
+          id: id
+      properties:
+        bill:
+          $ref: "#/components/schemas/Bill"
+        commissions:
+          items:
+            $ref: "#/components/schemas/Commission"
+          type: array
+    Commission:
+      example:
+        id: id
+      properties:
+        id:
+          type: string
+      type: object
+    CatalogListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/Catalogue"
+            type: array
+      example:
+        data:
+        - name: name
+          id: id
+        - name: name
+          id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    Catalogue:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+    ClientListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/Client"
+            type: array
+      example:
+        data:
+        - id: id
+          shortName: shortName
+        - id: id
+          shortName: shortName
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ClientRequestListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/ClientRequest"
+            type: array
+      example:
+        data:
+        - clientId: clientId
+          processStatus: processStatus
+          financingRequest: true
+          type: type
+          userId: userId
+          partialFinancing: true
+          mode: 6
+          number: number
+          requestDate: 2000-01-23
+          files:
+          - fileName: fileName
+            clientRequestId: 5
+            id: 1
+            content: content
+          - fileName: fileName
+            clientRequestId: 5
+            id: 1
+            content: content
+          id: 0
+          userFio: userFio
+          requestStatus: requestStatus
+        - clientId: clientId
+          processStatus: processStatus
+          financingRequest: true
+          type: type
+          userId: userId
+          partialFinancing: true
+          mode: 6
+          number: number
+          requestDate: 2000-01-23
+          files:
+          - fileName: fileName
+            clientRequestId: 5
+            id: 1
+            content: content
+          - fileName: fileName
+            clientRequestId: 5
+            id: 1
+            content: content
+          id: 0
+          userFio: userFio
+          requestStatus: requestStatus
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ClientRequestResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/ClientRequest"
+        type: object
+      example:
+        data:
+          clientId: clientId
+          processStatus: processStatus
+          financingRequest: true
+          type: type
+          userId: userId
+          partialFinancing: true
+          mode: 6
+          number: number
+          requestDate: 2000-01-23
+          files:
+          - fileName: fileName
+            clientRequestId: 5
+            id: 1
+            content: content
+          - fileName: fileName
+            clientRequestId: 5
+            id: 1
+            content: content
+          id: 0
+          userFio: userFio
+          requestStatus: requestStatus
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    BankAccountListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/BankAccount"
+            type: array
+      example:
+        data:
+        - agreementId: agreementId
+          id: id
+        - agreementId: agreementId
+          id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ClientRequestDetailsResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/ClientRequestDetails"
+        type: object
+      example:
+        data: null
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    StringListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              type: string
+            type: array
+      example:
+        data:
+        - data
+        - data
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ContentForSignResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            additionalProperties:
+              type: string
+            type: object
+      example:
+        data:
+          key: data
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ClientRequestHistoryListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/ClientRequestHistory"
+            type: array
+      example:
+        data:
+        - clientRequestId: 6
+          id: 0
+        - clientRequestId: 6
+          id: 0
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    NoticeConfigResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            additionalProperties:
+              items:
+                type: string
+              type: array
+            type: object
+      example:
+        data:
+          key:
+          - data
+          - data
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    CryptoProProfileResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/CryptoProProfile"
+        type: object
+      example:
+        data: null
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ClientRequest:
+      example:
+        clientId: clientId
+        processStatus: processStatus
+        financingRequest: true
+        type: type
+        userId: userId
+        partialFinancing: true
+        mode: 6
+        number: number
+        requestDate: 2000-01-23
+        files:
+        - fileName: fileName
+          clientRequestId: 5
+          id: 1
+          content: content
+        - fileName: fileName
+          clientRequestId: 5
+          id: 1
+          content: content
+        id: 0
+        userFio: userFio
+        requestStatus: requestStatus
+      properties:
+        id:
+          format: int64
+          type: integer
+        userId:
+          type: string
+        clientId:
+          type: string
+        requestDate:
+          format: date
+          type: string
+        processStatus:
+          type: string
+        requestStatus:
+          type: string
+        mode:
+          format: int32
+          type: integer
+        type:
+          type: string
+        number:
+          type: string
+        financingRequest:
+          type: boolean
+        partialFinancing:
+          type: boolean
+        files:
+          items:
+            $ref: "#/components/schemas/ClientRequestFile"
+          type: array
+        userFio:
+          type: string
+      type: object
+    ClientRequestFile:
+      example:
+        fileName: fileName
+        clientRequestId: 5
+        id: 1
+        content: content
+      properties:
+        id:
+          format: int64
+          type: integer
+        clientRequestId:
+          format: int64
+          type: integer
+        fileName:
+          type: string
+        content:
+          format: byte
+          type: string
+      type: object
+    BankAccount:
+      example:
+        agreementId: agreementId
+        id: id
+      properties:
+        id:
+          type: string
+        agreementId:
+          type: string
+      type: object
+    ClientRequestDetails:
+      type: object
+    ClientRequestHistory:
+      example:
+        clientRequestId: 6
+        id: 0
+      properties:
+        id:
+          format: int64
+          type: integer
+        clientRequestId:
+          format: int64
+          type: integer
+      type: object
+    CryptoProProfile:
+      type: object
+    CommissionListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/Commission"
+            type: array
+        type: object
+      example:
+        data:
+        - id: id
+        - id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    OidcConfig:
+      example:
+        authOidcAuthCodeEndpoint: authOidcAuthCodeEndpoint
+        authOidcClientId: authOidcClientId
+        authOidcRedirectUrl: authOidcRedirectUrl
+      properties:
+        authOidcAuthCodeEndpoint:
+          type: string
+        authOidcClientId:
+          type: string
+        authOidcRedirectUrl:
+          type: string
+      type: object
+    FullContractDataListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/FullContractData"
+            type: array
+        type: object
+      example:
+        data:
+        - null
+        - null
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    TermsListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/Terms"
+            type: array
+        type: object
+      example:
+        data:
+        - contractId: contractId
+          id: id
+        - contractId: contractId
+          id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ContractListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/Contract"
+            type: array
+        type: object
+      example:
+        data:
+        - id: id
+        - id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    Terms:
+      example:
+        contractId: contractId
+        id: id
+      properties:
+        id:
+          type: string
+        contractId:
+          type: string
+      type: object
+    Contract:
+      example:
+        id: id
+      properties:
+        id:
+          type: string
+      type: object
+    EventListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/Event"
+            type: array
+        type: object
+      example:
+        data:
+        - clientId: clientId
+          id: id
+          type: type
+        - clientId: clientId
+          id: id
+          type: type
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    InvoiceEventGroupListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/InvoiceEventGroup"
+            type: array
+        type: object
+      example:
+        data:
+        - groupId: groupId
+          id: id
+        - groupId: groupId
+          id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    Event:
+      example:
+        clientId: clientId
+        id: id
+        type: type
+      properties:
+        id:
+          type: string
+        clientId:
+          type: string
+        type:
+          type: string
+      type: object
+    InvoiceEventGroup:
+      example:
+        groupId: groupId
+        id: id
+      properties:
+        id:
+          type: string
+        groupId:
+          type: string
+      type: object
+    InvoiceDataResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/InvoiceData"
+        type: object
+      example:
+        data:
+          invoices:
+          - supplierId: supplierId
+            id: id
+            debtorId: debtorId
+          - supplierId: supplierId
+            id: id
+            debtorId: debtorId
+          totalCount: 0
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    GroupedInvoiceDataListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/GroupedInvoiceData"
+            type: array
+        type: object
+      example:
+        data:
+        - name: name
+          count: 0
+          sum: 6.027456183070403
+          id: id
+        - name: name
+          count: 0
+          sum: 6.027456183070403
+          id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    InvoiceDetailResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/InvoiceDetail"
+        type: object
+      example:
+        data:
+          operations:
+          - invoiceId: invoiceId
+            id: id
+          - invoiceId: invoiceId
+            id: id
+          commissions:
+          - id: id
+          - id: id
+          invoice:
+            supplierId: supplierId
+            id: id
+            debtorId: debtorId
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    InvoiceData:
+      example:
+        invoices:
+        - supplierId: supplierId
+          id: id
+          debtorId: debtorId
+        - supplierId: supplierId
+          id: id
+          debtorId: debtorId
+        totalCount: 0
+      properties:
+        invoices:
+          items:
+            $ref: "#/components/schemas/Invoice"
+          type: array
+        totalCount:
+          format: int64
+          type: integer
+      type: object
+    GroupedInvoiceData:
+      example:
+        name: name
+        count: 0
+        sum: 6.027456183070403
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        count:
+          format: int32
+          type: integer
+        sum:
+          format: double
+          type: number
+      type: object
+    InvoiceDetail:
+      example:
+        operations:
+        - invoiceId: invoiceId
+          id: id
+        - invoiceId: invoiceId
+          id: id
+        commissions:
+        - id: id
+        - id: id
+        invoice:
+          supplierId: supplierId
+          id: id
+          debtorId: debtorId
+      properties:
+        invoice:
+          $ref: "#/components/schemas/Invoice"
+        operations:
+          items:
+            $ref: "#/components/schemas/Operation"
+          type: array
+        commissions:
+          items:
+            $ref: "#/components/schemas/Commission"
+          type: array
+      type: object
+    Invoice:
+      example:
+        supplierId: supplierId
+        id: id
+        debtorId: debtorId
+      properties:
+        id:
+          type: string
+        supplierId:
+          type: string
+        debtorId:
+          type: string
+      type: object
+    Operation:
+      example:
+        invoiceId: invoiceId
+        id: id
+      properties:
+        id:
+          type: string
+        invoiceId:
+          type: string
+      type: object
+    CommonLimitResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/CommonLimit"
+        type: object
+      example:
+        data:
+          sum: 0.8008281904610115
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    LimitListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/Limit"
+            type: array
+        type: object
+      example:
+        data:
+        - sum: 6.027456183070403
+          id: id
+        - sum: 6.027456183070403
+          id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    LimitResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/Limit"
+        type: object
+      example:
+        data:
+          sum: 6.027456183070403
+          id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ManagerListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/Manager"
+            type: array
+        type: object
+      example:
+        data:
+        - clientId: clientId
+          id: id
+          fio: fio
+        - clientId: clientId
+          id: id
+          fio: fio
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    Manager:
+      example:
+        clientId: clientId
+        id: id
+        fio: fio
+      properties:
+        id:
+          type: string
+        clientId:
+          type: string
+        fio:
+          type: string
+      type: object
+    PaymentSearchResultResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/PaymentSearchResult"
+        type: object
+      example:
+        data:
+          payments:
+          - supplierId: supplierId
+            id: id
+          - supplierId: supplierId
+            id: id
+          totalCount: 0
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    PaymentDetailResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/PaymentDetail"
+        type: object
+      example:
+        data:
+          payment:
+            supplierId: supplierId
+            id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    PaymentSearchResult:
+      example:
+        payments:
+        - supplierId: supplierId
+          id: id
+        - supplierId: supplierId
+          id: id
+        totalCount: 0
+      properties:
+        payments:
+          items:
+            $ref: "#/components/schemas/Payment"
+          type: array
+        totalCount:
+          format: int64
+          type: integer
+      type: object
+    PaymentDetail:
+      example:
+        payment:
+          supplierId: supplierId
+          id: id
+      properties:
+        payment:
+          $ref: "#/components/schemas/Payment"
+      type: object
+    Payment:
+      example:
+        supplierId: supplierId
+        id: id
+      properties:
+        id:
+          type: string
+        supplierId:
+          type: string
+      type: object
+    RepaymentDataResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/RepaymentData"
+        type: object
+      example:
+        data:
+          totalCount: 0
+          repayments:
+          - id: id
+          - id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    RepaymentData:
+      example:
+        totalCount: 0
+        repayments:
+        - id: id
+        - id: id
+      properties:
+        repayments:
+          items:
+            $ref: "#/components/schemas/Repayment"
+          type: array
+        totalCount:
+          format: int64
+          type: integer
+      type: object
+    Repayment:
+      example:
+        id: id
+      properties:
+        id:
+          type: string
+      type: object
+    ReportRequestListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/ReportRequest"
+            type: array
+        type: object
+      example:
+        data:
+        - reportType: reportType
+          paramSupplierId: paramSupplierId
+          paramDebtorId: paramDebtorId
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - reportType: reportType
+          paramSupplierId: paramSupplierId
+          paramDebtorId: paramDebtorId
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ReportRequestResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/ReportRequest"
+        type: object
+      example:
+        data:
+          reportType: reportType
+          paramSupplierId: paramSupplierId
+          paramDebtorId: paramDebtorId
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ReportTypeListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/ReportType"
+            type: array
+        type: object
+      example:
+        data:
+        - name: name
+          id: id
+        - name: name
+          id: id
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ReportRequest:
+      example:
+        reportType: reportType
+        paramSupplierId: paramSupplierId
+        paramDebtorId: paramDebtorId
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        id:
+          format: uuid
+          type: string
+        paramDebtorId:
+          type: string
+        paramSupplierId:
+          type: string
+        reportType:
+          type: string
+      type: object
+    ReportType:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+    SdLinkInfoListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/SdLinkInfo"
+            type: array
+        type: object
+      example:
+        data:
+        - agreementId: agreementId
+          description: description
+          id: id
+          limitSum: 0.8008281904610115
+        - agreementId: agreementId
+          description: description
+          id: id
+          limitSum: 0.8008281904610115
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    SupplierDebtorLinkListResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            items:
+              $ref: "#/components/schemas/SupplierDebtorLink"
+            type: array
+        type: object
+      example:
+        data:
+        - supplierId: supplierId
+          agreementId: agreementId
+          id: id
+          debtorId: debtorId
+        - supplierId: supplierId
+          agreementId: agreementId
+          id: id
+          debtorId: debtorId
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    SdLinkInfo:
+      example:
+        agreementId: agreementId
+        description: description
+        id: id
+        limitSum: 0.8008281904610115
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        limitSum:
+          format: double
+          type: number
+        agreementId:
+          type: string
+      type: object
+    SupplierDebtorLink:
+      example:
+        supplierId: supplierId
+        agreementId: agreementId
+        id: id
+        debtorId: debtorId
+      properties:
+        id:
+          type: string
+        supplierId:
+          type: string
+        debtorId:
+          type: string
+        agreementId:
+          type: string
+      type: object
+    UserInfoResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/UserInfo"
+        type: object
+      example:
+        data:
+          groupingByDebtorEnable: true
+          showBills: true
+          newEventsCount: 0
+          groupingByAgreementEnable: true
+          unpaidBillCount: 6
+          groupingByContractEnable: true
+          client:
+            id: id
+            shortName: shortName
+          user:
+            clientId: clientId
+            id: id
+            fio: fio
+          groupingBySupplierEnable: true
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    ClientContactsResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/ClientContacts"
+        type: object
+      example:
+        data:
+          offices:
+          - clientId: clientId
+            id: id
+          - clientId: clientId
+            id: id
+          managers:
+          - clientId: clientId
+            id: id
+            fio: fio
+          - clientId: clientId
+            id: id
+            fio: fio
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    SessionInfoResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            $ref: "#/components/schemas/SessionInfo"
+        type: object
+      example:
+        data:
+          sessionTimestamp: 0
+          roles:
+          - roles
+          - roles
+          currentRole: currentRole
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    StringResponse:
+      allOf:
+      - $ref: "#/components/schemas/Response"
+      - properties:
+          data:
+            type: string
+        type: object
+      example:
+        data: data
+        errorMessage: errorMessage
+        errorCode: errorCode
+        error: true
+    UserInfo:
+      example:
+        groupingByDebtorEnable: true
+        showBills: true
+        newEventsCount: 0
+        groupingByAgreementEnable: true
+        unpaidBillCount: 6
+        groupingByContractEnable: true
+        client:
+          id: id
+          shortName: shortName
+        user:
+          clientId: clientId
+          id: id
+          fio: fio
+        groupingBySupplierEnable: true
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        client:
+          $ref: "#/components/schemas/Client"
+        groupingByAgreementEnable:
+          type: boolean
+        groupingByContractEnable:
+          type: boolean
+        groupingByDebtorEnable:
+          type: boolean
+        showBills:
+          type: boolean
+        groupingBySupplierEnable:
+          type: boolean
+        newEventsCount:
+          format: int32
+          type: integer
+        unpaidBillCount:
+          format: int32
+          type: integer
+      type: object
+    ClientContacts:
+      example:
+        offices:
+        - clientId: clientId
+          id: id
+        - clientId: clientId
+          id: id
+        managers:
+        - clientId: clientId
+          id: id
+          fio: fio
+        - clientId: clientId
+          id: id
+          fio: fio
+      properties:
+        managers:
+          items:
+            $ref: "#/components/schemas/Manager"
+          type: array
+        offices:
+          items:
+            $ref: "#/components/schemas/Office"
+          type: array
+      type: object
+    SessionInfo:
+      example:
+        sessionTimestamp: 0
+        roles:
+        - roles
+        - roles
+        currentRole: currentRole
+      properties:
+        sessionTimestamp:
+          format: int64
+          type: integer
+        currentRole:
+          type: string
+        roles:
+          items:
+            type: string
+          type: array
+      type: object
+    User:
+      example:
+        clientId: clientId
+        id: id
+        fio: fio
+      properties:
+        id:
+          type: string
+        clientId:
+          type: string
+        fio:
+          type: string
+      type: object
+    Office:
+      example:
+        clientId: clientId
+        id: id
+      properties:
+        id:
+          type: string
+        clientId:
+          type: string
+      type: object
+    UserStatisticsRequest:
+      example:
+        requestType: requestType
+        additionalInfo: additionalInfo
+        action: action
+      properties:
+        action:
+          type: string
+        requestType:
+          type: string
+        additionalInfo:
+          type: string
+      type: object
+    UserStatisticsResponse:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          format: uuid
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+      type: object
+    _api_v1_client_request_create_post_request:
+      properties:
+        clientRequest:
+          $ref: "#/components/schemas/ClientRequest"
+      type: object
+    _api_v1_user_choose_role_post_request:
+      properties:
+        role:
+          type: string
+      type: object
+x-raif-api: 1.0.0
+x-raif-api-services:
+  system:
+  - env: prod
+    uris:
+    - https://factor.raiffeisen.ru/fis
+  - env: test
+    uris:
+    - https://s-msk-v-fct-ws1.raiffeisen.ru/fis
