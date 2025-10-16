@@ -86,8 +86,7 @@ release:
         echo "Commit message:" >> release_notes.md
         echo "$CI_COMMIT_MESSAGE" >> release_notes.md
       else
-        echo "No previous tag found. Using all commits since beginning of repository:" > release_notes.md
-        git log --pretty=format:"* %h - %an, %ar : %s" >> release_notes.md
+        echo "$CI_COMMIT_MESSAGE" > release_notes.md
       fi
 
       echo "Release notes prepared:"
