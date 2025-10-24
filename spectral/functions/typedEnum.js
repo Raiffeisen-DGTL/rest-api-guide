@@ -1,5 +1,7 @@
 import { oas2, oas3_0 } from '@stoplight/spectral-formats';
+// import { oas2, oas3_0 } from './utils/format';
 import { printValue } from '@stoplight/spectral-runtime';
+// import { printValue } from './utils/runtime';
 import { createRulesetFunction } from '@stoplight/spectral-core';
 function getDataType(input, checkForInteger) {
     const type = typeof input;
