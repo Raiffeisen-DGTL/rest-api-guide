@@ -1,4 +1,4 @@
 #!/bin/sh
 
 # Generate rulesets
-cd "$(dirname "$0")/.." && ./build-rulesets.sh && git add base-ruleset.yaml required-ruleset.yaml
+cd "$(dirname "$0")/.." && node build-rulesets.js
