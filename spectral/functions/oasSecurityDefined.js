@@ -1,5 +1,6 @@
 import {createRulesetFunction} from "@stoplight/spectral-core";
-import { isPlainObject } from '@stoplight/json';
+// import { isPlainObject } from '@stoplight/json';
+import { isPlainObject } from './utils/json.js';
 
 export default createRulesetFunction(
   {

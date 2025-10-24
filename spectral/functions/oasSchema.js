@@ -1,9 +1,14 @@
 "use strict";
-import traverse from "json-schema-traverse";
+// import traverse from "json-schema-traverse";
+// import {isPlainObject, pointerToPath} from '@stoplight/json';
+
 import {schema as schemaFn} from '@stoplight/spectral-functions';
 import {createRulesetFunction} from "@stoplight/spectral-core";
 import {extractDraftVersion, oas2, oas3_0, oas3_1} from '@stoplight/spectral-formats';
-import {isPlainObject, pointerToPath} from '@stoplight/json';
+
+// import { extractDraftVersion, oas2, oas3_0, oas3_1 } from './utils/format';
+import { pointerToPath, isPlainObject } from "./utils/json.js";
+import traverse from './utils/traverse.js';
 
 function rewriteNullable(schema, errors) {
     for (const error of errors) {

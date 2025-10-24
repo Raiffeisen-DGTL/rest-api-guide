@@ -1,7 +1,7 @@
 "use strict";
-import {createRulesetFunction} from '@stoplight/spectral-core';
+import { createRulesetFunction } from '@stoplight/spectral-core';
 import {oas3} from '@stoplight/spectral-formats';
-
+// import { oas3_0 as oas3 } from './utils/format';
 
 export default createRulesetFunction(
     {
