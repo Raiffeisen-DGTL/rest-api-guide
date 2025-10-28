@@ -1,6 +1,7 @@
 rules:
   query-params-camel-case:
     description: Params должны быть в camelCase формате
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#query-params-camel-case
     severity: error
     given:
       - '$.paths.*.*.parameters[?(@.in == "query")].name'

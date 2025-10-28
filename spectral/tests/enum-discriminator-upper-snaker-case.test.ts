@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Enum discriminator upper snake case rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/base/enum-discriminator-upper-snaker-case.yaml'
+    const rulesFile = './rules/base/enum-discriminator-upper-snake-case.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

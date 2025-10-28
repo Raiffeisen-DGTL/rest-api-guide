@@ -1,6 +1,7 @@
 rules:
   url-versioning:
     description: Версия должна быть указана в пути запроса, в начале метода, в формате /beta, /v1, /v2 и т.д.
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#url-versioning
     severity: error
     given: 
       - "$.paths.*~"

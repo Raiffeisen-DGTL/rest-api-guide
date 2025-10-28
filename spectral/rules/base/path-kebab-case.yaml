@@ -1,6 +1,7 @@
 rules:
   path-kebab-case:
     description: Path должны быть в kebabCase формате
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#path-kebab-case
     severity: error
     given: '$.paths.*~'
     then:

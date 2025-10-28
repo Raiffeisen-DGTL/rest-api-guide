@@ -1,6 +1,7 @@
 rules:
   not-use-redirection-codes:
     description: Не используйте коды перенаправления в responses
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#not-use-redirection-codes
     severity: error
     given:
       - '$.paths.*.*.responses.*~'

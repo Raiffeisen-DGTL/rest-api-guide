@@ -4,6 +4,7 @@ functionsDir: "../../functions"
 rules:
   no-ref-siblings:
     description: Рядом с $ref не должно быть property
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#no-ref-siblings
     formats: [ oas3_0 ]
     severity: error
     resolved: false

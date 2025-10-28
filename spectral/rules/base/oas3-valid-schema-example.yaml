@@ -4,6 +4,7 @@ functionsDir: "../../functions"
 rules:
   oas3-valid-schema-example:
     description: Examples в описании схемы должны соответствовать объявленным типам
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#oas3-valid-schema-example
     formats: [ oas3_0 ]
     severity: error
     given:

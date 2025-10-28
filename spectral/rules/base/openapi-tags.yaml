@@ -1,6 +1,7 @@
 rules:
   openapi-tags:
     description: Массив tags не должен быть пустым
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#openapi-tags
     severity: error
     given: '$'
     then:
