@@ -9,6 +9,7 @@ functionsDir: "../../functions"
 rules:
   operation-success-response:
     description: Метод должен иметь 2хх либо 3хх ответ
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#operation-success-response
     severity: error
     resolved: false
     given: '#OperationObject'

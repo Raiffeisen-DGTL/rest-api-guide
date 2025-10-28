@@ -17,6 +17,7 @@ functionsDir: "../../functions"
 rules:
   oas3-server-variables:
     description: Переменные из servers должны быть определены в variables и не должно быть неиспользуемые переменных
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#oas3-server-variables
     severity: error
     given: [ '$.servers[*]', '#PathItem.servers[*]', '#OperationObject.servers[*]', '#LinkObject.server' ]
     then:

@@ -6,6 +6,7 @@ aliases:
 rules:
   blank-strings-forbidden:
     description: Пустые строки запрещены
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#blank-strings-forbidden
     severity: error
     formats: [ oas3_0, oas3_1 ]
     given:

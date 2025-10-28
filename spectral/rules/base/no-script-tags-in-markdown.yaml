@@ -1,6 +1,7 @@
 rules:
   no-script-tags-in-markdown:
     description: Блок description и title не должен содержать <script>
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#no-script-tags-in-markdown
     severity: error
     given: '$..[description,title]'
     then:

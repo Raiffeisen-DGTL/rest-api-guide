@@ -1,6 +1,7 @@
 rules:
   oas3-api-servers:
     description: Servers должны быть заполнены
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#oas3-api-servers
     formats: [ oas3_0 ]
     severity: error
     resolved: false

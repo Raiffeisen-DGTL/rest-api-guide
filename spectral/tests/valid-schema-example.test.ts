@@ -441,4 +441,81 @@ describe('valid-schema-example rule tests', () => {
     const results = await linter.run(specFile)
     expect(results.length).toBe(0)
   })
+
+  // Test for non-JSON content type exclusion
+  test('should not report an error for schema in non-JSON content type', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        title: 'Test API',
+        version: '1.0.0',
+      },
+      paths: {
+        '/users': {
+          post: {
+            requestBody: {
+              content: {
+                'text/plain': {
+                  schema: {
+                    type: 'string',
+                    // example is missing, but should be ignored because content type is not application/json
+                  },
+                },
+              },
+            },
+            responses: {
+              '201': {
+                description: 'Created',
+              },
+            },
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error for schema in JSON content type when example is missing', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        title: 'Test API',
+        version: '1.0.0',
+      },
+      paths: {
+        '/users': {
+          post: {
+            requestBody: {
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      name: {
+                        type: 'string',
+                        // example is missing and content type is application/json, so should report error
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            responses: {
+              '201': {
+                description: 'Created',
+              },
+            },
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Все схемы должны иметь example')
+    expect(results[0].path.join('.')).toBe(
+      'paths./users.post.requestBody.content.application/json.schema.properties.name',
+    )
+    expect(results[0].severity).toBe(Severity.error)
+  })
 })

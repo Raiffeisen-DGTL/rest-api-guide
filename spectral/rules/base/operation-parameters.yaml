@@ -9,6 +9,7 @@ functionsDir: "../../functions"
 rules:
   operation-parameters:
     description: Параметры в методах должны быть уникальными
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#operation-parameters
     severity: error
     resolved: false
     given: '#OperationObject.parameters'

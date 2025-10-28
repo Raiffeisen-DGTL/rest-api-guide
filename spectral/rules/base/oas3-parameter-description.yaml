@@ -6,6 +6,7 @@ aliases:
 rules:
   oas3-parameter-description:
     description: Параметры должны иметь заполненный description
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#oas3-parameter-description
     severity: warn
     resolved: false
     formats: [ oas3 ]

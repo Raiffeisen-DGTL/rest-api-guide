@@ -1,6 +1,7 @@
 rules:
   oas3-examples-value-or-externalValue:
     description: Examples должен содержать value или externalValue
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#oas3-examples-value-or-externalValue
     severity: warn
     resolved: false
     formats: [oas3]

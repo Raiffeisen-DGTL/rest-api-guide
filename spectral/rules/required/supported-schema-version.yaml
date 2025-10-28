@@ -4,6 +4,7 @@ rules:
     given: '$'
     message: "Схема документа не равна 3+"
     severity: error
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#supported-schema-version
     then:
       - field: "openapi"
         function: truthy

@@ -473,7 +473,7 @@ paths:
 ### Используем UPPER_SNAKE_CASE для Enum и mapping для discriminator
 | ID                                    | Severity | Дата принятия |
 |---------------------------------------|----------|---------------|
-| enum-discriminator-upper-snaker-case  | MUST     | 13.03.2025    |
+| enum-discriminator-upper-snake-case  | MUST     | 13.03.2025    |
 
 #### Описание правила
 Перечисления и значения маппинга для дискриминатора именуются UPPER_SNAKE_CASE

@@ -4,6 +4,7 @@ functionsDir: "../../functions"
 rules:
   provide-head-method:
     description: API для скачивания какого-либо файла должно поддерживать метод **HEAD**
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#provide-head-method
     severity: error
     given:
       - "$.paths.*"

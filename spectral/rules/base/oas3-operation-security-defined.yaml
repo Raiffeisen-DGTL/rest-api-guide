@@ -12,6 +12,7 @@ functionsDir: "../../functions"
 rules:
   oas3-operation-security-defined:
     description: Операция "security" должна быть определена в объекте "components.securitySchemes"
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#oas3-operation-security-defined
     severity: error
     resolved: false
     formats: [oas3]

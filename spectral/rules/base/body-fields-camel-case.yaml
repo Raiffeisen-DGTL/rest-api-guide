@@ -1,6 +1,7 @@
 rules:
   body-fields-camel-case:
     description: Поля в requestBody и responseBody должны быть в camelCase
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#body-fields-camel-case
     resolved: false
     severity: error
     given:

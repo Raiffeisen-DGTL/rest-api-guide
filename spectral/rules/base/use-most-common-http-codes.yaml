@@ -1,6 +1,7 @@
 rules:
   use-most-common-http-codes:
     description: 'Используйте только наиболее распространенные коды состояния HTTP'
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#use-most-common-http-codes
     severity: error
     given:
       - '$.paths.*.*.responses.*~'

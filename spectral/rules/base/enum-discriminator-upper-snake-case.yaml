@@ -1,0 +1,13 @@
+rules:
+  enum-discriminator-upper-snake-case:
+    description: Перечисления и значения маппинга для дискриминаторов именуются UPPER_SNAKE_CASE
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#enum-discriminator-upper-snake-case
+    message: Enum values and discriminator mappings must be in UPPER_SNAKE_CASE format
+    severity: error
+    given:
+      - '$.components.schemas..enum[*]'
+      - '$.components.schemas..discriminator.mapping.*~'
+    then:
+      function: casing
+      functionOptions:
+        type: macro

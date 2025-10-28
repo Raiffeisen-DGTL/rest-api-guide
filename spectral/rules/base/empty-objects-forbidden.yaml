@@ -1,6 +1,7 @@
 rules:
   empty-objects-forbidden:
     description: Запрещены пустые объекты
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#empty-objects-forbidden
     severity: error
     given:
       - '$'

@@ -4,6 +4,7 @@ functionsDir: "../../functions"
 rules:
   oas3-valid-media-example:
     description: Examples должны соответствовать объявленной схеме
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#oas3-valid-media-example
     formats: [ oas3_0 ]
     severity: error
     given:

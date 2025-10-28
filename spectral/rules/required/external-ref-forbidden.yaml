@@ -3,6 +3,7 @@ rules:
     description: "Все $ref должны ссылаться на components"
     message: Найдена ссылка на внешний компонент {{value}}
     severity: error
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#external-ref-forbidden
     given: "$..$ref"
     resolved: false
     then:

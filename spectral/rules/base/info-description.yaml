@@ -1,6 +1,7 @@
 rules:
-  info-contact:
+  info-description:
     description: Блок info должен содержать раздел description
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#info-description
     severity: error
     given: '$'
     then:

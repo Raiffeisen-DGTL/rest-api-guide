@@ -4,6 +4,7 @@ functionsDir: "../../functions"
 rules:
   oas3-unused-component:
     description: Спецификация не должна содержать неиспользуемые компоненты
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#oas3-unused-component
     formats: [ oas3_0 ]
     severity: error
     resolved: false
