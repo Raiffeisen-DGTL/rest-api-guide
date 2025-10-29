@@ -9,6 +9,7 @@
   "files": [
     "required-ruleset.yaml",
     "base-ruleset.yaml",
+    "asyncapi-required-ruleset.yaml",
     "functions/**/*.js"
   ],
   "publishConfig": {
