@@ -1,9 +1,0 @@
-rules:
-  info-contact:
-    description: Блок info должен содержать раздел contact
-    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules?ref_type=heads#info-contact
-    severity: error
-    given: '$'
-    then:
-      field: 'info.contact'
-      function: truthy

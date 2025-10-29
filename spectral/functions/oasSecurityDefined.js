@@ -1,6 +1,6 @@
-import {createRulesetFunction} from "@stoplight/spectral-core";
+import { createRulesetFunction } from '@stoplight/spectral-core'
 // import { isPlainObject } from '@stoplight/json';
-import { isPlainObject } from './utils/json.js';
+import { isPlainObject } from './utils/json.js'
 
 export default createRulesetFunction(
   {
@@ -20,63 +20,63 @@ export default createRulesetFunction(
     },
   },
   function oasSecurityDefined(input, { oasVersion }, { document, path }) {
-    const schemeNames = Object.keys(input);
-    if (schemeNames.length === 0) return;
+    const schemeNames = Object.keys(input)
+    if (schemeNames.length === 0) return
 
-    if (!isPlainObject(document.data)) return;
+    if (!isPlainObject(document.data)) return
 
     const allDefs =
       oasVersion === 2
         ? document.data.securityDefinitions
         : isPlainObject(document.data.components)
           ? document.data.components.securitySchemes
-          : null;
+          : null
 
-    let results;
+    let results
 
     for (const schemeName of schemeNames) {
       if (!isPlainObject(allDefs) || !(schemeName in allDefs)) {
-        const object = path.length === 2 ? 'API' : 'Operation';
-        const location = oasVersion === 2 ? 'securityDefinitions' : 'components.securitySchemes';
-        results ??= [];
+        const object = path.length === 2 ? 'API' : 'Operation'
+        const location = oasVersion === 2 ? 'securityDefinitions' : 'components.securitySchemes'
+        results ??= []
         results.push({
           message: `${object} "security" values must match a scheme defined in the "${location}" object.`,
           path: [...path, schemeName],
-        });
-        continue;
+        })
+        continue
       }
 
-      const scope = input[schemeName];
+      const scope = input[schemeName]
       for (let i = 0; i < scope.length; i++) {
-        const scopeName = scope[i];
+        const scopeName = scope[i]
         if (!isScopeDefined(oasVersion, scopeName, allDefs[schemeName])) {
-          results ??= [];
+          results ??= []
           results.push({
             message: `"${scopeName}" must be listed among scopes.`,
             path: [...path, schemeName, i],
-          });
+          })
         }
       }
     }
 
-    return results;
+    return results
   },
-);
+)
 
 function isScopeDefined(oasVersion, scopeName, securityScheme) {
-  if (!isPlainObject(securityScheme)) return false;
+  if (!isPlainObject(securityScheme)) return false
 
   if (oasVersion === 2) {
-    return isPlainObject(securityScheme.scopes) && scopeName in securityScheme.scopes;
+    return isPlainObject(securityScheme.scopes) && scopeName in securityScheme.scopes
   }
 
   if (isPlainObject(securityScheme.flows)) {
     for (const flow of Object.values(securityScheme.flows)) {
       if (isPlainObject(flow) && isPlainObject(flow.scopes) && scopeName in flow.scopes) {
-        return true;
+        return true
       }
     }
   }
 
-  return false;
+  return false
 }

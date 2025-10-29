@@ -1,0 +1,14 @@
+functions:
+  - validSchemaExample
+functionsDir: "../../../functions"
+rules:
+  valid-schema-example:
+    description: Все схемы должны иметь example
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#valid-schema-example
+    severity: error
+    given:
+    - "$..content.application/json.schema"
+    - "$..headers.*.schema"
+    - "$..parameters.*.schema"
+    then:
+      function: validSchemaExample

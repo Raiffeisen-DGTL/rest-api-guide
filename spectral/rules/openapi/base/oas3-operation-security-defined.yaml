@@ -1,0 +1,23 @@
+aliases:
+  PathItem:
+    - '$.paths[*]'
+  OperationObject:
+    - '#PathItem[get,put,post,delete,options,head,patch,trace]'
+  SecurityRequirementObject: 
+    - '$.security[*]'
+    - '#OperationObject.security[*]'
+functions:
+  - oasSecurityDefined
+functionsDir: "../../../functions"
+rules:
+  oas3-operation-security-defined:
+    description: Операция "security" должна быть определена в объекте "components.securitySchemes"
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#oas3-operation-security-defined
+    severity: error
+    resolved: false
+    formats: [oas3]
+    given: '#SecurityRequirementObject'
+    then:
+      function: oasSecurityDefined
+      functionOptions:
+        oasVersion: 3

@@ -1,0 +1,11 @@
+rules:
+  path-not-include-query:
+    description: Path не должен содержать символов "?"
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#path-not-include-query
+    severity: error
+    given: '$.paths'
+    then:
+      field: '@key'
+      function: pattern
+      functionOptions:
+        notMatch: '\?.+'

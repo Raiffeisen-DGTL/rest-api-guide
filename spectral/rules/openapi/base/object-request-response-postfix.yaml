@@ -1,0 +1,12 @@
+functions:
+  - objectRequestResponsePostfix
+functionsDir: "../../../functions"
+rules:
+  object-request-response-postfix:
+    description: Объекты запросов и ответов должны быть заданы стилем PascalCase с постфиксами Request/Response
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#object-request-response-postfix
+    severity: warn
+    given: 
+      - "$.components.schemas.*~"
+    then:
+      function: objectRequestResponsePostfix

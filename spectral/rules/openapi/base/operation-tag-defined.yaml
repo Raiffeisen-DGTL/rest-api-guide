@@ -1,0 +1,12 @@
+functions:
+  - oasTagDefined
+functionsDir: "../../../functions"
+rules:
+  operation-tag-defined:
+    description: Tags методов должны быть определены в глобальном списке tags
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-tag-defined
+    severity: error
+    resolved: false
+    given: '$'
+    then:
+      function: oasTagDefined

@@ -1,0 +1,11 @@
+rules:
+  method-operation-id-camel-case:
+    description: OperationId должны быть в camelCase формате
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#method-operation-id-camel-case
+    severity: error
+    given: '$.paths[*][get,put,post,delete,options,head,patch,trace]'
+    then:
+      field: 'operationId'
+      function: casing
+      functionOptions:
+        type: camel

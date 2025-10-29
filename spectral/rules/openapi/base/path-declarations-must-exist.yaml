@@ -1,0 +1,11 @@
+rules:
+  path-declarations-must-exist:
+    description: Параметры пути не должны записываться пустыми элементами, например "/given/{}"
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#path-declarations-must-exist
+    severity: error
+    given: '$.paths'
+    then:
+      field: '@key'
+      function: pattern
+      functionOptions:
+        notMatch: '{}'

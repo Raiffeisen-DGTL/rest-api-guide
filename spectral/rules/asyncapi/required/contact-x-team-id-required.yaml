@@ -1,0 +1,10 @@
+rules:
+  contact-x-team-id-required:
+    description: Поле info.contact.x-team-id является обязательным
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/asyncapi?ref_type=heads#contact-x-team-id-required
+    message: Отсутствует поле info.contact.x-team-id
+    severity: error
+    given: $.info
+    then:
+      field: contact.x-team-id
+      function: truthy
