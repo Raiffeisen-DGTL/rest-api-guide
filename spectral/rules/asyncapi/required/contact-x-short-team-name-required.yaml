@@ -1,0 +1,10 @@
+rules:
+  contact-x-short-team-name-required:
+    description: Поле info.contact.x-short-team-name является обязательным
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/asyncapi?ref_type=heads#contact-x-short-team-name-required
+    message: Отсутствует поле info.contact.x-short-team-name
+    severity: error
+    given: $.info
+    then:
+      field: contact.x-short-team-name
+      function: truthy

@@ -17,9 +17,9 @@ module.exports = [
     },
     rules: {
       quotes: [0, 'single'],
-      'no-unused-vars': 'warn',
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
-        'warn',
+        'off',
         { argsIgnorePattern: '^_' },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',

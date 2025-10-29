@@ -1,0 +1,9 @@
+asyncapi: '2.0.0'
+info:
+  title: Test Spec with External Ref
+  version: '0.0.1'
+channels:
+  test.channel:
+    subscribe:
+      message:
+        $ref: '/external-ref-forbidden-spec-error-additional.yaml#/components/schemas/TheGoodModel'

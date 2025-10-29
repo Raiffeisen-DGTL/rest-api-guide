@@ -1,0 +1,13 @@
+components:
+  schemas:
+    TheGoodModel:
+      type: object
+      properties:
+        number_of_connectors:
+          type: integer
+          description: The number of extension points.
+          enum:
+            - 1
+            - 2
+            - 4
+            - 5

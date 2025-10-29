@@ -1,0 +1,12 @@
+functions:
+  - oasPathParam
+functionsDir: "../../../functions"
+rules:
+  path-params:
+    description: Параметры пути должны быть описаны и использованы
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#path-params
+    severity: error
+    resolved: false
+    given: '$.paths'
+    then:
+      function: oasPathParam

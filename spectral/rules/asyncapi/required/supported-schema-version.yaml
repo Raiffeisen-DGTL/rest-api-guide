@@ -1,0 +1,14 @@
+rules:
+  supported-schema-version:
+    description: Спецификация должна быть версии 2+
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/asyncapi?ref_type=heads#supported-schema-version
+    given: '$'
+    message: "Схема документа не равна 2+"
+    severity: error
+    then:
+      - field: "asyncapi"
+        function: truthy
+      - field: "asyncapi"
+        function: pattern
+        functionOptions:
+          match: '^[23]\.\d{1}\.\d{1}$'

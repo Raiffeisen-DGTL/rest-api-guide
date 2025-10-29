@@ -17,10 +17,10 @@
   "scripts": {
     "test": "npx jest",
     "test-junit": "npx jest --ci --reporters=default --reporters=jest-junit --verbose",
-    "format": "prettier --write \"./tests/*.{ts,tsx,json,css}\"",
-    "check": "prettier --check \"./tests/*.{ts,tsx,json,css}\"",
-    "lint": "eslint \"./tests/*.{ts,tsx}\"",
-    "lint fix": "eslint --fix \"./tests/*.{ts,tsx}\"",
+    "format": "prettier --write \"./tests/**/*.{ts,tsx,json,css}\" \"./functions/**/*.{ts,js,tsx,json,css}\" \"./build-rulesets.js\"",
+    "check": "prettier --check \"./tests/**/*.{ts,tsx,json,css}\" \"./functions/**/*.{ts,js,tsx,json,css}\" \"./build-rulesets.js\"",
+    "lint": "eslint \"./tests/**/*.{ts,tsx}\" \"./functions/**/*.{ts,js,tsx,json,css}\" \"./build-rulesets.js\"",
+    "lint fix": "eslint --fix \"./tests/**/*.{ts,tsx}\" \"./functions/**/*.{ts,js,tsx,json,css}\" \"./build-rulesets.js\"",
     "prepare": "cd .. && husky spectral/.husky"
   },
   "jest": {
