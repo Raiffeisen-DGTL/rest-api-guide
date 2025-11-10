@@ -518,4 +518,421 @@ describe('valid-schema-example rule tests', () => {
     )
     expect(results[0].severity).toBe(Severity.error)
   })
+
+  // Test for components.schemas with allOf that references another schema
+  test('should report an error when schema in components.schemas with allOf does not have example', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        contact: {
+          url: 'https://sometestserver.ru/198',
+        },
+        title: 'Test Spec',
+        version: '0.0.2',
+      },
+      servers: [
+        {
+          description: 'test',
+          url: 'https://test.sometestserver.ru/',
+        },
+        {
+          description: 'prod',
+          url: 'https://prod.sometestserver.ru/',
+        },
+      ],
+      paths: {
+        '/v1/api/test': {
+          get: {
+            tags: ['testing endpoint'],
+            summary: 'Для тестирования правил',
+            operationId: 'getTest',
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/Supplier',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      components: {
+        schemas: {
+          Supplier: {
+            type: 'object',
+            properties: {
+              state: {
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/State',
+                  },
+                ],
+              },
+            },
+          },
+          State: {
+            type: 'string',
+            // Missing example here
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Все схемы должны иметь example')
+    expect(results[0].path.join('.')).toBe(
+      'paths./v1/api/test.get.responses.200.content.application/json.schema.properties.state',
+    )
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  // Test for components.schemas with allOf that references another schema with example
+  test('should not report an error when schema in components.schemas with allOf has example', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        contact: {
+          url: 'https://sometestserver.ru/198',
+        },
+        title: 'Test Spec',
+        version: '0.0.2',
+      },
+      servers: [
+        {
+          description: 'test',
+          url: 'https://test.sometestserver.ru/',
+        },
+        {
+          description: 'prod',
+          url: 'https://prod.sometestserver.ru/',
+        },
+      ],
+      paths: {
+        '/v1/api/test': {
+          get: {
+            tags: ['testing endpoint'],
+            summary: 'Для тестирования правил',
+            operationId: 'getTest',
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/Supplier',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      components: {
+        schemas: {
+          Supplier: {
+            type: 'object',
+            properties: {
+              state: {
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/State',
+                  },
+                ],
+              },
+            },
+          },
+          State: {
+            type: 'string',
+            example: 'active',
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(0)
+  })
+
+  // Test for components.schemas with oneOf that references another schema with example
+  test('should not report an error when schema in components.schemas with oneOf has example', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        contact: {
+          url: 'https://sometestserver.ru/198',
+        },
+        title: 'Test Spec',
+        version: '0.0.2',
+      },
+      servers: [
+        {
+          description: 'test',
+          url: 'https://test.sometestserver.ru/',
+        },
+        {
+          description: 'prod',
+          url: 'https://prod.sometestserver.ru/',
+        },
+      ],
+      paths: {
+        '/v1/api/test': {
+          get: {
+            tags: ['testing endpoint'],
+            summary: 'Для тестирования правил',
+            operationId: 'getTest',
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/Supplier',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      components: {
+        schemas: {
+          Supplier: {
+            type: 'object',
+            properties: {
+              state: {
+                oneOf: [
+                  {
+                    $ref: '#/components/schemas/State',
+                  },
+                ],
+              },
+            },
+          },
+          State: {
+            type: 'string',
+            example: 'active',
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(0)
+  })
+
+  // Test for components.schemas with anyOf that references another schema with example
+  test('should not report an error when schema in components.schemas with anyOf has example', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        contact: {
+          url: 'https://sometestserver.ru/198',
+        },
+        title: 'Test Spec',
+        version: '0.0.2',
+      },
+      servers: [
+        {
+          description: 'test',
+          url: 'https://test.sometestserver.ru/',
+        },
+        {
+          description: 'prod',
+          url: 'https://prod.sometestserver.ru/',
+        },
+      ],
+      paths: {
+        '/v1/api/test': {
+          get: {
+            tags: ['testing endpoint'],
+            summary: 'Для тестирования правил',
+            operationId: 'getTest',
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/Supplier',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      components: {
+        schemas: {
+          Supplier: {
+            type: 'object',
+            properties: {
+              state: {
+                anyOf: [
+                  {
+                    $ref: '#/components/schemas/State',
+                  },
+                ],
+              },
+            },
+          },
+          State: {
+            type: 'string',
+            example: 'active',
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(0)
+  })
+
+  // Test for components.schemas with oneOf that references another schema without example
+  test('should report an error when schema in components.schemas with oneOf does not have example', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        contact: {
+          url: 'https://sometestserver.ru/198',
+        },
+        title: 'Test Spec',
+        version: '0.0.2',
+      },
+      servers: [
+        {
+          description: 'test',
+          url: 'https://test.sometestserver.ru/',
+        },
+        {
+          description: 'prod',
+          url: 'https://prod.sometestserver.ru/',
+        },
+      ],
+      paths: {
+        '/v1/api/test': {
+          get: {
+            tags: ['testing endpoint'],
+            summary: 'Для тестирования правил',
+            operationId: 'getTest',
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/Supplier',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      components: {
+        schemas: {
+          Supplier: {
+            type: 'object',
+            properties: {
+              state: {
+                oneOf: [
+                  {
+                    $ref: '#/components/schemas/State',
+                  },
+                ],
+              },
+            },
+          },
+          State: {
+            type: 'string',
+            // Missing example here
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Все схемы должны иметь example')
+    expect(results[0].path.join('.')).toBe(
+      'paths./v1/api/test.get.responses.200.content.application/json.schema.properties.state',
+    )
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  // Test for components.schemas with anyOf that references another schema without example
+  test('should report an error when schema in components.schemas with anyOf does not have example', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        contact: {
+          url: 'https://sometestserver.ru/198',
+        },
+        title: 'Test Spec',
+        version: '0.0.2',
+      },
+      servers: [
+        {
+          description: 'test',
+          url: 'https://test.sometestserver.ru/',
+        },
+        {
+          description: 'prod',
+          url: 'https://prod.sometestserver.ru/',
+        },
+      ],
+      paths: {
+        '/v1/api/test': {
+          get: {
+            tags: ['testing endpoint'],
+            summary: 'Для тестирования правил',
+            operationId: 'getTest',
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/Supplier',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      components: {
+        schemas: {
+          Supplier: {
+            type: 'object',
+            properties: {
+              state: {
+                anyOf: [
+                  {
+                    $ref: '#/components/schemas/State',
+                  },
+                ],
+              },
+            },
+          },
+          State: {
+            type: 'string',
+            // Missing example here
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Все схемы должны иметь example')
+    expect(results[0].path.join('.')).toBe(
+      'paths./v1/api/test.get.responses.200.content.application/json.schema.properties.state',
+    )
+    expect(results[0].severity).toBe(Severity.error)
+  })
 })
