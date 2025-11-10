@@ -7,8 +7,19 @@ function hasExample(schema, context, visited = new Set()) {
     return false
   }
 
+  // Проверяем наличие example у самой схемы
   if (Object.prototype.hasOwnProperty.call(schema, 'example')) {
-    return true
+    // Если это объект, дополнительно проверяем, есть ли примеры у всех свойств
+    if (schema.type === 'object' && schema.properties && typeof schema.properties === 'object') {
+      for (const [propName, propSchema] of Object.entries(schema.properties)) {
+        // Для каждого свойства рекурсивно проверяем наличие примера
+        if (!hasExample(propSchema, context, new Set(visited))) {
+          return false // Если хотя бы у одного свойства нет примера, возвращаем false
+        }
+      }
+      return true // Все свойства имеют примеры
+    }
+    return true // У схемы есть example и это не объект со свойствами
   }
 
   if (schema.$ref) {
@@ -30,6 +41,11 @@ function hasExample(schema, context, visited = new Set()) {
       return hasExample(resolved, context, visited)
     }
     return false
+  }
+
+  // Обрабатываем случай, когда у нас есть массив с items, содержащим $ref
+  if (schema.type === 'array' && schema.items && typeof schema.items === 'object') {
+    return hasExample(schema.items, context, new Set(visited))
   }
 
   for (const keyword of COMPOSITE_KEYWORDS) {
@@ -108,6 +124,21 @@ export default createRulesetFunction(
             path: [...propPath, 'example'],
           })
         }
+      }
+    } else if (schema.type === 'array' && schema.items && typeof schema.items === 'object') {
+      // Для массивов проверяем пример у схемы элементов
+      const itemsPath = [...context.path, 'items']
+
+      // Рекурсивно проверяем схему элементов, как если бы она была передана в функцию напрямую
+      const itemsErrors = validSchemaExample(schema.items, _, {
+        ...context,
+        path: itemsPath,
+        utils: context.utils,
+      })
+
+      // Если есть ошибки в схеме элементов, добавляем их к общему списку ошибок
+      if (Array.isArray(itemsErrors) && itemsErrors.length > 0) {
+        errors.push(...itemsErrors)
       }
     } else if (schema.type && schema.type !== 'object') {
       try {
