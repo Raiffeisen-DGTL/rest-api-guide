@@ -1,4 +1,4 @@
-import { retrieveDocument, setupSpectral } from '../utils/utils'
+import { setupSpectral } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -985,6 +985,12 @@ describe('valid-schema-example rule tests', () => {
             properties: {
               items: {
                 type: 'array',
+                example: [
+                  {
+                    id: 123,
+                    name: 'Test Item',
+                  },
+                ],
                 items: {
                   $ref: '#/components/schemas/Item',
                 },
@@ -1480,5 +1486,193 @@ describe('valid-schema-example rule tests', () => {
     }
     const results = await linter.run(specFile)
     expect(results.length).toBe(0)
+  })
+
+  // Test for array schema without example
+  test('should report an error when array schema does not have example', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        title: 'Test API',
+        version: '1.0.0',
+      },
+      paths: {
+        '/users': {
+          get: {
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        tags: {
+                          type: 'array',
+                          items: {
+                            type: 'string',
+                            example: 'tag1',
+                          },
+                          // array schema itself missing example
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Все схемы должны иметь example')
+    expect(results[0].path.join('.')).toBe(
+      'paths./users.get.responses.200.content.application/json.schema.properties.tags',
+    )
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  // Test for array schema with example
+  test('should not report an error when array schema has example', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        title: 'Test API',
+        version: '1.0.0',
+      },
+      paths: {
+        '/users': {
+          get: {
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        tags: {
+                          type: 'array',
+                          example: ['tag1', 'tag2'],
+                          items: {
+                            type: 'string',
+                            example: 'tag1',
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(0)
+  })
+
+  // Test for array schema in components with example
+  test('should not report an error when array schema in components has example', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        title: 'Test API',
+        version: '1.0.0',
+      },
+      paths: {
+        '/users': {
+          get: {
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/User',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      components: {
+        schemas: {
+          User: {
+            type: 'object',
+            properties: {
+              tags: {
+                type: 'array',
+                example: ['tag1', 'tag2'],
+                items: {
+                  type: 'string',
+                  example: 'tag1',
+                },
+              },
+            },
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(0)
+  })
+
+  // Test for array schema in components without example
+  test('should report an error when array schema in components does not have example', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        title: 'Test API',
+        version: '1.0.0',
+      },
+      paths: {
+        '/users': {
+          get: {
+            responses: {
+              '200': {
+                description: 'OK',
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/User',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      components: {
+        schemas: {
+          User: {
+            type: 'object',
+            properties: {
+              tags: {
+                type: 'array',
+                items: {
+                  type: 'string',
+                  example: 'tag1',
+                },
+                // array schema itself missing example
+              },
+            },
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Все схемы должны иметь example')
+    expect(results[0].path.join('.')).toBe(
+      'paths./users.get.responses.200.content.application/json.schema.properties.tags',
+    )
+    expect(results[0].severity).toBe(Severity.error)
   })
 })
