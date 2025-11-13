@@ -45,7 +45,13 @@ function hasExample(schema, context, visited = new Set()) {
 
   // Обрабатываем случай, когда у нас есть массив с items, содержащим $ref
   if (schema.type === 'array' && schema.items && typeof schema.items === 'object') {
-    return hasExample(schema.items, context, new Set(visited))
+    // Проверяем, есть ли пример у самой схемы массива
+    if (Object.prototype.hasOwnProperty.call(schema, 'example')) {
+      return true
+    }
+    // Если у массива нет своего примера, возвращаем false
+    // Массив должен иметь свой собственный пример, а не только примеры элементов
+    return false
   }
 
   for (const keyword of COMPOSITE_KEYWORDS) {
@@ -115,18 +121,24 @@ export default createRulesetFunction(
         }
 
         if (!propHasExample) {
-          const message = propSchema.$ref
-            ? `Ссылка на схему в свойстве '${propName}' не имеет example.`
-            : `Свойство '${propName}' должно иметь пример (example).`
+          const message = 'Все схемы должны иметь example'
 
           errors.push({
             message,
-            path: [...propPath, 'example'],
+            path: propPath,
           })
         }
       }
     } else if (schema.type === 'array' && schema.items && typeof schema.items === 'object') {
-      // Для массивов проверяем пример у схемы элементов
+      // Для массивов проверяем наличие примера у самой схемы массива
+      if (!hasExample(schema, context)) {
+        errors.push({
+          message: 'Все схемы должны иметь example',
+          path: [...context.path, 'example'],
+        })
+      }
+
+      // Также проверяем пример у схемы элементов
       const itemsPath = [...context.path, 'items']
 
       // Рекурсивно проверяем схему элементов, как если бы она была передана в функцию напрямую
