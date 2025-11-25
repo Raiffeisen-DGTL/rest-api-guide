@@ -1,0 +1,23 @@
+asyncapi: '2.0.0'
+info:
+  title: Test Spec with Internal Servers Reference
+  version: '0.0.1'
+servers:
+  production:
+    url: broker.production.com
+    protocol: amqp
+  staging:
+    $ref: '#/servers/production'
+channels:
+  test.channel:
+    subscribe:
+      message:
+        $ref: '#/components/messages/TestMessage'
+components:
+  messages:
+    TestMessage:
+      payload:
+        type: object
+        properties:
+          id:
+            type: string

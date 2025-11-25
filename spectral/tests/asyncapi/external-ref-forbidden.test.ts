@@ -28,4 +28,18 @@ describe('Tests for external-ref-forbidden.yaml ruleset', () => {
     const results = await linter.run(spec)
     expect(results.length).toBe(0)
   })
+
+  test('should not report an error for internal references to blocks like servers or channels', async () => {
+    const specFile = './tests/asyncapi/testData/external-ref-forbidden-spec-internal-blocks.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should not report an error for internal references to servers block', async () => {
+    const specFile = './tests/asyncapi/testData/external-ref-forbidden-spec-servers-ref.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
 })

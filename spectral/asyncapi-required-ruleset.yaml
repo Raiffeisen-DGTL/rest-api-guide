@@ -31,7 +31,7 @@ rules:
     then:
       function: "pattern"
       functionOptions:
-        match: "^#/components"
+        match: "^#/"
   supported-schema-version:
     description: "Спецификация должна быть версии 2+"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/asyncapi?ref_type=heads#supported-schema-version"
