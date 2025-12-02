@@ -1,0 +1,28 @@
+openapi: 3.0.0
+info:
+  title: Test Spec with Mixed Paths - External Ref Correct and Inline Schemas
+  version: 0.0.1
+paths:
+  /users:
+    $ref: './path-with-inline-schemas.yaml'
+  /orders:
+    get:
+      responses:
+        '200':
+          description: Success
+          content:
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  id: { type: 'integer' }
+                  name: { type: 'string' }
+        '400':
+          description: Bad request
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                name: { type: 'string' }

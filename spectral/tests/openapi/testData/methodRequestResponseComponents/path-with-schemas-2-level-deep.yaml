@@ -1,0 +1,27 @@
+get:
+  responses:
+    '200':
+      description: Success
+      content:
+        'application/json':
+          schema:
+            $ref: './two-level-deep-schemas.yaml#/components/schemas/TheGoodModel'
+    '400':
+      description: Bad request
+      content:
+        'application/json':
+          schema:
+            type: object
+            properties:
+              favoriteColorSets:
+                type: array
+                items:
+                  type: string
+              name:
+                type: string
+                description: Valid description
+              title:
+                type: string
+                title: Valid title
+            required:
+              - name

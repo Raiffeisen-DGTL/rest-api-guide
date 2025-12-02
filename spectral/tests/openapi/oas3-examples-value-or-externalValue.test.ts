@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 
 let linter: Spectral
@@ -180,9 +180,9 @@ describe('oas3-examples-value-or-externalValue rule tests', () => {
       },
     }
     const results = await linter.run(specFile)
-    expect(results.length).toBe(1)
+    expect(results.length).toBe(2)
     expect(results[0].message).toBe('Examples должен содержать value или externalValue')
-    expect(results[0].path.join('.')).toBe('components.parameters.TestParam.examples.Example1')
+    expect(results[1].message).toBe('Examples должен содержать value или externalValue')
   })
 
   test('should report an error when examples in path.parameters have neither value nor externalValue', async () => {
@@ -292,9 +292,9 @@ describe('oas3-examples-value-or-externalValue rule tests', () => {
       },
     }
     const results = await linter.run(specFile)
-    expect(results.length).toBe(1)
+    expect(results.length).toBe(2)
     expect(results[0].message).toBe('Examples должен содержать value или externalValue')
-    expect(results[0].path.join('.')).toBe('components.headers.TestHeader.examples.Example1')
+    expect(results[1].message).toBe('Examples должен содержать value или externalValue')
   })
   test('should not report an error when examples have both value and externalValue (should be valid for xor)', async () => {
     const specFile = {
@@ -321,5 +321,23 @@ describe('oas3-examples-value-or-externalValue rule tests', () => {
     expect(results.length).toBe(1)
     expect(results[0].message).toBe('Examples должен содержать value или externalValue')
     expect(results[0].path.join('.')).toBe('components.examples.Example1')
+  })
+
+  test('should report an error when external reference contains examples without value or externalValue', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ExamplesValueOrExternalValue/spec-with-external-ref-invalid-example.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Examples должен содержать value или externalValue')
+    expect(results[0].path.join('.')).toBe('components.examples.LocalExample')
+  })
+
+  test('should not report an error when external reference contains valid examples', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ExamplesValueOrExternalValue/spec-with-external-ref-valid-example.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
   })
 })

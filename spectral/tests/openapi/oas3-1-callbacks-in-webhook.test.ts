@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -116,6 +116,28 @@ describe('oas3_1_callbacks_in_webhook rule tests', () => {
       },
     }
     const results = await linter.run(specFile)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when external webhook reference contains callbacks', async () => {
+    const specFile =
+      './tests/openapi/testData/oas31CallbacksInWebhook/webhook-with-external-ref.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    // The rule correctly detects callbacks in the external webhook reference
+    expect(results.length).toBe(1)
+    expect(results[0].path.join('.')).toBe('webhooks.myWebhook')
+    expect(results[0].message).toBe('Webhooks не должны включать в себя callbacks')
+    // Note: The path may vary depending on how Spectral resolves external references
+  })
+
+  test('should not report an error when external webhook reference does not contain callbacks', async () => {
+    const specFile =
+      './tests/openapi/testData/oas31CallbacksInWebhook/webhook-with-external-ref-no-callbacks.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    // Note: This test should pass because there are no callbacks in the main document
+    // and Spectral might not resolve the external reference in this rule context.
     expect(results.length).toBe(0)
   })
 })

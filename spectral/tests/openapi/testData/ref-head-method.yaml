@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: Test Spec for HEAD Method Ref
+  version: 0.0.1
+paths:
+  /download:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/pdf: {}
+    # Missing HEAD method - should trigger the rule

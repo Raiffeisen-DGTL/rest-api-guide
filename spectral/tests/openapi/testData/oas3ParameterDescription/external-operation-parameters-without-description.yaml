@@ -1,0 +1,5 @@
+parameters:
+  - name: limit
+    in: query
+    schema:
+      type: integer

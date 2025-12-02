@@ -14,7 +14,7 @@ variables:
   VERSION: 1.1.$CI_PIPELINE_IID
 
 .npm_job:
-  image: !reference [.image, node22]
+  image: !reference [ .image, node22 ]
   before_script:
     - cat $NPMRC > ~/.npmrc
     - npm set cache .npm
@@ -25,14 +25,14 @@ test:
   stage: test
   extends: .npm_job
   script:
-   - npm run check
-   - npm run lint
-   - npm run test-junit
+    - npm run check
+    - npm run lint
+    - npm run test-junit
   artifacts:
-   when: always
-   reports:
-     junit:
-       - ./spectral/junit.xml
+    when: always
+    reports:
+      junit:
+        - ./spectral/junit.xml
 
 package:
   stage: package
@@ -46,7 +46,7 @@ package:
     paths:
       - ./spectral/rapi-spectral-rulesets-*
   rules:
-  - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_TAG
 
 publish:
   stage: publish
@@ -59,15 +59,15 @@ publish:
   needs:
     - package
   rules:
-  - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_TAG
 
 release:
- stage: release
- image: 'artifactory.raiffeisen.ru/ext-devops-community-docker/release-cli:v0.16.0'
- dependencies:
-   - package
-   - publish
- script:
+  stage: release
+  image: 'artifactory.raiffeisen.ru/ext-devops-community-docker/release-cli:v0.16.0'
+  dependencies:
+    - package
+    - publish
+  script:
     - |
       if [ -z "$CI_COMMIT_TAG" ]; then
         echo "No tag found, skipping release creation"
@@ -91,7 +91,7 @@ release:
 
       echo "Release notes prepared:"
       cat release_notes.md
- release:
+  release:
     tag_name: "$CI_COMMIT_TAG"
     name: "$CI_COMMIT_TAG"
     description: "$(cat release_notes.md)"
@@ -99,8 +99,8 @@ release:
       links:
         - name: "spectral-rulesets-$CI_COMMIT_TAG"
           url: "https://artifactory.raiffeisen.ru/artifactory/cdci-public-npm/@rapi/spectral-rulesets/-/@rapi/spectral-rulesets-$CI_COMMIT_TAG.tgz"
- rules:
- - if: $CI_COMMIT_TAG
+  rules:
+    - if: $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
 
 
 github-mirror:

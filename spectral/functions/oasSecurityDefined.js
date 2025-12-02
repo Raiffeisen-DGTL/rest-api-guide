@@ -1,6 +1,6 @@
 import { createRulesetFunction } from '@stoplight/spectral-core'
-// import { isPlainObject } from '@stoplight/json';
 import { isPlainObject } from './utils/json.js'
+import { resolveRef } from './utils/refResolver.js'
 
 export default createRulesetFunction(
   {
@@ -19,18 +19,38 @@ export default createRulesetFunction(
       additionalProperties: false,
     },
   },
-  function oasSecurityDefined(input, { oasVersion }, { document, path }) {
+  function oasSecurityDefined(input, { oasVersion }, context) {
+    const { document, path } = context
     const schemeNames = Object.keys(input)
     if (schemeNames.length === 0) return
 
     if (!isPlainObject(document.data)) return
 
-    const allDefs =
+    // Resolve security schemes, handling external references
+    let allDefs =
       oasVersion === 2
         ? document.data.securityDefinitions
         : isPlainObject(document.data.components)
           ? document.data.components.securitySchemes
           : null
+
+    // If securitySchemes is a reference, resolve it
+    if (isPlainObject(allDefs) && typeof allDefs.$ref === 'string') {
+      try {
+        allDefs = resolveRef(allDefs.$ref, { document })
+      } catch (e) {
+        // If we can't resolve the reference, continue with the original logic
+      }
+    } else if (
+      typeof allDefs === 'string' &&
+      (allDefs.startsWith('#/') || allDefs.startsWith('./') || allDefs.startsWith('../'))
+    ) {
+      try {
+        allDefs = resolveRef(allDefs, { document })
+      } catch (e) {
+        // If we can't resolve the reference, continue with the original logic
+      }
+    }
 
     let results
 

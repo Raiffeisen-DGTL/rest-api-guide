@@ -1,0 +1,6 @@
+contact:
+  url: https://sometestserver.ru/198
+  name: Test Team
+  x-short-team-name: 198
+title: Test Spec
+version: 0.0.2

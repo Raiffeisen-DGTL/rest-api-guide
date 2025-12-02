@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Invalid Example
+  version: 0.0.1
+paths:
+  /users:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: './external-schema-invalid.yaml#/components/schemas/User'
+              example:
+                id: "not-a-number"
+                name: "John Doe"

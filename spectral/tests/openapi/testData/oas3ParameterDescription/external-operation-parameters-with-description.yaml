@@ -1,0 +1,6 @@
+parameters:
+  - name: limit
+    in: query
+    description: Number of users to return
+    schema:
+      type: integer

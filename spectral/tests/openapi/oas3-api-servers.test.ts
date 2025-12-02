@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -144,6 +144,49 @@ describe('oas3-api-servers rule tests', () => {
       },
     }
     const results = await linter.run(specFile)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Servers должны быть заполнены')
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should not report an error when external servers are properly defined', async () => {
+    const specFile = './tests/openapi/testData/oas3ApiServers/spec-with-external-servers-valid.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should not report an error when external servers array has multiple entries', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ApiServers/spec-with-external-servers-multiple.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should not report an error when external servers are non-empty', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ApiServers/spec-with-external-servers-non-empty.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when external reference is broken', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ApiServers/spec-with-external-servers-broken-ref.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    // When an external reference is broken, Spectral reports a resolution error
+    // This is different from the "Servers должны быть заполнены" error
+    expect(results.length).toBeGreaterThan(0)
+  })
+
+  test('should report an error when servers are missing even with external references', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ApiServers/spec-with-external-servers-missing.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
     expect(results.length).toBe(1)
     expect(results[0].message).toBe('Servers должны быть заполнены')
     expect(results[0].severity).toBe(Severity.error)

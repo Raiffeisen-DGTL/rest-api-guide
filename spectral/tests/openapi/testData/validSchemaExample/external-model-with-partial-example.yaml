@@ -1,0 +1,13 @@
+components:
+  schemas:
+    ExternalModelWithPartialExample:
+      type: object
+      example:
+        id: 123
+      properties:
+        id:
+          type: integer
+          example: 123
+        name:
+          type: string
+          # Missing example here

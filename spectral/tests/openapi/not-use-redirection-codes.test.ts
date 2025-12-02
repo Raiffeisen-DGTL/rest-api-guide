@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -102,5 +102,23 @@ describe('Not Use Redirection Codes rule tests', () => {
     const results = await linter.run(specFile)
     expect(results.length).toBe(1)
     expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should report an error when external file contains redirection codes', async () => {
+    const specFile =
+      './tests/openapi/testData/notUseRedirectionCodes/spec-with-external-ref-to-redirection-codes.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Не используйте коды перенаправления в responses')
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should not report an error when external file does not contain redirection codes', async () => {
+    const specFile =
+      './tests/openapi/testData/notUseRedirectionCodes/spec-with-external-ref-to-valid-codes.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
   })
 })

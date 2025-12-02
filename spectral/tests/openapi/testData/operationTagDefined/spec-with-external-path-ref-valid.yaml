@@ -1,0 +1,10 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Path References - Valid Tag
+  version: 0.0.2
+tags:
+  - name: test
+    description: Test tag
+paths:
+  /v1/api/test:
+    $ref: './path-with-valid-tag.yaml'

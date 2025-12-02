@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: Spec with External Reference to File with Disallowed HTTP Codes
+  version: 0.0.1
+paths:
+  /test:
+    $ref: './external-spec-with-disallowed-codes.yaml#/paths/~1external-test'

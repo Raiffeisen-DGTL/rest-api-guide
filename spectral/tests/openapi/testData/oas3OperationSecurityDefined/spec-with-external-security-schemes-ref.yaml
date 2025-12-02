@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Security Schemes Ref
+  version: 0.0.1
+components:
+  securitySchemes:
+    $ref: './external-security-schemes.yaml#/components/securitySchemes'
+paths:
+  /test:
+    get:
+      security:
+        - external_api_key: []
+      responses:
+        '200':
+          description: OK

@@ -2,7 +2,6 @@
   
 - [Описание автоматизированных правил Spectral для OpenAPI](#описание-автоматизированных-правил-spectral-для-openapi)
   - [Required ruleset](#required-ruleset)
-    - [external-ref-forbidden](#external-ref-forbidden)
     - [oas3-schema](#oas3-schema)
     - [supported-schema-version](#supported-schema-version)
     - [contact-x-short-team-name-required](#contact-x-short-team-name-required)
@@ -61,69 +60,7 @@
     - [typed-enum](#typed-enum)
     - [valid-schema-example](#valid-schema-example)
 
-
 ## Required ruleset
-### external-ref-forbidden
-
-| Severity | Description                             |
-|----------|-----------------------------------------|
-| ERROR    | Все $ref должны ссылаться на components |
-
-#### Описание
-
-В данный момент портал принимает только один файл для публикации. В связи с этим нет возможности опубликовать
-многофайловые спецификации.
-
-#### Решение
-
-```textmate
-Проверьте все $ref в вашей спецификации и убедитесь , что все они ведут в #/components в этой же спецификации
-```
-
-#### Примеры 
-
-##### Правильно
-```yaml
-components:
-  schemas:
-    User:
-      type: object
-      properties:
-        name:
-          type: string
-        age:
-          type: integer
-    Address:
-      type: object
-      properties:
-        street:
-          type: string
-paths:
-  /users:
-    get:
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-```
-
-##### Неправильно
-```yaml
-paths:
-  /users:
-    get:
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: 'https://example.com/api.yaml#/components/schemas/User'
-```
-
----
-
 ### oas3-schema
 
 | Severity | Description                                          |

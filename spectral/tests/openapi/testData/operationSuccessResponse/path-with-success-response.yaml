@@ -1,0 +1,8 @@
+get:
+  operationId: getUsers
+  summary: Get users
+  responses:
+    '200':
+      description: Successful response
+    '400':
+      description: Bad request

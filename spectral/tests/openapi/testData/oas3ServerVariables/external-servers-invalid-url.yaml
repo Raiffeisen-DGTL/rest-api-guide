@@ -1,0 +1,6 @@
+servers:
+  - url: 'https://api.example.com:{port}/v1'
+    description: 'Production server'
+    variables:
+      port:
+        default: '8o80'

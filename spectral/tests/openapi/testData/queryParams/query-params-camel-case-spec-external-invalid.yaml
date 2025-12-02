@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Ref Invalid
+  version: 0.0.1
+paths:
+  /users:
+    $ref: './query-params-camel-case-invalid-ref.yaml#/paths/~1users'

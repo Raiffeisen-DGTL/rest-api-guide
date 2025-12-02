@@ -1,0 +1,19 @@
+openapi: 3.0.3
+info:
+  title: Test Spec for External AllOf Elements
+  version: 0.0.1
+paths:
+  /test:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userData:
+                    allOf:
+                      - $ref: './allOf-element-1.yaml'
+                      - $ref: './allOf-element-2.yaml'

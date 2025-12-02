@@ -1,0 +1,40 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with Ref
+  version: 0.0.1
+paths:
+  /test:
+    get:
+      tags: ['test']
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './ref.yaml#/components/schemas/TestModel'
+        '400':
+          description: Bad request
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          required: false
+          schema:
+            type: integer

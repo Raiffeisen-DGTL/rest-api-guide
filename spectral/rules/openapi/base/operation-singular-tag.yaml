@@ -8,7 +8,6 @@ rules:
     description: Метод должен иметь не более одного тега
     documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-singular-tag
     severity: error
-    resolved: false
     given: '#OperationObject'
     then:
       field: 'tags'

@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -121,5 +121,25 @@ describe('use-most-common-http-codes', () => {
     )
     expect(results[1].path.join('.')).toBe('paths./orders.post.responses.302')
     expect(results[1].severity).toEqual(Severity.error)
+  })
+
+  test('should report an error when external file contains disallowed HTTP codes', async () => {
+    const specFile =
+      './tests/openapi/testData/useMostCommonHttpCodes/spec-with-external-ref-to-disallowed-codes.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results).toHaveLength(1)
+    expect(results[0].message).toBe(
+      'Используйте только наиболее распространенные коды состояния HTTP',
+    )
+    expect(results[0].severity).toEqual(Severity.error)
+  })
+
+  test('should not report an error when external file contains allowed HTTP codes', async () => {
+    const specFile =
+      './tests/openapi/testData/useMostCommonHttpCodes/spec-with-external-ref-to-allowed-codes.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results).toHaveLength(0)
   })
 })

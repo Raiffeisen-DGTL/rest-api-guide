@@ -1,0 +1,14 @@
+UserCreateRequest:
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/UserRequest'
+components:
+  schemas:
+    UserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string

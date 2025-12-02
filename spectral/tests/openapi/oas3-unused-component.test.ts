@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { retrieveDocument, setupSpectral } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -238,5 +238,21 @@ describe('OAS3 unused component rule tests', () => {
     }
     const results = await linter.run(specFile)
     expect(results.length).toBe(0)
+  })
+  test('should not report an error when external components are used', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3UnusedComponent/spec-with-external-used-components.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+  test('should report an error when external components are unused', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3UnusedComponent/spec-with-external-unused-components.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Спецификация не должна содержать неиспользуемые компоненты')
+    expect(results[0].severity).toBe(Severity.error)
   })
 })

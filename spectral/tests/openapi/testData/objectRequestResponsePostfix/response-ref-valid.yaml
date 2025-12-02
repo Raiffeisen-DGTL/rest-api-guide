@@ -1,0 +1,24 @@
+openapi: 3.0.0
+info:
+  title: Test Spec with Response Ref - Valid
+  version: 0.0.1
+paths:
+  /users:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          $ref: './response-valid.yaml#/UserCreateResponse'
+components:
+  schemas:
+    UserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string

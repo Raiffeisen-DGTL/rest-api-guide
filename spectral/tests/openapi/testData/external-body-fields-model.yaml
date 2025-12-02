@@ -1,0 +1,13 @@
+components:
+  schemas:
+    ExternalModel:
+      type: object
+      properties:
+        user_name:  # This should fail the rule (not camelCase)
+          type: string
+        firstName:  # This should pass the rule (camelCase)
+          type: string
+        last_name:  # This should fail the rule (not camelCase)
+          type: string
+        email_address:  # This should fail the rule (not camelCase)
+          type: string

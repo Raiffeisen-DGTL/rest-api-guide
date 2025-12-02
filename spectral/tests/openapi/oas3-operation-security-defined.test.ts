@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -113,5 +113,25 @@ describe('Tests for oas3-operation-security-defined.yaml ruleset', () => {
 
     const results = await linter.run(specFile)
     expect(results.length).toBe(0)
+  })
+
+  test('should not report an error when external reference contains valid security schemes', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3OperationSecurityDefined/spec-with-external-security-schemes-ref.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when external reference contains undefined security scheme', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3OperationSecurityDefined/spec-with-external-security-schemes-ref-invalid.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe(
+      'Операция "security" должна быть определена в объекте "components.securitySchemes"',
+    )
+    expect(results[0].severity).toBe(Severity.error)
   })
 })

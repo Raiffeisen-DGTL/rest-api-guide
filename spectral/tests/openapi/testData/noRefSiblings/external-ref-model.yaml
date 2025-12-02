@@ -1,0 +1,12 @@
+components:
+  schemas:
+    User:
+      $ref: '#/components/schemas/User2'
+      description: 'description'
+    User2:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string

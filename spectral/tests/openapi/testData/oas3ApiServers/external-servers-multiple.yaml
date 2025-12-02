@@ -1,0 +1,5 @@
+servers:
+  - url: 'https://api.example.com/v1'
+    description: 'Production server'
+  - url: 'https://api-staging.example.com/v1'
+    description: 'Staging server'

@@ -1,0 +1,11 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: 'integer' }
+        name: { type: 'string' }
+    UserInput:
+      type: object
+      properties:
+        name: { type: 'string' }

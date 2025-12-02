@@ -1,0 +1,15 @@
+get:
+  responses:
+    '200':
+      description: Success
+      content:
+        'application/json':
+          schema:
+            $ref: './user-schemas.yaml#/components/schemas/User'
+    '400':
+      description: Bad request
+  requestBody:
+    content:
+      'application/json':
+        schema:
+          $ref: './user-schemas.yaml#/components/schemas/UserInput'

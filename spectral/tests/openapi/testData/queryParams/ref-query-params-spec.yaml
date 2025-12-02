@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with Ref for Query Params
+  version: 0.0.1
+paths:
+  /test-ref:
+    $ref: './ref-query-params.yaml#/paths/~1test'

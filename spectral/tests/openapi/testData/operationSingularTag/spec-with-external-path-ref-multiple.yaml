@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Path References - Multiple Tags
+  version: 0.0.2
+paths:
+  /v1/api/test:
+    $ref: './path-with-multiple-tags.yaml'

@@ -1,4 +1,5 @@
 import { createRulesetFunction } from '@stoplight/spectral-core'
+import { resolveRef } from './utils/refResolver.js'
 
 const COMPOSITE_KEYWORDS = ['oneOf', 'allOf', 'anyOf']
 
@@ -32,7 +33,7 @@ function hasExample(schema, context, visited = new Set()) {
 
     let resolved
     try {
-      resolved = context.utils.resolveRef(schema)
+      resolved = resolveRef(schema.$ref, context)
     } catch (error) {
       throw error
     }
@@ -83,7 +84,7 @@ export default createRulesetFunction(
 
     if (schema.$ref) {
       try {
-        const resolved = context.utils.resolveRef(schema)
+        const resolved = resolveRef(schema.$ref, context)
         if (resolved && typeof resolved === 'object') {
           schema = resolved
         } else {

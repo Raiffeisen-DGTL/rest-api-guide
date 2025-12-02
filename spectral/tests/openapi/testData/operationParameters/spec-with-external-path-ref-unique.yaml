@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Path References - Unique Parameters
+  version: 0.0.2
+paths:
+  /v1/users:
+    $ref: './path-with-unique-parameters.yaml'

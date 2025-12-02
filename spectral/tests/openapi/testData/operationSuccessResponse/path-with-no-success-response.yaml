@@ -1,0 +1,10 @@
+get:
+  operationId: getUsers
+  summary: Get users
+  responses:
+    '400':
+      description: Bad request
+    '404':
+      description: Not found
+    '500':
+      description: Internal server error

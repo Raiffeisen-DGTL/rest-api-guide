@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { retrieveDocument, setupSpectral } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -151,5 +151,33 @@ describe('Query Params Camel Case rule tests', () => {
     const results = await linter.run(specFile)
     expect(results.length).toBe(1)
     expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should report an error when query params are not in camelCase in referenced file', async () => {
+    const specFile = './tests/openapi/testData/queryParams/ref-query-params-spec.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].severity).toBe(Severity.error)
+    expect(results[0].path.join('.')).toBe('paths./test-ref')
+    expect(results[0].message).toBe('Params должны быть в camelCase формате')
+  })
+
+  test('should not report an error when query params are in camelCase in external referenced file', async () => {
+    const specFile =
+      './tests/openapi/testData/queryParams/query-params-camel-case-spec-external-valid.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when query params are not in camelCase in external referenced file', async () => {
+    const specFile =
+      './tests/openapi/testData/queryParams/query-params-camel-case-spec-external-invalid.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].severity).toBe(Severity.error)
+    expect(results[0].message).toBe('Params должны быть в camelCase формате')
   })
 })

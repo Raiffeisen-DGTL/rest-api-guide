@@ -1,0 +1,23 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Ref Valid
+  version: 0.0.1
+paths:
+  /users:
+    get:
+      responses:
+        '200':
+          description: Success
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/User'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string

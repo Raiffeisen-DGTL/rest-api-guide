@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -10,7 +10,6 @@ describe('valid-schema-example rule tests', () => {
     linter = await setupSpectral(rulesFile)
   })
 
-  // Test for components.schemas pattern
   test('should report an error when schema in components.schemas does not have example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -136,7 +135,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for request bodies pattern
   test('should report an error when schema in request body does not have example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -221,7 +219,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for response bodies pattern
   test('should report an error when schema in response body does not have example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -302,7 +299,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for parameters pattern
   test('should report an error when schema in parameter does not have example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -374,7 +370,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for headers pattern
   test('should report an error when schema in header does not have example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -442,7 +437,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for non-JSON content type exclusion
   test('should not report an error for schema in non-JSON content type', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -519,7 +513,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results[0].severity).toBe(Severity.error)
   })
 
-  // Test for components.schemas with allOf that references another schema
   test('should report an error when schema in components.schemas with allOf does not have example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -591,7 +584,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results[0].severity).toBe(Severity.error)
   })
 
-  // Test for components.schemas with allOf that references another schema with example
   test('should not report an error when schema in components.schemas with allOf has example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -658,7 +650,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for components.schemas with oneOf that references another schema with example
   test('should not report an error when schema in components.schemas with oneOf has example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -725,7 +716,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for components.schemas with anyOf that references another schema with example
   test('should not report an error when schema in components.schemas with anyOf has example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -792,7 +782,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for components.schemas with oneOf that references another schema without example
   test('should report an error when schema in components.schemas with oneOf does not have example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -864,7 +853,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results[0].severity).toBe(Severity.error)
   })
 
-  // Test for components.schemas with anyOf that references another schema without example
   test('should report an error when schema in components.schemas with anyOf does not have example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -936,7 +924,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results[0].severity).toBe(Severity.error)
   })
 
-  // Test for components.schemas with ref inside items that has example
   test('should not report an error when schema in components.schemas with ref inside items has example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -1021,7 +1008,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for components.schemas with ref inside items that does not have example
   test('should report an error when schema in components.schemas with ref inside items does not have example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -1261,7 +1247,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results[0].severity).toBe(Severity.error)
   })
 
-  // Test for components.schemas with anyOf that has multiple refs, none have example
   test('should report an error when schema in components.schemas with anyOf has multiple refs without example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -1340,7 +1325,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results[0].severity).toBe(Severity.error)
   })
 
-  // Test for components.schemas with anyOf that has multiple refs, one has example
   test('should not report an error when schema in components.schemas with anyOf has multiple refs with one having example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -1414,7 +1398,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for components.schemas with anyOf that has multiple refs, all have example
   test('should not report an error when schema in components.schemas with anyOf has multiple refs with examples', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -1488,7 +1471,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for array schema without example
   test('should report an error when array schema does not have example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -1534,7 +1516,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results[0].severity).toBe(Severity.error)
   })
 
-  // Test for array schema with example
   test('should not report an error when array schema has example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -1575,7 +1556,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for array schema in components with example
   test('should not report an error when array schema in components has example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -1623,7 +1603,6 @@ describe('valid-schema-example rule tests', () => {
     expect(results.length).toBe(0)
   })
 
-  // Test for array schema in components without example
   test('should report an error when array schema in components does not have example', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -1672,6 +1651,55 @@ describe('valid-schema-example rule tests', () => {
     expect(results[0].message).toBe('Все схемы должны иметь example')
     expect(results[0].path.join('.')).toBe(
       'paths./users.get.responses.200.content.application/json.schema.properties.tags',
+    )
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should not report an error when schema in external file has example', async () => {
+    const specFile =
+      './tests/openapi/testData/validSchemaExample/spec-with-external-model-with-example.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when schema in external file does not have example', async () => {
+    const specFile =
+      './tests/openapi/testData/validSchemaExample/spec-with-external-model-without-example.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Все схемы должны иметь example')
+    // For external references, the error is reported at the schema level, not at the property level
+    expect(results[0].path.join('.')).toBe(
+      'paths./test.get.responses.200.content.application/json.schema',
+    )
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should report an error when schema in external file has missing property examples', async () => {
+    const specFile =
+      './tests/openapi/testData/validSchemaExample/spec-with-external-model-with-partial-example.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Все схемы должны иметь example')
+    // For external references, the error is reported at the schema level, not at the property level
+    expect(results[0].path.join('.')).toBe(
+      'paths./test.get.responses.200.content.application/json.schema',
+    )
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should report error for complex external schema with multiple missing examples', async () => {
+    const specFile =
+      './tests/openapi/testData/validSchemaExample/spec-with-complex-external-model-without-examples.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Все схемы должны иметь example')
+    expect(results[0].path.join('.')).toBe(
+      'paths./test.get.responses.200.content.application/json.schema',
     )
     expect(results[0].severity).toBe(Severity.error)
   })

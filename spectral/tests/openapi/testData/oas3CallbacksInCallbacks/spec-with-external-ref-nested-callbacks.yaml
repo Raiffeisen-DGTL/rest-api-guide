@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Ref containing nested callbacks
+  version: 0.0.1
+paths:
+  /test:
+    post:
+      callbacks:
+        myCallback:
+          'https://example.com/callback':
+            $ref: './external-path-with-nested-callbacks.yaml#/callbackContent'
+      responses:
+        '200':
+          description: OK

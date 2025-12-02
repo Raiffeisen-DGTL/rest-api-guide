@@ -1,0 +1,5 @@
+contact:
+  name: Test Team
+  x-short-team-name: TT
+title: Test Spec
+version: '0.0.1'

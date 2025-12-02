@@ -1,0 +1,28 @@
+get:
+  tags: ['test']
+  operationId: 'getUsers'
+  responses:
+    '200':
+      description: Success
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/User'
+    '400':
+      description: Bad request
+  requestBody:
+    content:
+      'application/json':
+        schema:
+          $ref: '#/components/schemas/UserInput'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: 'integer' }
+        name: { type: 'string' }
+    UserInput:
+      type: object
+      properties:
+        name: { type: 'string' }

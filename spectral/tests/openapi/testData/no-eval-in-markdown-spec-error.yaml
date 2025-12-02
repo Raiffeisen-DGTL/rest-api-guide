@@ -1,0 +1,33 @@
+openapi: 3.0.3
+info:
+  title: 'some title with eval("alert(\"You are Hacked\");")'
+  description: 'some description with eval("alert(\"You are Hacked\");")'
+  version: 0.0.2
+servers:
+  - description: 'some description with eval("alert(\"You are Hacked\");")'
+    url: https://test.sometestserver.ru/
+  - description: 'some description with eval("alert(\"You are Hacked\");")'
+    url: https://prod.sometestserver.ru/
+paths:
+  /v1/api/test:
+    get:
+      tags:
+        - testing endpoint
+      summary: Для тестирования правил
+      operationId: getTest
+      responses:
+        '200':
+          description: 'some description with eval("alert(\"You are Hacked\");")'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TheGoodModel'
+components:
+  schemas:
+    TheGoodModel:
+      type: object
+      properties:
+        number_of_connectors:
+          type: integer
+          description: 'The number of eval("alert(\"You are Hacked\");") extension points.'
+          enum: [1, 2, 4, 5]

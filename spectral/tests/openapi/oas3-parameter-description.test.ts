@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -233,9 +233,12 @@ describe('oas3-parameter-description rule tests', () => {
       },
     }
     const results = await linter.run(specFile)
-    expect(results.length).toBe(1)
+    // The rule reports warnings for both the component parameter and the reference
+    expect(results.length).toBe(2)
     expect(results[0].severity).toBe(Severity.warning)
     expect(results[0].message).toBe('Параметры должны иметь заполненный description')
+    expect(results[1].severity).toBe(Severity.warning)
+    expect(results[1].message).toBe('Параметры должны иметь заполненный description')
   })
 
   test('should not report an error when parameters are not present', async () => {
@@ -260,5 +263,62 @@ describe('oas3-parameter-description rule tests', () => {
     }
     const results = await linter.run(specFile)
     expect(results.length).toBe(0)
+  })
+
+  test('should not report an error when external path parameters have description', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ParameterDescription/spec-with-external-path-parameters-with-description.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report a warning when external path parameters do not have description', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ParameterDescription/spec-with-external-path-parameters-without-description.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].severity).toBe(Severity.warning)
+    expect(results[0].message).toBe('Параметры должны иметь заполненный description')
+  })
+
+  test('should not report an error when external operation parameters have description', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ParameterDescription/spec-with-external-operation-parameters-with-description.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report a warning when external operation parameters do not have description', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ParameterDescription/spec-with-external-operation-parameters-without-description.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].severity).toBe(Severity.warning)
+    expect(results[0].message).toBe('Параметры должны иметь заполненный description')
+  })
+
+  test('should not report an error when external component parameters have description', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ParameterDescription/spec-with-external-component-parameters-with-description.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report a warning when external component parameters do not have description', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ParameterDescription/spec-with-external-component-parameters-without-description.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    // The rule reports warnings for both the component parameter and the reference
+    expect(results.length).toBe(2)
+    expect(results[0].severity).toBe(Severity.warning)
+    expect(results[0].message).toBe('Параметры должны иметь заполненный description')
+    expect(results[1].severity).toBe(Severity.warning)
+    expect(results[1].message).toBe('Параметры должны иметь заполненный description')
   })
 })

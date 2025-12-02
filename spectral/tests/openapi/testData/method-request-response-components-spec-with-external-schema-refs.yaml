@@ -1,0 +1,7 @@
+openapi: 3.0.0
+info:
+  title: Test Spec with Path as External Ref and External Schema Refs
+  version: 0.0.1
+paths:
+  /users:
+    $ref: './path-with-external-schema-refs.yaml'

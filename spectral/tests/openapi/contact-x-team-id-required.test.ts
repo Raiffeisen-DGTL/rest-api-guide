@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 
 describe('Tests for contact-x-team-id-required.yaml rulesets ', () => {
@@ -35,6 +35,13 @@ describe('Tests for contact-x-team-id-required.yaml rulesets ', () => {
     expect(results.length).toBe(0)
   })
 
+  test('should not report an error when info is in external file and contact.x-team-id is present', async () => {
+    const specFile = './tests/openapi/testData/spec-with-info-ref-id-valid.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
   test('should report an error when info.contact x-team-id field is missing', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -60,6 +67,16 @@ describe('Tests for contact-x-team-id-required.yaml rulesets ', () => {
     await linter.run(specFile).then((results) => {
       expect(results.length).toBe(1)
       expect(results[0].path.join('.')).toBe('info.contact')
+      expect(results[0].message).toBe('Отсутствует поле info.contact.x-team-id')
+    })
+  })
+
+  test('should report an error when info is in external file but contact.x-team-id is missing', async () => {
+    const specFile = './tests/openapi/testData/spec-with-info-ref-id-invalid.yaml'
+    const spec = retrieveDocument(specFile)
+    await linter.run(spec).then((results) => {
+      expect(results.length).toBe(1)
+      expect(results[0].path.join('.')).toBe('info')
       expect(results[0].message).toBe('Отсутствует поле info.contact.x-team-id')
     })
   })

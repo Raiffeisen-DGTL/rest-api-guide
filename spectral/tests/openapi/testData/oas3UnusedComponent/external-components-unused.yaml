@@ -1,0 +1,16 @@
+components:
+  schemas:
+    ExternalUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    ExternalUnusedUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string

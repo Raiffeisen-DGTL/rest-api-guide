@@ -1,0 +1,9 @@
+components:
+  schemas:
+    Status:
+      type: string
+      enum:
+        - NEW_ORDER
+        - CANCELLED
+        - EXPIRED
+        - PAID

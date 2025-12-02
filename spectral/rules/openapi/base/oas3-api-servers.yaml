@@ -4,7 +4,6 @@ rules:
     documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#oas3-api-servers
     formats: [ oas3_0 ]
     severity: error
-    resolved: false
     given: '$'
     then:
       field: 'servers'

@@ -2,86 +2,109 @@
 
 import { createRulesetFunction } from '@stoplight/spectral-core'
 import { isObject } from './utils/isObject.js'
+import { resolveRef } from './utils/refResolver.js'
 
-/**
- * Получает значение родительского ключа по JSON-пути.
- *
- * @param {unknown} document - Полный документ, в котором ведётся проверка
- * @param {Array<string|number>} path - JSON-путь (список ключей до нужного значения)
- * @returns {unknown} - Возвращает родительский объект для текущего пути или null, если путь некорректен
- */
-function getParentValue(document, path) {
-  if (path.length === 0) {
-    // В корне нет родителя
-    return null
-  }
-
-  // Начинаем с корня документа
-  let piece = document
-
-  // Проходим по всем частям пути, кроме последней — она указывает на текущее значение
-  for (let i = 0; i < path.length - 1; i += 1) {
-    if (!isObject(piece)) {
-      // Если на промежуточном шаге встречаем не объект — дальше идти нельзя
-      return null
-    }
-
-    piece = piece[path[i]] // спускаемся по дереву JSON
-  }
-
-  return piece
-}
-
-/**
- * Основная функция проверки.
- * Реализует правило: свойство `$ref` (или аналогичное “ключевое слово”) не должно находиться рядом с другими свойствами.
- *
- * @param {*} targetVal — значение текущего проверяемого узла (Spectral передаёт его сам)
- * @param {*} opts — опции правила (в данном случае не используются)
- * @param {object} ctx — контекст, содержащий `document` (весь JSON) и `path` (путь до текущего значения)
- * @returns {(Array|undefined)} — возвращает массив ошибок, если правило нарушено, или undefined, если всё ок
- */
 export default createRulesetFunction(
   {
     input: null,
     options: null,
   },
-  function refSiblings(targetVal, opts, { document, path }) {
-    // Получаем объект, содержащий текущее свойство
-    const value = getParentValue(document.data, path)
-
-    // Проверяем, является ли родитель объектом
-    if (!isObject(value)) return
-
-    const keys = Object.keys(value)
-
-    // Если объект содержит только одно свойство (например, только "$ref"), всё ок
-    if (keys.length === 1) {
-      return
+  function refSiblings(paths, opts, context) {
+    if (!paths || typeof paths !== 'object') {
+      return []
     }
 
-    // Здесь мы будем накапливать найденные нарушения
     const results = []
+    // Set to track processed references to prevent infinite recursion
+    const processedRefs = new Set()
 
-    // actualObjPath = путь к самому объекту (без последнего элемента, т.е. без имени проверяемого свойства)
-    const actualObjPath = path.slice(0, -1)
-
-    // Перебираем все ключи родителя
-    for (const key of keys) {
-      // Проверяем, есть ли в объекте "особое" поле (например "$ref")
-      if (key === 'ref') {
-        // Пропускаем само поле $ref — ошибка должна ставиться на остальные
-        continue
+    // Проверяет объект на наличие $ref с соседними свойствами
+    function checkRefWithSiblings(obj, currentPath) {
+      if (!Object.prototype.hasOwnProperty.call(obj, '$ref')) {
+        return
       }
 
-      // Добавляем ошибку: $ref (или аналог) не должен находиться рядом с другими свойствами
-      results.push({
-        message: 'Поле "$ref" не должно быть размещено рядом с другими свойствами.',
-        path: [...actualObjPath, key],
-      })
+      const keys = Object.keys(obj)
+      // Если есть другие свойства besides $ref, это ошибка
+      if (keys.length > 1) {
+        for (const key of keys) {
+          if (key !== '$ref') {
+            results.push({
+              message: 'Рядом с $ref не должно быть property',
+              path: [...currentPath, key],
+            })
+          }
+        }
+      }
     }
 
-    // Возвращаем список найденных нарушений
+    // Рекурсивная функция для поиска $ref свойств и проверки их на наличие соседей
+    function checkForRefSiblings(obj, currentPath) {
+      if (!isObject(obj)) {
+        return
+      }
+
+      // Проверяем текущий объект на наличие $ref с соседями
+      checkRefWithSiblings(obj, currentPath)
+
+      // Рекурсивно проверяем все вложенные объекты
+      for (const [key, value] of Object.entries(obj)) {
+        if (isObject(value)) {
+          checkForRefSiblings(value, [...currentPath, key])
+        }
+      }
+    }
+
+    // Обрабатывает разрешение ссылок и проверку содержимого
+    function processResolvedRef(refValue, currentPath, ctx) {
+      // Prevent infinite recursion by tracking processed references
+      if (processedRefs.has(refValue)) {
+        return
+      }
+
+      // Add this reference to the set of processed references
+      processedRefs.add(refValue)
+
+      try {
+        const resolved = resolveRef(refValue, {
+          ...ctx,
+          path: [...currentPath, '$ref'],
+        })
+
+        if (isObject(resolved)) {
+          // Проверяем разрешенный объект на наличие $ref с соседями
+          checkRefWithSiblings(resolved, currentPath)
+          // Рекурсивно проверяем вложенные объекты в разрешенном содержимом
+          checkExternalRefs(resolved, currentPath, ctx)
+        }
+      } catch (e) {
+        // Игнорируем ошибки разрешения ссылок
+      }
+    }
+
+    // Рекурсивная функция для проверки внешних ссылок
+    function checkExternalRefs(obj, currentPath, ctx) {
+      if (!isObject(obj)) {
+        return
+      }
+
+      for (const [key, value] of Object.entries(obj)) {
+        if (key === '$ref' && typeof value === 'string') {
+          // Если это ссылка, разрешаем её и проверяем содержимое
+          processResolvedRef(value, currentPath, ctx)
+        } else if (isObject(value)) {
+          // Рекурсивно проверяем вложенные объекты
+          checkExternalRefs(value, [...currentPath, key], ctx)
+        }
+      }
+    }
+
+    // Проверяем основной документ
+    checkForRefSiblings(paths, context.path)
+
+    // Проверяем внешние ссылки
+    checkExternalRefs(paths, context.path, context)
+
     return results
   },
 )

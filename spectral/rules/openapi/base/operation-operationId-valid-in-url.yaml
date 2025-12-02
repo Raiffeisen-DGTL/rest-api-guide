@@ -8,7 +8,6 @@ rules:
     description: OperationId не должен содержать запрещенных символов
     documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-operationId-valid-in-url
     severity: error
-    resolved: false
     given: '#OperationObject'
     then:
       field: 'operationId'

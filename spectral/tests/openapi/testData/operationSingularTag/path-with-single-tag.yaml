@@ -1,0 +1,7 @@
+get:
+  tags: ['test']
+  summary: Test operation
+  operationId: 'getTest'
+  responses:
+    '200':
+      description: OK

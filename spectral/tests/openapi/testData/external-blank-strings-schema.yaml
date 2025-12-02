@@ -1,0 +1,14 @@
+components:
+  schemas:
+    TestModel:
+      type: object
+      properties:
+        description:
+          type: string
+          description: "   "  # Blank string in description
+          example: "   "  # Blank string in example
+        title:
+          type: string
+          title: "   "  # Blank string in title
+      required:
+        - "   "  # Blank string in required array

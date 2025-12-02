@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { retrieveDocument, setupSpectral } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -130,6 +130,22 @@ describe('OAS3 valid media example rule tests', () => {
     expect(results[0].path.join('.')).toBe(
       'paths./users.get.responses.200.content.application/json.example.id',
     )
+    expect(results[0].message).toBe('Examples должны соответствовать объявленной схеме')
+    expect(results[0].severity).toBe(Severity.error)
+  })
+  test('should not report an error when external schema is used with valid example', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ValidMediaExample/spec-with-external-valid-example.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+  test('should report an error when external schema is used with invalid example', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ValidMediaExample/spec-with-external-invalid-example.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
     expect(results[0].message).toBe('Examples должны соответствовать объявленной схеме')
     expect(results[0].severity).toBe(Severity.error)
   })

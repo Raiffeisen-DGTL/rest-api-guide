@@ -1,0 +1,33 @@
+openapi: 3.0.0
+info:
+  title: Test Spec with Mixed Paths - External Ref Correct and Inline Schemas
+  version: 0.0.1
+paths:
+  /users:
+    $ref: './path-with-schemas-2-level-deep.yaml'
+  /test:
+    get:
+      responses:
+        '200':
+          description: Success
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/TheGoodModel'
+components:
+  schemas:
+    TheGoodModel:
+      type: object
+      properties:
+        favoriteColorSets:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+          description: Valid description
+        title:
+          type: string
+          title: Valid title
+      required:
+        - name

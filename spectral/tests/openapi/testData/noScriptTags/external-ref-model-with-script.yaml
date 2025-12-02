@@ -1,0 +1,11 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: User ID <script>alert("Hacked");</script>
+        name:
+          type: string
+          description: A user name

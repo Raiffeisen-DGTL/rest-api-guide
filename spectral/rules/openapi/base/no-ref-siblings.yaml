@@ -8,6 +8,6 @@ rules:
     formats: [ oas3_0 ]
     severity: error
     resolved: false
-    given: "$..[?(@property === '$ref')]"
+    given: $.paths
     then:
       function: refSiblings

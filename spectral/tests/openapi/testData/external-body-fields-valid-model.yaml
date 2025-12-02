@@ -1,0 +1,13 @@
+components:
+  schemas:
+    ValidExternalModel:
+      type: object
+      properties:
+        userName:  # This should pass the rule (camelCase)
+          type: string
+        firstName:  # This should pass the rule (camelCase)
+          type: string
+        lastName:  # This should pass the rule (camelCase)
+          type: string
+        emailAddress:  # This should pass the rule (camelCase)
+          type: string

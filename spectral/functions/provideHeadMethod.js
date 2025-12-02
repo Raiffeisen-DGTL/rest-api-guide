@@ -1,4 +1,5 @@
 import { createRulesetFunction } from '@stoplight/spectral-core'
+import { resolveRef } from './utils/refResolver.js'
 
 // MIME-типы, которые считаются файлами
 const FILE_MIME_TYPES = [
@@ -32,7 +33,7 @@ export default createRulesetFunction(
     // Если это $ref — разрешаем его
     if (pathItem.$ref) {
       try {
-        const resolved = context.utils.resolveRef(pathItem)
+        const resolved = resolveRef(pathItem.$ref, context)
         if (resolved && typeof resolved === 'object') {
           pathItem = resolved
         } else {
@@ -62,7 +63,7 @@ export default createRulesetFunction(
       // Если GET — это $ref, разрешаем его
       if (getOperation.$ref) {
         try {
-          getOperation = context.utils.resolveRef(getOperation)
+          getOperation = resolveRef(getOperation.$ref, context)
         } catch (e) {
           errors.push({
             message: 'Ошибка при разрешении $ref в GET-методе.',

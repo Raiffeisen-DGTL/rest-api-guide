@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -142,6 +142,19 @@ describe('Empty objects forbidden rule tests', () => {
     )
     expect(results[3].path.join('.')).toBe(
       'paths./v1/test/test.post.responses.200.content.application/json',
+    )
+    expect(results[0].message).toBe('Запрещены пустые объекты')
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should report an error when spec has empty objects in referenced file', async () => {
+    const specFile = './tests/openapi/testData/ref-test-spec.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    // The ref.yaml contains an empty object, so we expect 1 error
+    expect(results.length).toBe(1)
+    expect(results[0].path.join('.')).toBe(
+      'paths./test.get.responses.200.content.application/json.schema',
     )
     expect(results[0].message).toBe('Запрещены пустые объекты')
     expect(results[0].severity).toBe(Severity.error)

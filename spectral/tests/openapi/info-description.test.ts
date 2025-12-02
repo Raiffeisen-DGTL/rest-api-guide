@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 
 let linter: Spectral
@@ -59,4 +59,14 @@ test('should not report an error when info.description is present', async () => 
   }
   const results = await linter.run(specFile)
   expect(results.length).toBe(0)
+})
+
+test('should report an error when info.description is missing in referenced file', async () => {
+  const specFile = './tests/openapi/testData/ref-test-spec.yaml'
+  const spec = retrieveDocument(specFile)
+  const results = await linter.run(spec)
+  // The ref-test-spec.yaml doesn't contain info.description, so we expect 1 error
+  expect(results.length).toBe(1)
+  expect(results[0].path.join('.')).toBe('info')
+  expect(results[0].message).toBe('Блок info должен содержать раздел description')
 })

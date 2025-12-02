@@ -1,0 +1,6 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Server without Trailing Slash
+  version: 0.0.1
+servers:
+  - $ref: './external-server-without-trailing-slash.yaml#/servers/0'

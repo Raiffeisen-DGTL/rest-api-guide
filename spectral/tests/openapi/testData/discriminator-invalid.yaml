@@ -1,0 +1,13 @@
+components:
+  schemas:
+    Payment:
+      type: object
+      discriminator:
+        propertyName: paymentType
+        mapping:
+          credit-card: '#/components/schemas/CreditCardPayment'
+          BANK_TRANSFER: '#/components/schemas/BankTransferPayment'
+          BankTransfer: '#/components/schemas/BankTransferPayment'
+      properties:
+        paymentType:
+          type: string

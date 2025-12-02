@@ -1,0 +1,5 @@
+contact:
+  name: Test Team
+  x-team-id: 198
+title: Test Spec
+version: '0.0.1'

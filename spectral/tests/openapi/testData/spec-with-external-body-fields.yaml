@@ -1,0 +1,19 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Body Fields Model
+  version: 0.0.2
+paths:
+  /test:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './external-body-fields-model.yaml#/components/schemas/ExternalModel'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './external-body-fields-model.yaml#/components/schemas/ExternalModel'

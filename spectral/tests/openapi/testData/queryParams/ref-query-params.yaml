@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: Test Spec for Query Params Ref
+  version: 0.0.1
+paths:
+  /test:
+    get:
+      parameters:
+        - name: user_id  # This should fail the rule
+          in: query
+          schema:
+            type: string
+        - name: first_name  # This should also fail the rule
+          in: query
+          schema:
+            type: string

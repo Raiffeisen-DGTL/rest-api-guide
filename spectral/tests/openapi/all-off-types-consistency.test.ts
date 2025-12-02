@@ -433,4 +433,23 @@ describe('All-off-types-consistency rule tests', () => {
     expect(results[0].message).toBe('Все элементы allOf должны иметь одинаковый тип')
     expect(results[0].severity).toBe(Severity.error)
   })
+
+  test('should report an error when allOf elements in external file have inconsistent types', async () => {
+    const specFile = './tests/openapi/testData/spec-with-external-allOf-inconsistent.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].path.join('.')).toBe(
+      'paths./test.get.responses.200.content.application/json.schema.properties.userData.allOf',
+    )
+    expect(results[0].message).toBe('Все элементы allOf должны иметь одинаковый тип')
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should not report an error when allOf has consistent external elements', async () => {
+    const specFile = './tests/openapi/testData/spec-with-external-allOf-elements.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
 })

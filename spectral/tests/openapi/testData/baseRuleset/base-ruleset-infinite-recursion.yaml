@@ -1,0 +1,231 @@
+openapi: 3.0.3
+info:
+  title: Test API
+  description: Test API with recursion
+  contact:
+    x-short-team-name: TEST TEAM
+    x-team-id: 189
+    name: Test team
+    email: test@raiffeisen.ru
+  version: 1.0.0
+servers:
+  - url: https://test.sometestserver.ru
+    description: Test servers
+tags:
+  - name: test
+    description: Test tag
+paths:
+  /v1/test/user/commissions:
+    post:
+      tags:
+        - test
+      description: Test path
+      summary: Get commissions
+      operationId: getMarketCommissions
+      parameters:
+        - name: X-Skip-Security-Cache
+          description: Get commissions
+          in: header
+          required: false
+          schema:
+            type: boolean
+            example: true
+        - $ref: "#/components/parameters/IdToken"
+      requestBody:
+        description: Request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CalculateCommissionsRequest"
+        required: true
+      responses:
+        "200":
+          description: Commission received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SingleDataWrapperPreCalculatedCommissionsResponse"
+components:
+  schemas:
+    PreCalculatedCommissionsDto:
+      type: object
+      example:
+        volume: 344
+        currency: "USD"
+        commissions:
+          - rate:
+              product: "REPO"
+              secboard: "TQBR"
+              symbol: "SBER"
+              rate: 0.05
+              price: 100.50
+            commissions:
+              brkgCommission:
+                rate:
+                  product: "REPO"
+                  secboard: "TQBR"
+                  symbol: "SBER"
+                  rate: 0.05
+                  price: 100.50
+                commissions:
+                  brkgCommission:
+                    rate: 0.01
+                  exchCommission:
+                    rate: 0.005
+                  chargingDate: "2023-01-01"
+              exchCommission:
+                rate:
+                  product: "REPO"
+                  secboard: "TQBR"
+                  symbol: "SBER"
+                  rate: 0.05
+                  price: 100.50
+                commissions:
+                  brkgCommission:
+                    rate: 0.01
+                  exchCommission:
+                    rate: 0.005
+                  chargingDate: "2023-01-01"
+              chargingDate: "2023-01-01"
+      properties:
+        volume:
+          type: integer
+          format: int64
+          example: 344
+        currency:
+          type: string
+          enum:
+            - RUB
+            - USD
+            - EUR
+            - CNH
+          example: USD
+        commissions:
+          type: array
+          items:
+            $ref: "#/components/schemas/CommissionValueDto"
+          example:
+            - rate:
+                product: "REPO"
+                secboard: "TQBR"
+                symbol: "SBER"
+                rate: 0.05
+                price: 100.50
+              commissions:
+                brkgCommission:
+                  rate:
+                    product: "REPO"
+                    secboard: "TQBR"
+                    symbol: "SBER"
+                    rate: 0.05
+                    price: 100.50
+                  commissions:
+                    brkgCommission:
+                      rate: 0.01
+                    exchCommission:
+                      rate: 0.005
+                    chargingDate: "2023-01-01"
+                exchCommission:
+                  rate:
+                    product: "REPO"
+                    secboard: "TQBR"
+                    symbol: "SBER"
+                    rate: 0.05
+                    price: 100.50
+                  commissions:
+                    brkgCommission:
+                      rate: 0.01
+                    exchCommission:
+                      rate: 0.005
+                    chargingDate: "2023-01-01"
+                chargingDate: "2023-01-01"
+    Rate:
+      type: object
+      properties:
+        product:
+          type: string
+          enum:
+            - REPO
+            - SWAP
+          example: REPO
+        secboard:
+          type: string
+          example: "TQBR"
+        symbol:
+          type: string
+          example: "SBER"
+        rate:
+          type: number
+          example: 0.05
+        price:
+          type: number
+          example: 100.50
+    PreCalculatedCommissionDto:
+      type: object
+      properties:
+        brkgCommission:
+          $ref: "#/components/schemas/CommissionValueDto"
+        exchCommission:
+          $ref: "#/components/schemas/CommissionValueDto"
+        chargingDate:
+          type: string
+          format: date
+          example: "2023-01-01"
+    CalculateCommissionsRequest:
+      required:
+        - clientId
+        - currency
+        - rates
+      type: object
+      properties:
+        clientId:
+          type: string
+          example: "client123"
+        volume:
+          type: integer
+          format: int64
+          example: 1000
+        currency:
+          type: string
+          enum:
+            - RUB
+            - USD
+            - EUR
+            - CNH
+          example: "USD"
+        rates:
+          type: array
+          items:
+            $ref: "#/components/schemas/Rate"
+          example:
+            - product: "REPO"
+              secboard: "TQBR"
+              symbol: "SBER"
+              rate: 0.05
+              price: 100.50
+    CommissionValueDto:
+      type: object
+      properties:
+        rate:
+          $ref: "#/components/schemas/Rate"
+        commissions:
+          $ref: "#/components/schemas/PreCalculatedCommissionDto"
+    SingleDataWrapperPreCalculatedCommissionsResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/PreCalculatedCommissionsDto"
+  parameters:
+    IdToken:
+      name: Id-Token
+      in: header
+      description: Security Token
+      required: true
+      schema:
+        type: string
+        example: "token123"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

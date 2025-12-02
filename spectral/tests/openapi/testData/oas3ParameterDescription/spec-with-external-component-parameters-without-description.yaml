@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Component Parameters without Description
+  version: 0.0.1
+components:
+  parameters:
+    UserId:
+      $ref: './external-component-parameters-without-description.yaml#/parameters/UserId'
+paths:
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: User object

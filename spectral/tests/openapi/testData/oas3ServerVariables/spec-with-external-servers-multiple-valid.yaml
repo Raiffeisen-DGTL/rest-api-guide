@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Servers Multiple Valid
+  version: 0.0.1
+servers:
+  - $ref: './external-servers-multiple-valid.yaml#/servers/0'
+  - $ref: './external-servers-multiple-valid.yaml#/servers/1'

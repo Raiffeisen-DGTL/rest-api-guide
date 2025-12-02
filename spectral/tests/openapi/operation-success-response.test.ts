@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -9,6 +9,7 @@ describe('Operation Success Response Rule Tests', () => {
     const rulesFile = './rules/openapi/base/operation-success-response.yaml'
     linter = await setupSpectral(rulesFile)
   })
+
   test('should not report an error when operation has 2хх successful response', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -39,6 +40,7 @@ describe('Operation Success Response Rule Tests', () => {
     const results = await linter.run(specFile)
     expect(results.length).toBe(0)
   })
+
   test('should not report an error when operation has 3хх successful response', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -63,6 +65,7 @@ describe('Operation Success Response Rule Tests', () => {
     const results = await linter.run(specFile)
     expect(results.length).toBe(0)
   })
+
   test('should report an error when operation has no successful response', async () => {
     const specFile = {
       openapi: '3.0.3',
@@ -93,6 +96,25 @@ describe('Operation Success Response Rule Tests', () => {
     const results = await linter.run(specFile)
     expect(results.length).toBe(1)
     expect(results[0].path.join('.')).toBe('paths./v1/users.get.responses')
+    expect(results[0].message).toBe('Метод должен иметь 2хх либо 3хх ответ')
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should not report an error when operation has successful response in externally referenced path', async () => {
+    const specFile =
+      './tests/openapi/testData/operationSuccessResponse/spec-with-external-path-ref-success.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when operation has no successful response in externally referenced path', async () => {
+    const specFile =
+      './tests/openapi/testData/operationSuccessResponse/spec-with-external-path-ref-no-success.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].path.join('.')).toBe('paths./v1/users')
     expect(results[0].message).toBe('Метод должен иметь 2хх либо 3хх ответ')
     expect(results[0].severity).toBe(Severity.error)
   })

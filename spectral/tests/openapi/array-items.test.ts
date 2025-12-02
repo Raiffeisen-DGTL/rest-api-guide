@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 
 let linter: Spectral
@@ -372,5 +372,20 @@ describe('Array-Items rule tests', () => {
     }
     const results = await linter.run(specFile)
     expect(results.length).toBe(0)
+  })
+
+  test('should not report an error when array items is present in external file', async () => {
+    const specFile = './tests/openapi/testData/spec-with-external-good-model.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when array items is missing in external file', async () => {
+    const specFile = './tests/openapi/testData/spec-with-external-bad-model.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Объекты типа Array должны содержать массив элементов')
   })
 })
