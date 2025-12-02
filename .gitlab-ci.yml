@@ -100,7 +100,7 @@ release:
         - name: "spectral-rulesets-$CI_COMMIT_TAG"
           url: "https://artifactory.raiffeisen.ru/artifactory/cdci-public-npm/@rapi/spectral-rulesets/-/@rapi/spectral-rulesets-$CI_COMMIT_TAG.tgz"
   rules:
-    - if: $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
 
 
 github-mirror:
