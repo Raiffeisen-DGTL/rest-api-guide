@@ -1,0 +1,18 @@
+components:
+  schemas:
+    ComplexExternalModelWithoutExamples:
+      type: object
+      properties:
+        id:
+          type: integer
+        details:
+          type: object
+          properties:
+            name:
+              type: string
+            age:
+              type: integer
+        tags:
+          type: array
+          items:
+            type: string

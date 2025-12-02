@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Security Schemes Ref - Invalid
+  version: 0.0.1
+components:
+  securitySchemes:
+    $ref: './external-security-schemes.yaml#/components/securitySchemes'
+paths:
+  /test:
+    get:
+      security:
+        - invalid_external_scheme: []
+      responses:
+        '200':
+          description: OK

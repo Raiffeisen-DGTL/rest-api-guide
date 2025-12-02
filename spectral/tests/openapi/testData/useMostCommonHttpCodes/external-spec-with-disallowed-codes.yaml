@@ -1,0 +1,12 @@
+openapi: 3.0.3
+info:
+  title: External Spec with Disallowed HTTP Codes
+  version: 0.0.1
+paths:
+  /external-test:
+    get:
+      responses:
+        '207':
+          description: Multi-status
+        '418':
+          description: I'm a teapot

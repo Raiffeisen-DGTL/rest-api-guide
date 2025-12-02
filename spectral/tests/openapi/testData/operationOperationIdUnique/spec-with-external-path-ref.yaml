@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Path References
+  version: 0.0.2
+paths:
+  /v1/users:
+    $ref: './external-path-with-operation-id.yaml'
+  /v1/posts:
+    get:
+      operationId: getPosts
+      responses:
+        '200':
+          description: Success

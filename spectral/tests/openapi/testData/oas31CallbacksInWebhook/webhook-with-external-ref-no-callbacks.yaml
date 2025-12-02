@@ -1,0 +1,7 @@
+openapi: 3.1.0
+info:
+  title: Test Spec with External Webhook Ref No Callbacks
+  version: 0.0.1
+webhooks:
+  myWebhook:
+    $ref: './external-webhook-no-callbacks.yaml#/webhooks/externalWebhook'

@@ -1,0 +1,14 @@
+openapi: 3.0.0
+info:
+  title: Test API with External Ref
+  version: 1.0.0
+paths:
+  /test:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './typed-enum-external-error.yaml#/components/schemas/StatusModel'

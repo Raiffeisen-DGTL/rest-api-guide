@@ -9,14 +9,16 @@ beforeAll(async () => {
 })
 
 test("should not report an error when spec don't have script", async () => {
-  const specFile = './tests/openapi/testData/no-script-tags-in-markdown-spec-valid.yaml'
+  const specFile =
+    './tests/openapi/testData/noScriptTags/no-script-tags-in-markdown-spec-valid.yaml'
   const spec = retrieveDocument(specFile)
   const results = await linter.run(spec)
   expect(results.length).toBe(0)
 })
 
 test('should report an error when spec have script', async () => {
-  const specFile = './tests/openapi/testData/no-script-tags-in-markdown-spec-error.yaml'
+  const specFile =
+    './tests/openapi/testData/noScriptTags/no-script-tags-in-markdown-spec-error.yaml'
   const spec = retrieveDocument(specFile)
   const results = await linter.run(spec)
   expect(results.length).toBe(5)
@@ -26,6 +28,26 @@ test('should report an error when spec have script', async () => {
   expect(results[3].path.join('.')).toBe('paths./v1/api/test.get.responses.200.description')
   expect(results[4].path.join('.')).toBe(
     'components.schemas.TheGoodModel.properties.number_of_connectors.description',
+  )
+  expect(results[0].message).toBe('Блок description и title не должен содержать <script>')
+})
+
+test("should not report an error when external ref spec don't have script", async () => {
+  const specFile =
+    './tests/openapi/testData/noScriptTags/no-script-tags-in-markdown-spec-external-valid.yaml'
+  const spec = retrieveDocument(specFile)
+  const results = await linter.run(spec)
+  expect(results.length).toBe(0)
+})
+
+test('should report an error when external ref spec have script', async () => {
+  const specFile =
+    './tests/openapi/testData/noScriptTags/no-script-tags-in-markdown-spec-external-error.yaml'
+  const spec = retrieveDocument(specFile)
+  const results = await linter.run(spec)
+  expect(results.length).toBe(1)
+  expect(results[0].path.join('.')).toBe(
+    'paths./users.get.responses.200.content.application/json.schema',
   )
   expect(results[0].message).toBe('Блок description и title не должен содержать <script>')
 })

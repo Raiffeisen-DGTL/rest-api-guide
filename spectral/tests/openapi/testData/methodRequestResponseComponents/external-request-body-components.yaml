@@ -1,0 +1,15 @@
+components:
+  requestBodies:
+    UserCreateBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserCreate'
+  schemas:
+    UserCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string

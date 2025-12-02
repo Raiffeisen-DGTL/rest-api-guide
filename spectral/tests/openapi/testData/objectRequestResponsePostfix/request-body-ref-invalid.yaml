@@ -1,0 +1,25 @@
+openapi: 3.0.0
+info:
+  title: Test Spec with Request Body Ref - Invalid
+  version: 0.0.1
+paths:
+  /users:
+    post:
+      requestBody:
+        $ref: './request-body-invalid.yaml#/UserCreate'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+components:
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string

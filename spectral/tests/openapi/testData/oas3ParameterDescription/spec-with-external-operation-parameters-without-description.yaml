@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Operation Parameters without Description
+  version: 0.0.1
+paths:
+  /users:
+    get:
+      summary: Get users
+      parameters:
+        - $ref: './external-operation-parameters-without-description.yaml#/parameters/0'
+      responses:
+        '200':
+          description: List of users

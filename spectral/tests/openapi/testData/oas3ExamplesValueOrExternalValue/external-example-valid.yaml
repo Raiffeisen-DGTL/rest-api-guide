@@ -1,0 +1,7 @@
+components:
+  examples:
+    ExternalExample:
+      summary: 'Example with value'
+      value:
+        id: 1
+        name: 'Test'

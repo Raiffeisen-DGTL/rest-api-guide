@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -83,6 +83,25 @@ describe('Operation Parameters Rule Tests', () => {
     const results = await linter.run(specFile)
     expect(results.length).toBe(1)
     expect(results[0].path.join('.')).toBe('paths./v1/users.get.parameters.1')
+    expect(results[0].message).toBe('Параметры в методах должны быть уникальными')
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should not report an error when parameters are unique in externally referenced path', async () => {
+    const specFile =
+      './tests/openapi/testData/operationParameters/spec-with-external-path-ref-unique.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when parameters are not unique in externally referenced path', async () => {
+    const specFile =
+      './tests/openapi/testData/operationParameters/spec-with-external-path-ref-duplicate.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].path.join('.')).toBe('paths./v1/users')
     expect(results[0].message).toBe('Параметры в методах должны быть уникальными')
     expect(results[0].severity).toBe(Severity.error)
   })

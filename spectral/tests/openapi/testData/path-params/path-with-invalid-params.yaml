@@ -1,0 +1,7 @@
+paths:
+  /users/{id}:
+    get:
+      # Missing path parameter definition for {id}
+      responses:
+        '200':
+          description: OK

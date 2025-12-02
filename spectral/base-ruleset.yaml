@@ -36,6 +36,7 @@ aliases:
 extends: [['spectral:oas', off]]
 functions:
   - "allOffTypesConsistency"
+  - "arrayItems"
   - "methodRequestResponseComponents"
   - "refSiblings"
   - "oasSecurityDefined"
@@ -67,11 +68,9 @@ rules:
       - "oas3_0"
       - "oas3_1"
     given: "#ArrayProperties"
-    resolved: false
     severity: "error"
     then:
-      field: "items"
-      function: "truthy"
+      function: "arrayItems"
   blank-strings-forbidden:
     description: "Пустые строки запрещены"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#blank-strings-forbidden"
@@ -99,7 +98,6 @@ rules:
       - "$.components.schemas.*..properties.*~"
       - "$.components.requestBodies.*.content.*.schema..properties.*~"
       - "$.components.responses.*.content.*.schema..properties.*~"
-    resolved: false
     severity: "error"
     then:
       function: "casing"
@@ -161,17 +159,6 @@ rules:
       function: "casing"
       functionOptions:
         type: "macro"
-  external-ref-forbidden:
-    description: "Все $ref должны ссылаться на components"
-    documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#external-ref-forbidden"
-    given: "$..$ref"
-    message: "Найдена ссылка на внешний компонент {{value}}"
-    resolved: false
-    severity: "error"
-    then:
-      function: "pattern"
-      functionOptions:
-        match: "^#/components"
   info-contact:
     description: "Блок info должен содержать раздел contact"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#info-contact"
@@ -210,7 +197,6 @@ rules:
     description: "Блок description и title не должен содержать eval()"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#no-eval-in-markdown"
     given: "$..[description,title]"
-    resolved: false
     severity: "error"
     then:
       function: "pattern"
@@ -221,7 +207,7 @@ rules:
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#no-ref-siblings"
     formats:
       - "oas3_0"
-    given: "$..[?(@property === '$ref')]"
+    given: "$.paths"
     resolved: false
     severity: "error"
     then:
@@ -264,7 +250,6 @@ rules:
     formats:
       - "oas3_0"
     given: "$"
-    resolved: false
     severity: "error"
     then:
       field: "servers"
@@ -297,7 +282,6 @@ rules:
       - "$.components.parameters[*].examples[*]"
       - "$.paths[*][*]..headers[*].examples[*]"
       - "$.components.headers[*].examples[*]"
-    resolved: false
     severity: "warn"
     then:
       function: "xor"
@@ -326,7 +310,6 @@ rules:
       - "#PathItem.parameters[?(@ && @.in)]"
       - "#OperationObject.parameters[?(@ && @.in)]"
       - "$.components.parameters[?(@ && @.in)]"
-    resolved: false
     severity: "warn"
     then:
       field: "description"
@@ -413,7 +396,8 @@ rules:
     description: "Объекты запросов и ответов должны быть заданы стилем PascalCase с постфиксами Request/Response"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#object-request-response-postfix"
     given:
-      - "$.components.schemas.*~"
+      - "$"
+    resolved: false
     severity: "warn"
     then:
       function: "objectRequestResponsePostfix"
@@ -473,7 +457,6 @@ rules:
     description: "OperationId не должен содержать запрещенных символов"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-operationId-valid-in-url"
     given: "#OperationObject"
-    resolved: false
     severity: "error"
     then:
       field: "operationId"
@@ -484,7 +467,6 @@ rules:
     description: "Параметры в методах должны быть уникальными"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-parameters"
     given: "#OperationObject.parameters"
-    resolved: false
     severity: "error"
     then:
       function: "oasOpParams"
@@ -492,7 +474,6 @@ rules:
     description: "Метод должен иметь не более одного тега"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-singular-tag"
     given: "#OperationObject"
-    resolved: false
     severity: "error"
     then:
       field: "tags"
@@ -503,7 +484,6 @@ rules:
     description: "Метод должен иметь 2хх либо 3хх ответ"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-success-response"
     given: "#OperationObject"
-    resolved: false
     severity: "error"
     then:
       field: "responses"
@@ -512,7 +492,6 @@ rules:
     description: "Tags методов должны быть определены в глобальном списке tags"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-tag-defined"
     given: "$"
-    resolved: false
     severity: "error"
     then:
       function: "oasTagDefined"

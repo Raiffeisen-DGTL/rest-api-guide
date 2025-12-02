@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with Ref for HEAD Method
+  version: 0.0.1
+paths:
+  /test:
+    $ref: './ref-head-method.yaml#/paths/~1download'

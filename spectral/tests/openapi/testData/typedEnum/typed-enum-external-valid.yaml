@@ -1,0 +1,11 @@
+components:
+  schemas:
+    StatusModel:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - active
+            - inactive
+            - pending  # This should pass the typed-enum rule

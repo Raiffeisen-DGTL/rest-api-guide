@@ -1,0 +1,17 @@
+components:
+  schemas:
+    TheGoodModel:
+      type: object
+      properties:
+        favoriteColorSets:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+          description: Valid description
+        title:
+          type: string
+          title: Valid title
+      required:
+        - name

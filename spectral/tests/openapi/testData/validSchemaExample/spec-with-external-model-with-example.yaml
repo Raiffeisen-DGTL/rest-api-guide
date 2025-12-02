@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Model With Example
+  version: 0.0.1
+paths:
+  /test:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './external-model-with-example.yaml#/components/schemas/ExternalModelWithExample'

@@ -1,0 +1,3 @@
+servers:
+  - url: 'https://api.example.com'
+    description: 'Production server without trailing slash'

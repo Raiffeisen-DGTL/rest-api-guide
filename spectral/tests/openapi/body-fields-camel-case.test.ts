@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -198,10 +198,49 @@ describe('Body Fields Camel Case rule tests', () => {
       },
     }
     const results = await linter.run(specFile)
-    expect(results.length).toBe(2)
-    expect(results[0].path.join('.')).toBe('components.schemas.User.properties.user_id')
-    expect(results[1].path.join('.')).toBe('components.schemas.User.properties.first_name')
+    expect(results.length).toBe(4)
+    // Check that we have errors for both properties, but order may vary
+    const paths = results.map((r) => r.path.join('.'))
+    expect(paths).toContain(
+      'paths./test.post.requestBody.content.application/json.schema.properties.user_id',
+    )
+    expect(paths).toContain(
+      'paths./test.post.requestBody.content.application/json.schema.properties.first_name',
+    )
     expect(results[0].message).toBe('Поля в requestBody и responseBody должны быть в camelCase')
     expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should report error when body fields are not in camelCase in referenced file', async () => {
+    const specFile = './tests/openapi/testData/ref-test-spec.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].path.join('.')).toBe(
+      'paths./test.get.responses.200.content.application/json.schema',
+    )
+    expect(results[0].message).toBe('Поля в requestBody и responseBody должны быть в camelCase')
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should not report an error when body fields are in camelCase in external file', async () => {
+    const specFile = './tests/openapi/testData/spec-with-external-body-fields-valid.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report errors when body fields are not in camelCase in external file', async () => {
+    const specFile = './tests/openapi/testData/spec-with-external-body-fields.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(2)
+
+    for (const result of results) {
+      expect(result.message).toBe('Поля в requestBody и responseBody должны быть в camelCase')
+    }
+    const paths = results.map((r) => r.path.join('.'))
+    expect(paths).toContain('paths./test.post.requestBody.content.application/json.schema')
+    expect(paths).toContain('paths./test.post.responses.200.content.application/json.schema')
   })
 })

@@ -1,0 +1,17 @@
+UserCreateResponse:
+  description: Success
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/UserResponse'
+components:
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string

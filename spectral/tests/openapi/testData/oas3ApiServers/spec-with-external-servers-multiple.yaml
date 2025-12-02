@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: Test API with External Multiple Servers
+  version: 1.0.0
+servers:
+  - $ref: './external-servers-multiple.yaml#/servers/0'
+  - $ref: './external-servers-multiple.yaml#/servers/1'
+paths:
+  /users:
+    get:
+      responses:
+        '200':
+          description: 'OK'

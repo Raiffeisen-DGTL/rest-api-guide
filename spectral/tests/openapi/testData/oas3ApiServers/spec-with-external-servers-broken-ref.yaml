@@ -1,0 +1,12 @@
+openapi: 3.0.3
+info:
+  title: Test API with Non-Existent External Reference
+  version: 1.0.0
+servers:
+  - $ref: './non-existent-file.yaml#/servers/0'
+paths:
+  /users:
+    get:
+      responses:
+        '200':
+          description: 'OK'

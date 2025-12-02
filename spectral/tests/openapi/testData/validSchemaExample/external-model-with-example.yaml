@@ -1,0 +1,14 @@
+components:
+  schemas:
+    ExternalModelWithExample:
+      type: object
+      example:
+        id: 123
+        name: "Test Name"
+      properties:
+        id:
+          type: integer
+          example: 123
+        name:
+          type: string
+          example: "Test Name"

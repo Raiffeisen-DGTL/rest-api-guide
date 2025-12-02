@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: Spec with External Reference to File with Redirection Codes
+  version: 0.0.1
+paths:
+  /test:
+    $ref: './external-spec-with-redirection-codes.yaml#/paths/~1external-test'

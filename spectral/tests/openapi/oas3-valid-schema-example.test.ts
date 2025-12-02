@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { retrieveDocument, setupSpectral } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -388,6 +388,27 @@ describe('oas3-valid-schema-example rule tests', () => {
       },
     }
     const results = await linter.run(specFile)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe(
+      'Examples в описании схемы должны соответствовать объявленным типам',
+    )
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  // Tests for external references
+  test('should not report an error when external schema with valid example is referenced', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ValidSchemaExample/spec-with-direct-external-schema-valid-example.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when external schema with invalid example is referenced', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ValidSchemaExample/spec-with-direct-external-schema-invalid-example.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
     expect(results.length).toBe(1)
     expect(results[0].message).toBe(
       'Examples в описании схемы должны соответствовать объявленным типам',

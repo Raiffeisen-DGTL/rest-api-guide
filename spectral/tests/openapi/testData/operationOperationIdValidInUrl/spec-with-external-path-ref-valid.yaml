@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Path References - Valid OperationId
+  version: 0.0.2
+paths:
+  /v1/api/test:
+    $ref: './path-with-valid-operationId.yaml'

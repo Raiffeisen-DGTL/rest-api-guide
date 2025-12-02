@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Path Parameters without Description
+  version: 0.0.1
+paths:
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - $ref: './external-path-parameters-without-description.yaml#/parameters/0'
+      responses:
+        '200':
+          description: User object

@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -217,6 +217,17 @@ describe('oas3-1-servers-in-webhook rule tests', () => {
     }
     const results = await linter.run(specFile)
     expect(results.length).toBe(1)
+    expect(results[0].severity).toBe(Severity.error)
+    expect(results[0].message).toBe('Webhooks не должны включать в себя servers')
+  })
+
+  test('should report an error when external webhook reference contains servers at operation level', async () => {
+    const specFile =
+      './tests/openapi/testData/oas31ServersInWebhook/spec-with-external-webhook-ref-servers-operation-level.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].path.join('.')).toBe('webhooks.myWebhook')
     expect(results[0].severity).toBe(Severity.error)
     expect(results[0].message).toBe('Webhooks не должны включать в себя servers')
   })

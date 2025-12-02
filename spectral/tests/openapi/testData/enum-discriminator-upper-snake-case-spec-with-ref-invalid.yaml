@@ -1,0 +1,8 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with Refs for Invalid Enum
+  version: 0.0.1
+components:
+  schemas:
+    Status:
+      $ref: './enum-invalid.yaml'

@@ -1,0 +1,19 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Blank Strings
+  version: 0.0.2
+servers:
+  - description: test
+    url: https://test.sometestserver.ru/
+paths:
+  /v1/api/test:
+    get:
+      summary: "Test summary"
+      operationId: getTest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './external-blank-strings-schema.yaml#/components/schemas/TestModel'

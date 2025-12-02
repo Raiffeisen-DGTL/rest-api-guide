@@ -1,6 +1,7 @@
 'use strict'
 import { isObject } from './utils/isObject.js'
 import { createRulesetFunction } from '@stoplight/spectral-core'
+import { resolveRef } from './utils/refResolver.js'
 
 // Шаблон для поиска параметров пути вида {id}, {;id}, {?userId}, {userId*} и т.п.
 const pathRegex = /(\{;?\??[a-zA-Z0-9_-]+\*?\})/g
@@ -83,6 +84,74 @@ function uniqueDefinitionMessage(name) {
   return `Path parameter "${name}" must not be defined multiple times.`
 }
 
+/**
+ * Обрабатывает параметры на уровне пути или операции
+ */
+function processParameters(parameters, basePath, results, seenParams) {
+  const processedParams = {}
+  if (Array.isArray(parameters)) {
+    for (const [i, value] of parameters.entries()) {
+      if (!isObject(value)) continue
+      const fullParameterPath = [...basePath, i]
+      if (isUnknownNamedPathParam(value, fullParameterPath, results, processedParams)) {
+        processedParams[value.name] = fullParameterPath
+      }
+    }
+  }
+  return processedParams
+}
+
+/**
+ * Разрешает ссылку с обработкой ошибок
+ */
+function resolveReference(ref, contextPath, context) {
+  try {
+    const refContext = { ...context, path: contextPath }
+    return resolveRef(ref, refContext)
+  } catch (e) {
+    return null
+  }
+}
+
+/**
+ * Извлекает параметры пути из строки пути
+ */
+function extractPathElements(pathKey, results) {
+  const pathElements = []
+  let match
+  while ((match = pathRegex.exec(pathKey))) {
+    const varName = match[0].replace(/[{}?*;]/g, '')
+    if (pathElements.includes(varName)) {
+      results.push(
+        generateResult(`Path "${pathKey}" must not use parameter "{${varName}}" multiple times.`, [
+          'paths',
+          pathKey,
+        ]),
+      )
+    } else {
+      pathElements.push(varName)
+    }
+  }
+  return pathElements
+}
+
+/**
+ * Проверяет эквивалентность путей
+ */
+function checkPathEquivalence(path, originalPathKey, uniquePaths, results) {
+  const normalized = path.replace(pathRegex, '%') // '%' = шаблон
+  if (normalized in uniquePaths) {
+    results.push(
+      generateResult(
+        `Paths "${String(uniquePaths[normalized])}" and "${path}" must not be equivalent.`,
+        ['paths', originalPathKey],
+      ),
+    )
+  } else {
+    uniquePaths[normalized] = path
+  }
+}
+
 export default createRulesetFunction(
   {
     input: { type: 'object' },
@@ -93,9 +162,11 @@ export default createRulesetFunction(
    * Основная проверка Path Parameters в OpenAPI.
    *
    * @param {object} paths Объект `paths` из OpenAPI
+   * @param {*} opts Опции (не используются)
+   * @param {object} context Контекст Spectral
    * @returns {Array<object>} Список ошибок (или пустой массив)
    */
-  function oasPathParam(paths) {
+  function oasPathParam(paths, opts, context) {
     /**
      * Логика проверки:
      *
@@ -111,80 +182,80 @@ export default createRulesetFunction(
 
     // Перебираем все пути документа
     for (const path of Object.keys(paths)) {
-      const pathValue = paths[path]
+      let pathValue = paths[path]
+      const originalPathKey = path
+
+      // Если путь является ссылкой, разрешаем её
+      if (isObject(pathValue) && pathValue.$ref) {
+        const resolvedPath = resolveReference(pathValue.$ref, ['paths', path], context)
+        if (resolvedPath === null) continue
+        pathValue = resolvedPath
+      }
+
       if (!isObject(pathValue)) continue
 
       // --- Проверка эквивалентных путей ---
-      const normalized = path.replace(pathRegex, '%') // '%' = шаблон
-      if (normalized in uniquePaths) {
-        results.push(
-          generateResult(
-            `Paths "${String(uniquePaths[normalized])}" and "${path}" must not be equivalent.`,
-            ['paths', path],
-          ),
-        )
-      } else {
-        uniquePaths[normalized] = path
-      }
+      checkPathEquivalence(path, originalPathKey, uniquePaths, results)
 
       // --- Извлекаем переменные в пути ---
-      const pathElements = []
-      let match
-      while ((match = pathRegex.exec(path))) {
-        const varName = match[0].replace(/[{}?*;]/g, '')
-        if (pathElements.includes(varName)) {
-          results.push(
-            generateResult(`Path "${path}" must not use parameter "{${varName}}" multiple times.`, [
-              'paths',
-              path,
-            ]),
-          )
-        } else {
-          pathElements.push(varName)
-        }
-      }
+      const pathElements = extractPathElements(originalPathKey, results)
 
       // --- Обработка параметров, определённых на уровне пути ---
-      const topParams = {}
-      if (Array.isArray(pathValue.parameters)) {
-        for (const [i, value] of pathValue.parameters.entries()) {
-          if (!isObject(value)) continue
-          const fullParameterPath = ['paths', path, 'parameters', i]
-          if (isUnknownNamedPathParam(value, fullParameterPath, results, topParams)) {
-            topParams[value.name] = fullParameterPath
-          }
-        }
-      }
+      const topParams = processParameters(
+        pathValue.parameters,
+        ['paths', originalPathKey, 'parameters'],
+        results,
+        {},
+      )
 
       // --- Обработка параметров на уровне операций ---
-      if (isObject(paths[path])) {
+      if (isObject(pathValue)) {
         for (const op of Object.keys(pathValue)) {
-          const operationValue = pathValue[op]
+          let operationValue = pathValue[op]
+          const originalOpKey = op
+
+          // Если операция является ссылкой, разрешаем её
+          if (isObject(operationValue) && operationValue.$ref) {
+            const resolvedOp = resolveReference(
+              operationValue.$ref,
+              ['paths', originalPathKey, op],
+              context,
+            )
+            if (resolvedOp === null) continue
+
+            // Заменяем operationValue на разрешённое значение для дальнейшей обработки
+            if (isObject(resolvedOp)) {
+              operationValue = resolvedOp
+            }
+          }
+
           if (!isObject(operationValue)) continue
 
           if (op === 'parameters' || !validOperationKeys.includes(op)) {
             continue
           }
 
-          const operationParams = {}
-          const { parameters } = operationValue
-          const operationPath = ['paths', path, op]
+          const operationPath = ['paths', originalPathKey, originalOpKey]
 
-          if (Array.isArray(parameters)) {
-            for (const [i, p] of parameters.entries()) {
-              if (!isObject(p)) continue
-              const fullParamPath = [...operationPath, 'parameters', i]
-              if (isUnknownNamedPathParam(p, fullParamPath, results, operationParams)) {
-                operationParams[p.name] = fullParamPath
-              }
-            }
-          }
+          const operationParams = processParameters(
+            operationValue.parameters,
+            [...operationPath, 'parameters'],
+            results,
+            {},
+          )
+
           // Объединяем параметры уровня пути и операции
           const definedParams = { ...topParams, ...operationParams }
+
           // Проверки взаимного соответствия
-          ensureAllDefinedPathParamsAreUsedInPath(path, definedParams, pathElements, results)
+          ensureAllDefinedPathParamsAreUsedInPath(
+            originalPathKey,
+            definedParams,
+            pathElements,
+            results,
+          )
           ensureAllExpectedParamsInPathAreDefined(
-            path,
+            originalPathKey,
             definedParams,
             pathElements,
             operationPath,

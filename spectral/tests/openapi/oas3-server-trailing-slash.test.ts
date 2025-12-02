@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 
 let linter: Spectral
@@ -47,6 +47,24 @@ describe('oas3-server-trailing-slash rule tests', () => {
     }
     const results = await linter.run(specFile)
     expect(results.length).toBe(2)
+    expect(results[0].severity).toBe(2)
+    expect(results[0].message).toBe('Servers не должны заканчиваться на символ /')
+  })
+
+  test('should not report an error when external servers do not end with slash', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ServerTrailingSlash/spec-with-external-server-no-trailing-slash.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when external servers end with slash', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3ServerTrailingSlash/spec-with-external-server-trailing-slash.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
     expect(results[0].severity).toBe(2)
     expect(results[0].message).toBe('Servers не должны заканчиваться на символ /')
   })

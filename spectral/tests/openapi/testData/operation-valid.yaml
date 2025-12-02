@@ -1,0 +1,12 @@
+get:
+  operationId: getTest
+  summary: Test endpoint
+  responses:
+    '200':
+      description: OK
+post:
+  operationId: createUser
+  summary: Create user
+  responses:
+    '201':
+      description: Created

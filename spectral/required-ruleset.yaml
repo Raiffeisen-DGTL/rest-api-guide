@@ -20,17 +20,6 @@ rules:
     then:
       field: "contact.x-team-id"
       function: "truthy"
-  external-ref-forbidden:
-    description: "Все $ref должны ссылаться на components"
-    documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#external-ref-forbidden"
-    given: "$..$ref"
-    message: "Найдена ссылка на внешний компонент {{value}}"
-    resolved: false
-    severity: "error"
-    then:
-      function: "pattern"
-      functionOptions:
-        match: "^#/components"
   oas3-schema: "error"
   supported-schema-version:
     description: "Спецификация должна быть версии 3+"

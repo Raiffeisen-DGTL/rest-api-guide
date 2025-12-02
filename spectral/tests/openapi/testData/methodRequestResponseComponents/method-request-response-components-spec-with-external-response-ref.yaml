@@ -1,0 +1,26 @@
+openapi: 3.0.0
+info:
+  title: Test Spec with External Ref
+  version: 0.0.1
+  contact:
+    name: Test spec
+paths:
+  /users:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          $ref: './external-response-components.yaml#/components/responses/UserCreatedResponse'
+components:
+  schemas:
+    UserCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string

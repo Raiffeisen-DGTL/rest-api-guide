@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with Invalid Path Params Ref
+  version: 0.0.1
+paths:
+  /users/{id}:
+    get:
+      # Missing path parameter definition for {id}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '../ref.yaml#/components/schemas/TestModel'

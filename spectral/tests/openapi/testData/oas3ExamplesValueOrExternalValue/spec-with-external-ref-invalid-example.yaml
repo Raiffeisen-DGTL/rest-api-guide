@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Ref containing invalid examples
+  version: 0.0.1
+components:
+  examples:
+    LocalExample:
+      $ref: './external-example-invalid.yaml#/components/examples/ExternalExample'
+paths:
+  /test:
+    get:
+      responses:
+        '200':
+          description: OK

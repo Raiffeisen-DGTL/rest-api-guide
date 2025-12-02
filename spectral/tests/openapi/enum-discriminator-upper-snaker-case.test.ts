@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -122,5 +122,43 @@ describe('Enum discriminator upper snake case rule tests', () => {
     expect(results[1].path.join('.')).toBe(
       'components.schemas.Payment.discriminator.mapping.BankTransfer',
     )
+  })
+
+  test('should not report an error when enum values are in UPPER_SNAKE_CASE through $ref', async () => {
+    const specFile =
+      './tests/openapi/testData/enum-discriminator-upper-snake-case-spec-with-ref-valid.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when enum values are not in UPPER_SNAKE_CASE through $ref', async () => {
+    const specFile =
+      './tests/openapi/testData/enum-discriminator-upper-snake-case-spec-with-ref-invalid.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].severity).toBe(Severity.error)
+    expect(results[0].code).toBe('enum-discriminator-upper-snake-case')
+    expect(results[0].path.join('.')).toBe('components.schemas.Status')
+  })
+
+  test('should not report an error when discriminator mapping keys are in UPPER_SNAKE_CASE through $ref', async () => {
+    const specFile =
+      './tests/openapi/testData/enum-discriminator-upper-snake-case-spec-with-ref-discriminator-valid.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when discriminator mapping keys are not in UPPER_SNAKE_CASE through $ref', async () => {
+    const specFile =
+      './tests/openapi/testData/enum-discriminator-upper-snake-case-spec-with-ref-discriminator-invalid.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].severity).toBe(Severity.error)
+    expect(results[0].code).toBe('enum-discriminator-upper-snake-case')
+    expect(results[0].path.join('.')).toBe('components.schemas.Payment')
   })
 })

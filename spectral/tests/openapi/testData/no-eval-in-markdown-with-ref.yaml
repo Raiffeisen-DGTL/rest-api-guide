@@ -1,0 +1,14 @@
+get:
+  operationId: get_test
+  description: 'some description with eval("alert(\"You are Hacked\");")'
+  summary: Test endpoint
+  responses:
+    '200':
+      description: OK
+post:
+  operationId: create_user
+  summary: Create user
+  description: 'some description with eval("alert(\"You are Hacked\");")'
+  responses:
+    '201':
+      description: Created

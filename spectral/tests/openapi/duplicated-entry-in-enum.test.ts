@@ -25,3 +25,15 @@ test("should not report an error when ENUM don't have duplicate entry", async ()
   const results = await linter.run(spec)
   expect(results.length).toBe(0)
 })
+
+test('should report an error when ENUM have duplicate entry in referenced file', async () => {
+  const specFile = './tests/openapi/testData/ref-test-spec.yaml'
+  const spec = retrieveDocument(specFile)
+  const results = await linter.run(spec)
+  // The ref.yaml contains duplicate entry '2' in enum, so we expect 1 error
+  expect(results.length).toBe(1)
+  expect(results[0].path.join('.')).toBe(
+    'paths./test.get.responses.200.content.application/json.schema',
+  )
+  expect(results[0].message).toBe("Duplicate entry '[object Object]' in enum.")
+})

@@ -1,0 +1,6 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Valid Servers
+  version: 0.0.1
+servers:
+  - $ref: './external-servers-valid.yaml#/servers/0'

@@ -1,0 +1,26 @@
+components:
+  schemas:
+    TestModel:
+      type: object
+      properties:
+        user_id:  # This would fail body-fields-camel-case rule
+          type: string
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - inactive
+            - PENDING  # Mixed case enum values
+        number_of_items:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+            - 2  # Duplicate entry
+        empty_object: {}  # Empty object
+        description:
+          type: string
+          example: "   "  # Blank string
+      required:
+        - user_id

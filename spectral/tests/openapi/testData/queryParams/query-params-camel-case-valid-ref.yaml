@@ -1,0 +1,16 @@
+paths:
+  /users:
+    get:
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: string
+        - name: firstName
+          in: query
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          schema:
+            type: integer

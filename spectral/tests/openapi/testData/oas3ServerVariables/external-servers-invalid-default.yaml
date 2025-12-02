@@ -1,0 +1,7 @@
+servers:
+  - url: 'https://api.example.com/{region}'
+    description: 'Production server'
+    variables:
+      region:
+        default: 'us-south'
+        enum: ['us-west', 'us-east']

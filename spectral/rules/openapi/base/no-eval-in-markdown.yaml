@@ -2,7 +2,6 @@ rules:
   no-eval-in-markdown:
     description: Блок description и title не должен содержать eval()
     documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#no-eval-in-markdown
-    resolved: false
     severity: error
     given: '$..[description,title]'
     then:

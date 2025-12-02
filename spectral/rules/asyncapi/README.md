@@ -3,7 +3,6 @@
 - [Описание автоматизированных правил Spectral для AsyncAPI](#описание-автоматизированных-правил-spectral-для-asyncapi)
   - [Required ruleset](#required-ruleset)
     - [asyncapi-schema](#asyncapi-schema)
-    - [external-ref-forbidden](#external-ref-forbidden)
     - [supported-schema-version](#supported-schema-version)
     - [contact-x-short-team-name-required](#contact-x-short-team-name-required)
     - [contact-x-team-id-required](#contact-x-team-id-required)
@@ -43,56 +42,6 @@ channels: {}
 asyncapi: 2.0.0
 #   Отсутствует блок info
 channels: {}
-```
-
----
-
-### external-ref-forbidden
-
-| Severity | Description                             |
-|----------|-----------------------------------------|
-| ERROR    | Все $ref должны ссылаться на components |
-
-#### Описание
-
-В данный момент портал принимает только один файл для публикации. В связи с этим нет возможности опубликовать
-многофайловые спецификации.
-
-#### Решение
-
-```textmate
-Проверьте все $ref в вашей спецификации и убедитесь , что все они ведут в #/components в этой же спецификации
-```
-
-#### Примеры 
-
-##### Правильно
-```yaml
-components:
-  schemas:
-    User:
-      type: object
-      properties:
-        name:
-          type: string
-        age:
-          type: integer
-channels:
-  users:
-    subscribe:
-      message:
-        payload:
-          $ref: '#/components/schemas/User'
-```
-
-##### Неправильно
-```yaml
-channels:
-  users:
-    subscribe:
-      message:
-        payload:
-          $ref: 'https://example.com/api.yaml#/components/schemas/User'
 ```
 
 ---

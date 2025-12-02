@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with Invalid Tags Ref
+  version: 0.0.1
+paths:
+  /test:
+    get:
+      tags: ['undefined-tag']  # This tag is not defined in global tags
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './ref.yaml#/components/schemas/TestModel'

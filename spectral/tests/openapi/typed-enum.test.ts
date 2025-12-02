@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { retrieveDocument, setupSpectral } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -60,6 +60,24 @@ describe('typed-enum rule', () => {
       },
     }
     const results = await linter.run(specFile)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when ENUM items in external file do not match the specified type', async () => {
+    const specFile =
+      './tests/openapi/testData/typedEnum/typed-enum-spec-with-external-ref-error.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Каждый элемент Enum должен соответствовать указанному типу')
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should not report an error when ENUM items in external file match the specified type', async () => {
+    const specFile =
+      './tests/openapi/testData/typedEnum/typed-enum-spec-with-external-ref-valid.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
     expect(results.length).toBe(0)
   })
 })

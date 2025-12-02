@@ -1,0 +1,27 @@
+openapi: 3.0.0
+info:
+  title: Test Spec with External Ref
+  version: 0.0.1
+  contact:
+    name: Test spec
+paths:
+  /users:
+    post:
+      requestBody:
+        $ref: './external-request-body-components.yaml#/components/requestBodies/UserCreateBody'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string

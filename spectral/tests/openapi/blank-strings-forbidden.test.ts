@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -20,6 +20,23 @@ describe('Blank strings forbidden rule tests', () => {
     }
     const results = await linter.run(specFile)
     expect(results.length).toBe(0)
+  })
+
+  test('should not report an error when spec has blank strings in external file with valid content', async () => {
+    const specFile = './tests/openapi/testData/spec-with-external-good-model.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when spec has blank strings in external file', async () => {
+    const specFile = './tests/openapi/testData/spec-with-external-blank-strings.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    for (const result of results) {
+      expect(result.message).toBe('Пустые строки запрещены')
+    }
   })
 
   test('should report an error when spec has blank strings in title', async () => {
@@ -343,5 +360,18 @@ describe('Blank strings forbidden rule tests', () => {
     }
     const results = await linter.run(specFile)
     expect(results.length).toBe(0)
+  })
+
+  test('should report error when spec has blank strings in referenced file', async () => {
+    const specFile = './tests/openapi/testData/ref-test-spec.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    // The ref.yaml contains a blank string example, so we expect 1 error
+    expect(results.length).toBe(1)
+    expect(results[0].path.join('.')).toBe(
+      'paths./test.get.responses.200.content.application/json.schema',
+    )
+    expect(results[0].message).toBe('Пустые строки запрещены')
+    expect(results[0].severity).toBe(Severity.error)
   })
 })

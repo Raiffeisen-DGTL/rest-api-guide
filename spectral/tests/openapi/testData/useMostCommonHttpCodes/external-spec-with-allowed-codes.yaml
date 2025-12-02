@@ -1,0 +1,12 @@
+openapi: 3.0.3
+info:
+  title: External Spec with Allowed HTTP Codes
+  version: 0.0.1
+paths:
+  /external-test:
+    get:
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found

@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 
 let linter: Spectral
@@ -142,6 +142,23 @@ describe('oas3_callbacks_in_callbacks rule tests', () => {
       },
     }
     const results = await linter.run(specFile)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when external reference contains nested callbacks', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3CallbacksInCallbacks/spec-with-external-ref-nested-callbacks.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(1)
+    expect(results[0].message).toBe('Callbacks не должны включать в себя callbacks')
+  })
+
+  test('should not report an error when external reference does not contain nested callbacks', async () => {
+    const specFile =
+      './tests/openapi/testData/oas3CallbacksInCallbacks/spec-with-external-ref-no-nested-callbacks.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
     expect(results.length).toBe(0)
   })
 })

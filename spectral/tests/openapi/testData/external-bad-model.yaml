@@ -1,0 +1,8 @@
+components:
+  schemas:
+    TheBadModel:
+      type: object
+      properties:
+        favoriteColorSets:
+          type: array
+          # Missing items field - this should trigger the rule

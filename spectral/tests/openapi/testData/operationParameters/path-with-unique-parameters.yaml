@@ -1,0 +1,17 @@
+get:
+  operationId: getUsers
+  summary: Get users
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Success

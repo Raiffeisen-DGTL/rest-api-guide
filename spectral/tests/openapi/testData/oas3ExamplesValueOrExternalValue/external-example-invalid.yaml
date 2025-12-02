@@ -1,0 +1,4 @@
+components:
+  examples:
+    ExternalExample:
+      summary: 'Example without value or externalValue'

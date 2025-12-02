@@ -1,0 +1,11 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: "not-an-integer"  # This should trigger an error
+        name:
+          type: string
+          example: "John Doe"

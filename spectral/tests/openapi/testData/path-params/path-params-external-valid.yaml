@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with External Path Ref - Valid
+  version: 0.0.1
+paths:
+  /users/{id}:
+    $ref: './path-with-valid-params.yaml#/paths/~1users~1{id}'

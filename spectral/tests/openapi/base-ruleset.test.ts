@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import { join } from 'path'
 import * as yaml from 'js-yaml'
 import { readdirSync } from 'fs'
-import { setupSpectral } from '../utils/utils'
+import { retrieveDocument, setupSpectral } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 
 let linter: Spectral
@@ -142,4 +142,10 @@ describe('Final ruleset validation', () => {
       )
     })
   })
+  test('should not report an error when spec nave infinity recursion', async () => {
+    const specFile = './tests/openapi/testData/baseRuleset/base-ruleset-infinite-recursion.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  }, 60000)
 })

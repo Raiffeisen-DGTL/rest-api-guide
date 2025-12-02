@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with Complex External Model Without Examples
+  version: 0.0.1
+paths:
+  /test:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './complex-external-model-without-examples.yaml#/components/schemas/ComplexExternalModelWithoutExamples'

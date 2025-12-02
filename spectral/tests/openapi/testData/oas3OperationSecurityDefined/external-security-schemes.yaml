@@ -1,0 +1,6 @@
+components:
+  securitySchemes:
+    external_api_key:
+      type: apiKey
+      in: header
+      name: X-External-API-Key

@@ -1,4 +1,4 @@
-import { setupSpectral } from '../utils/utils'
+import { setupSpectral, retrieveDocument } from '../utils/utils'
 import { Spectral } from '@stoplight/spectral-core'
 import { Severity } from '../utils/severity'
 
@@ -59,6 +59,25 @@ describe('Operation OperationId Unique Rule Tests', () => {
       },
     }
     const results = await linter.run(specFile)
+    expect(results.length).toBe(1)
+    expect(results[0].path.join('.')).toBe('paths./v1/posts.get.operationId')
+    expect(results[0].message).toBe('OperationId должен быть уникальным')
+    expect(results[0].severity).toBe(Severity.error)
+  })
+
+  test('should not report an error when operationIds are unique with external path references', async () => {
+    const specFile =
+      './tests/openapi/testData/operationOperationIdUnique/spec-with-external-path-ref.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
+    expect(results.length).toBe(0)
+  })
+
+  test('should report an error when operationIds are not unique with external path references', async () => {
+    const specFile =
+      './tests/openapi/testData/operationOperationIdUnique/spec-with-external-path-ref-duplicate.yaml'
+    const spec = retrieveDocument(specFile)
+    const results = await linter.run(spec)
     expect(results.length).toBe(1)
     expect(results[0].path.join('.')).toBe('paths./v1/posts.get.operationId')
     expect(results[0].message).toBe('OperationId должен быть уникальным')

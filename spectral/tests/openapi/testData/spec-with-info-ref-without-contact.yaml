@@ -1,0 +1,8 @@
+openapi: 3.0.3
+info:
+  $ref: './info-without-contact-invalid.yaml'
+servers:
+  - description: test
+    url: https://test.sometestserver.ru/
+  - description: prod
+    url: https://prod.sometestserver.ru/

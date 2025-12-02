@@ -1,0 +1,28 @@
+openapi: 3.0.0
+info:
+  title: Test Spec with Schema Ref - Invalid Request
+  version: 0.0.1
+paths:
+  /users:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './user-schemas-invalid-request.yaml#/UserCreate'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+components:
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
