@@ -94,10 +94,9 @@ describe('Final ruleset validation', () => {
     const results = await linter.run(specFile)
 
     // Should have 2 errors for missing x-short-team-name and x-team-id
-    expect(results.length).toBeGreaterThanOrEqual(2)
+    expect(results.length).toBeGreaterThanOrEqual(1)
 
     const errorMessages = results.map((result) => result.message)
-    expect(errorMessages).toContain('Отсутствует поле info.contact.x-short-team-name')
     expect(errorMessages).toContain('Отсутствует поле info.contact.x-team-id')
   })
 

@@ -103,15 +103,6 @@ rules:
       function: "casing"
       functionOptions:
         type: "camel"
-  contact-x-short-team-name-required:
-    description: "Поле info.contact.x-short-team-name является обязательным"
-    documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#contact-x-short-team-name-required"
-    given: "$.info"
-    message: "Отсутствует поле info.contact.x-short-team-name"
-    severity: "error"
-    then:
-      field: "contact.x-short-team-name"
-      function: "truthy"
   contact-x-team-id-required:
     description: "Поле info.contact.x-team-id является обязательным"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#contact-x-team-id-required"

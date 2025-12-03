@@ -3,7 +3,6 @@ info:
   title: Test API
   description: Test API with recursion
   contact:
-    x-short-team-name: TEST TEAM
     x-team-id: 189
     name: Test team
     email: test@raiffeisen.ru
