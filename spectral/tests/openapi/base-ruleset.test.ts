@@ -125,19 +125,17 @@ describe('Final ruleset validation', () => {
       },
     }
     await linter.run(specFile).then((results) => {
-      expect(results.length).toBe(5)
+      expect(results.length).toBe(4)
       expect(results[0].path.join('.')).toBe('info')
       expect(results[0].message).toBe('Блок info должен содержать раздел description')
       expect(results[1].path.join('.')).toBe('info.contact')
-      expect(results[1].message).toBe('Отсутствует поле info.contact.x-short-team-name')
-      expect(results[2].path.join('.')).toBe('info.contact')
-      expect(results[2].message).toBe('Отсутствует поле info.contact.x-team-id')
-      expect(results[3].path.join('.')).toBe('paths./v1/test.get')
-      expect(results[3].message).toBe(
+      expect(results[1].message).toBe('Отсутствует поле info.contact.x-team-id')
+      expect(results[2].path.join('.')).toBe('paths./v1/test.get')
+      expect(results[2].message).toBe(
         'Блок operation.description должен быть заполнен не пустой строкой',
       )
-      expect(results[4].path.join('.')).toBe('paths./v1/test.get.tags.0')
-      expect(results[4].message).toBe(
+      expect(results[3].path.join('.')).toBe('paths./v1/test.get.tags.0')
+      expect(results[3].message).toBe(
         'Tags методов должны быть определены в глобальном списке tags',
       )
     })

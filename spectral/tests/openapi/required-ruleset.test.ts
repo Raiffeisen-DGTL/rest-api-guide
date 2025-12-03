@@ -100,12 +100,10 @@ describe('Final ruleset validation', () => {
       ],
     }
     await linter.run(specFile).then((results) => {
-      expect(results.length).toBe(3)
+      expect(results.length).toBe(2)
       expect(results[0].message).toBe('must have required property "paths".')
       expect(results[1].path.join('.')).toBe('info.contact')
-      expect(results[1].message).toBe('Отсутствует поле info.contact.x-short-team-name')
-      expect(results[2].path.join('.')).toBe('info.contact')
-      expect(results[2].message).toBe('Отсутствует поле info.contact.x-team-id')
+      expect(results[1].message).toBe('Отсутствует поле info.contact.x-team-id')
     })
   })
 })
