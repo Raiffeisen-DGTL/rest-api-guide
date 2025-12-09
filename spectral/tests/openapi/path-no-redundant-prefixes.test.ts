@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Path No Redundant Prefixes Rule Tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/path-no-redundant-prefixes.yaml'
+    const rulesFile = './rules/openapi/path-no-redundant-prefixes.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error for valid paths without redundant prefixes', async () => {

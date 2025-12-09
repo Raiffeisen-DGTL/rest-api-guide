@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Path-params rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/path-params.yaml'
+    const rulesFile = './rules/openapi/path-params.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

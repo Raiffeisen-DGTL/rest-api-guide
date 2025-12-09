@@ -1,0 +1,18 @@
+x-rulesets: [ base, documentation, ai-ready ]
+rules:
+  oas3-api-servers:
+    description: Servers должны быть заполнены
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#oas3-api-servers
+    formats: [ oas3_0 ]
+    severity: error
+    given: '$'
+    then:
+      field: 'servers'
+      function: schema
+      functionOptions:
+        dialect: 'draft7'
+        schema:
+          items:
+            type: 'object'
+          minItems: 1
+          type: 'array'

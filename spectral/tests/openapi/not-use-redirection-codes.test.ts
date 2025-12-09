@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Not Use Redirection Codes rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/not-use-redirection-codes.yaml'
+    const rulesFile = './rules/openapi/not-use-redirection-codes.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when response codes are not redirection codes', async () => {

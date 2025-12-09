@@ -6,7 +6,7 @@ describe('Operation Parameters Rule Tests', () => {
   let linter: Spectral
 
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/operation-parameters.yaml'
+    const rulesFile = './rules/openapi/operation-parameters.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when parameters are unique', async () => {

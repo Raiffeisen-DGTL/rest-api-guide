@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Method OperationId Camel Case rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/method-operation-id-camel-case.yaml'
+    const rulesFile = './rules/openapi/method-operation-id-camel-case.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when operationId is in camelCase', async () => {

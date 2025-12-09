@@ -1,3 +1,4 @@
+x-rulesets: [ required ]
 rules:
   contact-x-team-id-required:
     description: Поле info.contact.x-team-id является обязательным

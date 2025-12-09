@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('OAS3 valid media example rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/oas3-valid-media-example.yaml'
+    const rulesFile = './rules/openapi/oas3-valid-media-example.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when examples match the schema', async () => {

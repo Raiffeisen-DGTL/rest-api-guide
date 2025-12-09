@@ -5,7 +5,7 @@ let linter: Spectral
 
 describe('Array-Items rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/array-items.yaml'
+    const rulesFile = './rules/openapi/array-items.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

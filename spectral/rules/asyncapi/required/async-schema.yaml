@@ -1,3 +1,4 @@
+x-rulesets: [ required ]
 extends: [[spectral:asyncapi, off]]
 rules:
   asyncapi-schema: error

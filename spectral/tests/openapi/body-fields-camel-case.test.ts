@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Body Fields Camel Case rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/body-fields-camel-case.yaml'
+    const rulesFile = './rules/openapi/body-fields-camel-case.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when body fields are in camelCase', async () => {

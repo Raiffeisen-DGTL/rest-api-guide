@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('provide-head-method rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/provide-head-method.yaml'
+    const rulesFile = './rules/openapi/provide-head-method.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

@@ -1,0 +1,12 @@
+x-rulesets: [ base ]
+rules:
+  path-kebab-case:
+    description: Path должны быть в kebabCase формате
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#path-kebab-case
+    severity: error
+    given: '$.paths.*~'
+    then:
+      field: '@key'
+      function: pattern
+      functionOptions:
+        match: '^/(?:[a-z][a-z0-9]*(?:-[a-z0-9]+)*|\{[A-Za-z0-9_]+\})(?:/(?:[a-z][a-z0-9]*(?:-[a-z0-9]+)*|\{[A-Za-z0-9_]+\}))*$'

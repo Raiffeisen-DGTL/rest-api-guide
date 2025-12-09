@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('oas3-1-servers-in-webhook rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/oas3-1-servers-in-webhook.yaml'
+    const rulesFile = './rules/openapi/oas3-1-servers-in-webhook.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

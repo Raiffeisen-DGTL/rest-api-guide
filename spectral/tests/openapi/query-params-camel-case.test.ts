@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Query Params Camel Case rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/query-params-camel-case.yaml'
+    const rulesFile = './rules/openapi/query-params-camel-case.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when query params are in camelCase', async () => {

@@ -1,0 +1,12 @@
+x-rulesets: [ base, documentation, ai-ready ]
+rules:
+  openapi-tags:
+    description: Массив tags не должен быть пустым
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#openapi-tags
+    severity: error
+    given: '$'
+    then:
+      field: 'tags'
+      function: length
+      functionOptions:
+        min: 1

@@ -1,9 +1,0 @@
-rules:
-  operation-description:
-    description: Блок operation.description должен быть заполнен не пустой строкой
-    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-description
-    severity: warn
-    given: '$.paths[*][get,put,post,delete,options,head,patch,trace]'
-    then:
-      field: 'description'
-      function: truthy

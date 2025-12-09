@@ -1,0 +1,15 @@
+components:
+  schemas:
+    пользователь:  # English name
+      type: object
+      properties:
+        имя:  # English name
+          type: string
+        фамилия:  # English name
+          type: string
+    Status:
+      type: string
+      enum:
+        - активный
+        - неактивный
+        - pending

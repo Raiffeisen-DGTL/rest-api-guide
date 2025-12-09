@@ -4,7 +4,7 @@ import { Spectral } from '@stoplight/spectral-core'
 let linter: Spectral
 
 beforeAll(async () => {
-  const rulesFile = './rules/openapi/base/duplicated-entry-in-enum.yaml'
+  const rulesFile = './rules/openapi/duplicated-entry-in-enum.yaml'
   linter = await setupSpectral(rulesFile)
 })
 

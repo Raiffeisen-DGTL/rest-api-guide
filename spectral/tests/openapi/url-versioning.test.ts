@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('url-versioning rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/url-versioning.yaml'
+    const rulesFile = './rules/openapi/url-versioning.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

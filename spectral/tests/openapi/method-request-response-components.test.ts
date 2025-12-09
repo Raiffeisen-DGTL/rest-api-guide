@@ -7,7 +7,7 @@ describe('Method Request Response Components Rule Tests', () => {
 
   beforeAll(async () => {
     // Use our isolated ruleset for testing
-    const rulesFile = './rules/openapi/base/method-request-response-components.yaml'
+    const rulesFile = './rules/openapi/method-request-response-components.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

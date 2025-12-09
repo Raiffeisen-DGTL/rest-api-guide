@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Path keys no trailing slash rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/path-keys-no-trailing-slash.yaml'
+    const rulesFile = './rules/openapi/path-keys-no-trailing-slash.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

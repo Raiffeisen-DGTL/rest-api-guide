@@ -6,7 +6,7 @@ describe('Tests for oas3-operation-security-defined.yaml ruleset', () => {
   let linter: Spectral
 
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/oas3-operation-security-defined.yaml'
+    const rulesFile = './rules/openapi/oas3-operation-security-defined.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

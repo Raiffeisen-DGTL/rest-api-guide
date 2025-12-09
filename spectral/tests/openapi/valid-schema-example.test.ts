@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('valid-schema-example rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/valid-schema-example.yaml'
+    const rulesFile = './rules/openapi/valid-schema-example.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

@@ -5,7 +5,7 @@ import { Severity } from '../utils/severity'
 let linter: Spectral
 
 beforeAll(async () => {
-  const rulesFile = './rules/openapi/base/use-most-common-http-codes.yaml'
+  const rulesFile = './rules/openapi/use-most-common-http-codes.yaml'
   linter = await setupSpectral(rulesFile)
 })
 

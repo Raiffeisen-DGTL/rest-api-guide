@@ -1,0 +1,4 @@
+x-rulesets: [ required, base, documentation ]
+extends: [[spectral:oas, off]]
+rules:
+  oas3-schema: error

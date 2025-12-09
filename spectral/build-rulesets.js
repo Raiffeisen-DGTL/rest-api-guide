@@ -41,6 +41,11 @@ function mergeObjects(objects) {
   for (const obj of objects) {
     // Merge each object into result
     for (const key in obj) {
+      // Skip x-rulesets field as it's only used for organizing rulesets
+      if (key === 'x-rulesets') {
+        continue
+      }
+
       if (obj.hasOwnProperty(key)) {
         if (
           key === 'rules' &&
@@ -208,48 +213,93 @@ function buildRulesetWithJS(inputFiles, outputFile) {
   console.log(`Successfully built ${path.basename(outputFile)}`)
 }
 
+// Function to get all rule files from a specified directory
+function getAllRuleFiles(scriptDir, apiType) {
+  const ruleFiles = []
+  const apiDir = path.join(scriptDir, 'rules', apiType)
+
+  // Recursively find all yaml files in the API directory
+  function walkDir(dir) {
+    const files = fs.readdirSync(dir)
+    for (const file of files) {
+      const filePath = path.join(dir, file)
+      const stat = fs.statSync(filePath)
+      if (stat.isDirectory()) {
+        walkDir(filePath)
+      } else if (file.endsWith('.yaml') || file.endsWith('.yml')) {
+        ruleFiles.push(filePath)
+      }
+    }
+  }
+
+  walkDir(apiDir)
+  return ruleFiles.sort()
+}
+
+// Function to extract tags from a rule file
+function getTagsFromFile(filePath) {
+  try {
+    const content = fs.readFileSync(filePath, 'utf8')
+    const doc = yaml.load(content) || {}
+    return doc['x-rulesets'] || []
+  } catch (error) {
+    console.error(`Error reading tags from ${filePath}:`, error.message)
+    return []
+  }
+}
+
+// Function to group files by tags
+function groupFilesByTags(files) {
+  const tagGroups = {}
+
+  for (const file of files) {
+    const tags = getTagsFromFile(file)
+    for (const tag of tags) {
+      if (!tagGroups[tag]) {
+        tagGroups[tag] = []
+      }
+      tagGroups[tag].push(file)
+    }
+  }
+
+  return tagGroups
+}
+
 // Get the directory of this script
 const scriptDir = path.join(__dirname)
 
-// Get required rule files
-const requiredFiles = fs
-  .readdirSync(path.join(scriptDir, 'rules', 'openapi', 'required'))
-  .filter((file) => file.endsWith('.yaml') || file.endsWith('.yml'))
-  .map((file) => path.join(scriptDir, 'rules', 'openapi', 'required', file))
-  .sort()
+// Get all OpenAPI rule files
+const allOpenAPIRuleFiles = getAllRuleFiles(scriptDir, 'openapi')
 
-// Build required ruleset
-buildRulesetWithJS(requiredFiles, path.join(scriptDir, 'required-ruleset.yaml'))
+// Group files by tags
+const tagGroups = groupFilesByTags(allOpenAPIRuleFiles)
 
-// Get AsyncAPI required rule files
-const asyncRequiredFiles = fs
-  .readdirSync(path.join(scriptDir, 'rules', 'asyncapi', 'required'))
-  .filter((file) => file.endsWith('.yaml') || file.endsWith('.yml'))
-  .map((file) => path.join(scriptDir, 'rules', 'asyncapi', 'required', file))
-  .sort()
+// Build ruleset for each tag
+for (const [tag, files] of Object.entries(tagGroups)) {
+  const outputFile = path.join(scriptDir, `${tag}-ruleset.yaml`)
+  buildRulesetWithJS(files, outputFile)
+}
 
-// Build AsyncAPI required ruleset
-buildRulesetWithJS(asyncRequiredFiles, path.join(scriptDir, 'asyncapi-required-ruleset.yaml'))
+// Get all AsyncAPI rule files
+const allAsyncAPIRuleFiles = getAllRuleFiles(scriptDir, 'asyncapi')
 
-// Get base rule files (required + base)
-const baseFiles = [
-  ...requiredFiles,
-  ...fs
-    .readdirSync(path.join(scriptDir, 'rules', 'openapi', 'base'))
-    .filter((file) => file.endsWith('.yaml') || file.endsWith('.yml'))
-    .map((file) => path.join(scriptDir, 'rules', 'openapi', 'base', file))
-    .sort(),
-]
+// Group AsyncAPI files by tags
+const asyncTagGroups = groupFilesByTags(allAsyncAPIRuleFiles)
 
-// Build base ruleset
-buildRulesetWithJS(baseFiles, path.join(scriptDir, 'base-ruleset.yaml'))
+// Build AsyncAPI ruleset for each tag with asyncapi- prefix
+for (const [tag, files] of Object.entries(asyncTagGroups)) {
+  const outputFile = path.join(scriptDir, `asyncapi-${tag}-ruleset.yaml`)
+  buildRulesetWithJS(files, outputFile)
+}
 
 // Add generated files to git
 try {
-  require('child_process').execSync(
-    'git add base-ruleset.yaml required-ruleset.yaml asyncapi-required-ruleset.yaml',
-    { stdio: 'inherit' },
-  )
+  const generatedFiles = Object.keys(tagGroups).map((tag) => `${tag}-ruleset.yaml`)
+  // Add AsyncAPI rulesets with asyncapi- prefix
+  Object.keys(asyncTagGroups).forEach((tag) => {
+    generatedFiles.push(`asyncapi-${tag}-ruleset.yaml`)
+  })
+  require('child_process').execSync(`git add ${generatedFiles.join(' ')}`, { stdio: 'inherit' })
 } catch (error) {
   console.warn('Could not add files to git:', error.message)
 }

@@ -5,7 +5,7 @@ let linter: Spectral
 
 describe('oas3-server-trailing-slash rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/oas3-server-trailing-slash.yaml'
+    const rulesFile = './rules/openapi/oas3-server-trailing-slash.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

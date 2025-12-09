@@ -1,0 +1,21 @@
+x-rulesets: [ base, documentation, ai-ready ]
+aliases:
+  PathItem:
+    - '$.paths[*]'
+  OperationObject:
+    - '#PathItem[get,put,post,delete,options,head,patch,trace]'
+rules:
+  blank-strings-forbidden:
+    description: Пустые строки запрещены
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#blank-strings-forbidden
+    severity: error
+    formats: [ oas3_0, oas3_1 ]
+    given:
+      - '$..[description,title]'
+      - '$..[required[*]]'
+      - '$..[summary,example]'
+      - '$..[x-raif-api-description-en]'
+    then:
+      function: pattern
+      functionOptions:
+        match: '(.|\s)*\S(.|\s)*'

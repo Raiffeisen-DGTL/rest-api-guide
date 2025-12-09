@@ -8,6 +8,8 @@
   "main": "index.js",
   "files": [
     "required-ruleset.yaml",
+    "documentation-ruleset.yaml",
+    "ai-ready-ruleset.yaml",
     "base-ruleset.yaml",
     "asyncapi-required-ruleset.yaml",
     "rules/common/external-ref-forbidden.yaml",

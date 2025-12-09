@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Operation Singular Tag Rule Tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/operation-singular-tag.yaml'
+    const rulesFile = './rules/openapi/operation-singular-tag.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when operation has one tag', async () => {

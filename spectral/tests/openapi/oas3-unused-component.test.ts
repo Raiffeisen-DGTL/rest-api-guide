@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('OAS3 unused component rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/oas3-unused-component.yaml'
+    const rulesFile = './rules/openapi/oas3-unused-component.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when all components are used', async () => {

@@ -1,9 +1,0 @@
-rules:
-  info-description:
-    description: Блок info должен содержать раздел description
-    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#info-description
-    severity: error
-    given: '$'
-    then:
-      field: 'info.description'
-      function: truthy

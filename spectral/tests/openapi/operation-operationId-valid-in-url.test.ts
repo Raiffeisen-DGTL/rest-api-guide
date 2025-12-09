@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Operation OperationId Valid in URL Rule Tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/operation-operationId-valid-in-url.yaml'
+    const rulesFile = './rules/openapi/operation-operationId-valid-in-url.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when operationId contains valid characters', async () => {

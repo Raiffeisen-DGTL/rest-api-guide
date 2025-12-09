@@ -4,24 +4,20 @@
   - [Required ruleset](#required-ruleset)
     - [oas3-schema](#oas3-schema)
     - [supported-schema-version](#supported-schema-version)
-    - [contact-x-short-team-name-required](#contact-x-short-team-name-required)
     - [contact-x-team-id-required](#contact-x-team-id-required)
   - [Base ruleset](#base-ruleset)
     - [info-contact](#info-contact)
-    - [provide-head-method](#provide-head-method)
     - [all-off-types-consistency](#all-off-types-consistency)
     - [array-items](#array-items)
     - [blank-strings-forbidden](#blank-strings-forbidden)
-    - [body-fields-camel-case](#body-fields-camel-case)
     - [duplicated-entry-in-enum](#duplicated-entry-in-enum)
+    - [description-required-for-schema-fields](#description-required-for-schema-fields)
     - [empty-objects-forbidden](#empty-objects-forbidden)
-    - [enum-discriminator-upper-snake-case](#enum-discriminator-upper-snake-case)
     - [info-description](#info-description)
     - [method-operation-id-camel-case](#method-operation-id-camel-case)
     - [method-request-response-components](#method-request-response-components)
     - [no-eval-in-markdown](#no-eval-in-markdown)
     - [no-script-tags-in-markdown](#no-script-tags-in-markdown)
-    - [not-use-redirection-codes](#not-use-redirection-codes)
     - [oas3-api-servers](#oas3-api-servers)
     - [oas3-parameter-description](#oas3-parameter-description)
     - [oas3-server-trailing-slash](#oas3-server-trailing-slash)
@@ -32,13 +28,10 @@
     - [operation-operationId](#operation-operationid)
     - [operation-operationId-unique](#operation-operationid-unique)
     - [operation-operationId-valid-in-url](#operation-operationid-valid-in-url)
-    - [use-most-common-http-codes](#use-most-common-http-codes)
     - [operation-singular-tag](#operation-singular-tag)
     - [path-keys-no-trailing-slash](#path-keys-no-trailing-slash)
     - [path-not-include-query](#path-not-include-query)
-    - [query-params-camel-case](#query-params-camel-case)
     - [tag-description](#tag-description)
-    - [url-versioning](#url-versioning)
     - [no-ref-siblings](#no-ref-siblings)
     - [oas3-1-callbacks-in-webhook](#oas3-1-callbacks-in-webhook)
     - [oas3-1-servers-in-webhook](#oas3-1-servers-in-webhook)
@@ -54,13 +47,25 @@
     - [operation-success-response](#operation-success-response)
     - [operation-tag-defined](#operation-tag-defined)
     - [path-declarations-must-exist](#path-declarations-must-exist)
-    - [path-kebab-case](#path-kebab-case)
-    - [path-no-redundant-prefixes](#path-no-redundant-prefixes)
     - [path-params](#path-params)
     - [typed-enum](#typed-enum)
     - [valid-schema-example](#valid-schema-example)
+    - [operation-must-have-summary](#operation-must-have-summary)
+    - [operation-must-have-tag](#operation-must-have-tag)
+    - [operation-must-have-security](#operation-must-have-security)
+    - [url-versioning](#url-versioning)
+    - [body-fields-camel-case](#body-fields-camel-case)
+    - [query-params-camel-case](#query-params-camel-case)
+    - [provide-head-method](#provide-head-method)
+    - [enum-discriminator-upper-snake-case](#enum-discriminator-upper-snake-case)
+    - [not-use-redirection-codes](#not-use-redirection-codes)
+    - [use-most-common-http-codes](#use-most-common-http-codes)
+    - [path-kebab-case](#path-kebab-case)
+    - [path-no-redundant-prefixes](#path-no-redundant-prefixes)
+    - [names-should-be-in-english](#names-should-be-in-english)
 
 ## Required ruleset
+Cодержит правила необходимые для публикации на портал 
 ### oas3-schema
 
 | Severity | Description                                          |
@@ -155,62 +160,6 @@ paths:
         '200':
           description: A list of users
 ```
-
----
-
-### contact-x-short-team-name-required
-
-| Severity | Description                                               |
-|----------|-----------------------------------------------------------|
-| ERROR    | Поле info.contact.x-short-team-name является обязательным |
-
-#### Описание
-
-Для отображения на портале контактов команды ответственной за API, необходимо указать её название.
-
-#### Решение
-
-```textmate
-Заполните значение x-short-team-name в info.contact
-```
-
-#### Примеры
-
-##### Правильно
-```yaml
-openapi: 3.0.3
-info:
-  title: Example API
-  version: 1.0.0
-  contact:
-    name: CDC Integrations
-    x-short-team-name: CDCI
-    x-team-id: 180
-paths:
-  /users:
-    get:
-      responses:
-        '200':
-          description: A list of users
-```
-
-##### Неправильно
-```yaml
-openapi: 3.0.3
-info:
-  title: Example API
-  version: 1.0.0
-  contact:
-    name: CDC Integrations
-    x-team-id: 180
-paths:
-  /users:
-    get:
-      responses:
-        '200':
-          description: A list of users
-```
-
 ---
 
 ### contact-x-team-id-required
@@ -313,82 +262,6 @@ paths:
       responses:
         '200':
           description: A list of users
-```
-
----
-
-### provide-head-method
-
-| Severity | Description                                                   |
-|----------|---------------------------------------------------------------|
-| WARN     | API для скачивания файлов должно поддерживать метод **HEAD**  |
-
-#### Описание правила в API Guide
-
-[Ссылка на описания правила](../../../rules/rules.md#api-для-скачивания-файлов-обязано-поддерживать-head-запрос) 
-
-#### Описание
-
-Если API предоставляет возможность скачивания файлов (например, PDF, Excel, ZIP и т.д.), то для соответствующего GET-метода должен быть реализован соответствующий HEAD-метод. Это позволяет клиентам получать метаинформацию о файле (размер, тип и т.д.) без необходимости загружать сам файл.
-
-#### Решение
-
-```textmate
-Для каждого GET-метода, который возвращает файл (на основе MIME-типа в ответе), добавьте соответствующий HEAD-метод с аналогичной сигнатурой, но без тела ответа.
-```
-
-#### Примеры
-
-##### Правильно
-```yaml
-paths:
-  /v1/files:
-    get:
-      summary: Скачать файл
-      operationId: downloadFile
-      responses:
-        '200':
-          description: Файл
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-    head:
-      summary: Получить метаинформацию о файле
-      operationId: downloadFileHead
-      responses:
-        '200':
-          description: Метаинформация о файле
-          headers:
-            Content-Length:
-              description: Размер файла в байтах
-              schema:
-                type: integer
-                example: 1
-            Content-Type:
-              description: MIME-тип файла
-              schema:
-                type: string
-                example: application/pdf
-```
-
-##### Неправильно
-```yaml
-paths:
-  /v1/files:
-    get:
-      summary: Скачать файл
-      operationId: downloadFile
-      responses:
-        '200':
-          description: Файл
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-# Отсутствует HEAD-метод
 ```
 
 ---
@@ -565,80 +438,6 @@ paths:
 
 ---
 
-### body-fields-camel-case
-
-| Severity | Description                                         |
-|----------|-----------------------------------------------------|
-| ERROR    | Поля в requestBody и responseBody должны быть в camelCase |
-
-#### Описание правила в API Guide
-
-[Ссылка на описания правила](../../../rules/rules.md#используем-для-именования-полей-тела-запроса-camelcase) 
-
-#### Описание
-
-Все поля в телах запросов и ответов должны быть в формате camelCase. Это правило проверяет, что имена полей в схемах requestBody, responseBody и компонентах следуют стилю именования camelCase, что является стандартом для большинства API.
-
-#### Решение
-
-```textmate
-Измените имена полей в схемах на формат camelCase (например, firstName вместо first_name или FirstName).
-```
-
-#### Примеры
-
-##### Правильно
-```yaml
-components:
-  schemas:
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 12
-        firstName:
-          type: string
-          example: John
-        lastName:
-          type: string
-          example: Doe
-        emailAddress:
-          type: string
-          example: john.doe@example.com
-paths:
-  /v1/users:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-```
-
-##### Неправильно
-```yaml
-components:
-  schemas:
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 12
-        first_name:  # snake_case вместо camelCase
-          type: string
-          example: John
-        LastName:    # PascalCase вместо camelCase
-          type: string
-          example: Doe
-        email_address:  # snake_case вместо camelCase
-          type: string
-          example: john.doe@example.com
-```
-
----
-
 ### duplicated-entry-in-enum
 
 | Severity | Description                        |
@@ -683,6 +482,70 @@ components:
         - ADMIN      # Дубликат
         - MODERATOR
         - USER       # Дубликат
+```
+
+---
+
+### description-required-for-schema-fields
+
+| Severity | Description                                      |
+|----------|--------------------------------------------------|
+| ERROR    | У каждого поля в схеме должен быть description   |
+
+#### Описание
+
+Все поля в схемах API должны иметь описание (description), объясняющее их назначение и формат. Это улучшает понимание структуры данных и упрощает использование API.
+
+#### Решение
+
+```textmate
+Добавьте описание ко всем полям в схемах API.
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Уникальный идентификатор пользователя
+          example: 123
+        name:
+          type: string
+          description: Имя пользователя
+          example: John Doe
+        email:
+          type: string
+          format: email
+          description: Электронная почта пользователя
+          example: john.doe@example.com
+```
+
+##### Неправильно
+```yaml
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          # Отсутствует описание поля
+          example: 123
+        name:
+          type: string
+          # Отсутствует описание поля
+          example: John Doe
+        email:
+          type: string
+          format: email
+          # Отсутствует описание поля
+          example: john.doe@example.com
 ```
 
 ---
@@ -741,80 +604,6 @@ components:
           example: John Doe
     EmptyObject:  # Пустой объект без свойств
       type: object
-```
-
----
-
-### enum-discriminator-upper-snake-case
-
-| Severity | Description                                                              |
-|----------|--------------------------------------------------------------------------|
-| ERROR    | Перечисления и значения маппинга для дискриминаторов именуются UPPER_SNAKE_CASE |
-
-#### Описание правила в API Guide
-
-[Ссылка на описания правила](../../../rules/rules.md#используем-upper_snake_case-для-enum-и-mapping-для-discriminator) 
-
-#### Описание
-
-Все значения в перечислениях (enum) и маппингах для discriminator должны следовать формату UPPER_SNAKE_CASE. Это правило обеспечивает единообразие именования в спецификации API.
-
-#### Решение
-
-```textmate
-Измените имена значений enum и discriminator на формат UPPER_SNAKE_CASE (например, USER_ADMIN вместо userAdmin или UserAdmin).
-```
-
-#### Примеры
-
-##### Правильно
-```yaml
-components:
-  schemas:
-    Pet:
-      type: object
-      discriminator:
-        propertyName: petType
-        mapping:
-          DOG: '#/components/schemas/Dog'
-          CAT: '#/components/schemas/Cat'
-      properties:
-        petType:
-          type: string
-          enum:
-            - DOG
-            - CAT
-    UserStatus:
-      type: string
-      enum:
-        - ACTIVE
-        - INACTIVE
-        - PENDING_APPROVAL
-```
-
-##### Неправильно
-```yaml
-components:
-  schemas:
-    Pet:
-      type: object
-      discriminator:
-        propertyName: petType
-        mapping:
-          dog: '#/components/schemas/Dog'      # Должно быть DOG
-          Cat: '#/components/schemas/Cat'      # Должно быть CAT
-      properties:
-        petType:
-          type: string
-          enum:
-            - dog      # Должно быть DOG
-            - Cat      # Должно быть CAT
-    UserStatus:
-      type: string
-      enum:
-        - active       # Должно быть ACTIVE
-        - Inactive     # Должно быть INACTIVE
-        - pendingApproval  # Должно быть PENDING_APPROVAL
 ```
 
 ---
@@ -1087,69 +876,6 @@ paths:
       responses:
         '200':
           description: A list of users <script>someFunction()</script>
-```
-
----
-
-### not-use-redirection-codes
-
-| Severity | Description                                  |
-|----------|----------------------------------------------|
-| ERROR    | Не используйте коды перенаправления в responses |
-
-#### Описание правила в API Guide
-
-[Ссылка на описания правила](../../../rules/rules.md#не-используй-статусы-перенаправления-запроса) 
-
-
-#### Описание
-
-В спецификации API не рекомендуется использовать коды перенаправления HTTP (3xx), кроме 304 (Not Modified). Клиенты API должны получать прямые ответы, а не перенаправления.
-
-#### Решение
-
-```textmate
-Избегайте использования кодов перенаправления в API. Возвращайте прямые ответы с данными.
-```
-
-#### Примеры
-
-##### Правильно
-```yaml
-paths:
-  /v1/users/{id}:
-    get:
-      responses:
-        '200':
-          description: Информация о пользователе
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '404':
-          description: Пользователь не найден
-```
-
-##### Неправильно
-```yaml
-paths:
-  /users/{id}:
-    get:
-      responses:
-        '301':  # Код перенаправления
-          description: Пользователь перемещен
-          headers:
-            Location:
-              description: Новый URL пользователя
-              schema:
-                type: string
-        '302':  # Код перенаправления
-          description: Пользователь временно перемещен
-          headers:
-            Location:
-              description: Временный URL пользователя
-              schema:
-                type: string
 ```
 
 ---
@@ -1654,60 +1380,6 @@ paths:
 
 ---
 
-### use-most-common-http-codes
-
-| Severity | Description                                         |
-|----------|-----------------------------------------------------|
-| ERROR    | Используйте только наиболее распространенные коды состояния HTTP |
-
-#### Описание правила в API Guide
-
-[Ссылка на описания правила](../../../rules/rules.md#используй-только-наиболее-распространенные-коды-состояния-http) 
-
-#### Описание
-
-В API следует использовать только наиболее распространенные коды состояния HTTP. Это правило запрещает использование редко используемых кодов состояния, которые могут быть непонятны разработчикам или неправильно интерпретированы клиентами.
-
-#### Решение
-
-```textmate
-Используйте только распространенные коды состояния HTTP. Такие коды как 205,206,207,301,302,303,307,308,408,417,418,422,424,431,505,507,511 запрещены
-```
-
-#### Примеры
-
-##### Правильно
-```yaml
-paths:
-  /v1/users:
-    get:
-      operationId: getUsers
-      responses:
-        '200':  # Распространенный код
-          description: Список пользователей
-        '400':  # Распространенный код
-          description: Неверный запрос
-        '500':  # Распространенный код
-          description: Внутренняя ошибка сервера
-```
-
-##### Неправильно
-```yaml
-paths:
-  /v1/users:
-    get:
-      operationId: getUsers
-      responses:
-        '205':  # Редко используемый код
-          description: Сброс содержимого
-        '418':  # Редко используемый код (I'm a teapot)
-          description: Я чайник
-        '505':  # Редко используемый код
-          description: Версия HTTP не поддерживается
-```
-
----
-
 ### operation-singular-tag
 
 | Severity | Description                          |
@@ -1846,69 +1518,6 @@ paths:
 
 ---
 
-### query-params-camel-case
-
-| Severity | Description                       |
-|----------|-----------------------------------|
-| ERROR    | Params должны быть в camelCase формате |
-
-#### Описание правила в API Guide
-
-[Ссылка на описания правила](../../../rules/rules.md#используем-для-именования-параметров-запроса-camelcase) 
-
-#### Описание
-
-Все параметры запроса (query parameters) должны следовать формату camelCase. Это правило обеспечивает единообразие именования параметров в API.
-
-#### Решение
-
-```textmate
-Измените имена параметров запроса на формат camelCase (например, userId вместо user_id или UserId).
-```
-
-#### Примеры
-
-##### Правильно
-```yaml
-paths:
-  /v1/users:
-    summary: Получить список пользователей
-    operationId: getUsers
-    get:
-      parameters:
-        - name: userId      # camelCase
-          in: query
-          description: Идентификатор пользователя
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Список пользователей
-```
-
-##### Неправильно
-```yaml
-paths:
-  /users:
-    get:
-      parameters:
-        - name: user_id     # snake_case вместо camelCase
-          in: query
-          description: Идентификатор пользователя
-          schema:
-            type: integer
-        - name: PageSize    # PascalCase вместо camelCase
-          in: query
-          description: Размер страницы
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Список пользователей
-```
-
----
-
 ### tag-description
 
 | Severity | Description                    |
@@ -1943,52 +1552,6 @@ tags:
     # Отсутствует описание тега
   - name: Orders
     # Отсутствует описание тега
-```
-
----
-
-### url-versioning
-
-| Severity | Description                                                              |
-|----------|--------------------------------------------------------------------------|
-| ERROR    | Версия должна быть указана в пути запроса, в начале метода, в формате /beta, /v1, /v2 и т.д. |
-
-#### Описание правила в API Guide
-
-[Ссылка на описания правила](../../../rules/rules.md#используй-версионирование-в-url) 
-
-#### Описание
-
-Версия API должна быть указана в пути запроса в начале, в формате /beta, /v1, /v2 и т.д. Это позволяет легко управлять версиями API и обеспечивает единообразие.
-
-#### Решение
-
-```textmate
-Добавьте версию API в начало всех путей.
-```
-
-#### Примеры
-
-##### Правильно
-```yaml
-paths:
-  /v1/users:
-    get:
-      summary: Получить список пользователей
-      operationId: getUsers
-      responses:
-        '200':
-          description: Список пользователей
-```
-
-##### Неправильно
-```yaml
-paths:
-  /users:    # Отсутствует версия в пути
-    get:
-      responses:
-        '200':
-          description: Список пользователей
 ```
 
 ---
@@ -3042,118 +2605,6 @@ paths:
 
 ---
 
-### path-kebab-case
-
-| Severity | Description                              |
-|----------|------------------------------------------|
-| ERROR    | Path должны быть в kebabCase формате     |
-
-#### Описание правила в API Guide
-
-[Ссылка на описания правила](../../../rules/rules.md#использование-kebab-case-для-пути) 
-
-#### Описание
-
-Все пути в API должны следовать формату kebab-case, где слова разделены дефисами и состоят только из строчных букв и цифр. Это правило проверяет, что все сегменты пути соответствуют этому формату.
-
-#### Решение
-
-```textmate
-Измените пути так, чтобы все сегменты следовали формату kebab-case (например, /user-profiles вместо /user_profiles или /UserProfiles).
-```
-
-#### Примеры
-
-##### Правильно
-```yaml
-paths:
-  /v1/user-profiles:  # kebab-case
-    get:
-      summary: Получить список профилей пользователей
-      operationId: getUserProfiles
-      responses:
-        '200':
-          description: Список профилей пользователей
-```
-
-##### Неправильно
-```yaml
-paths:
-  /v1/user_profiles:  # snake_case вместо kebab-case
-    get:
-      operationId: getUserProfiles
-      responses:
-        '200':
-          description: Список профилей пользователей
-  /v1/userProfiles:   # camelCase вместо kebab-case
-    get:
-      operationId: getUserProfiles2
-      responses:
-        '200':
-          description: Список профилей пользователей
-  /v1/UserProfiles:   # PascalCase вместо kebab-case
-    get:
-      operationId: getUserProfiles3
-      responses:
-        '200':
-          description: Список профилей пользователей
-```
-
----
-
-### path-no-redundant-prefixes
-
-| Severity | Description                                                              |
-|----------|--------------------------------------------------------------------------|
-| ERROR    | В paths запрещено использовать сегменты api, openapi, http, service      |
-
-#### Описание правила в API Guide
-
-[Ссылка на описания правила](../../../rules/rules.md#избегать-избыточных-префиксов-в-пути) 
-
-#### Описание
-
-В путях API запрещено использовать избыточные префиксы, такие как `api`, `openapi`, `http` и `service`. Эти префиксы считаются избыточными, так как они не добавляют смысловой нагрузки и могут привести к неоднозначности в структуре API.
-
-#### Решение
-
-```textmate
-Удалите избыточные префиксы из путей API.
-```
-
-#### Примеры
-
-##### Правильно
-```yaml
-paths:
-  /v1/users:  # Правильно: без избыточных префиксов
-    get:
-      summary: Получить список пользователей
-      operationId: getUsers
-      responses:
-        '200':
-          description: Список пользователей
-```
-
-##### Неправильно
-```yaml
-paths:
-  /api/v1/users:  # Недопустимо: избыточный префикс api
-    get:
-      operationId: getUsers
-      responses:
-        '200':
-          description: Список пользователей
-  /openapi/v1/orders:  # Недопустимо: избыточный префикс openapi
-    get:
-      operationId: getOrders
-      responses:
-        '200':
-          description: Список заказов
-```
-
----
-
 ### path-params
 
 | Severity | Description                                         |
@@ -3367,3 +2818,789 @@ components:
 ```
 
 ---
+
+### operation-must-have-summary
+
+| Severity | Description                                      |
+|----------|--------------------------------------------------|
+| ERROR    | Каждая операция должна содержать поле summary    |
+
+#### Описание
+
+Каждая операция API должна иметь краткое описание (summary), объясняющее ее назначение в одном предложении. Это улучшает навигацию и понимание API в документации.
+
+#### Решение
+
+```textmate
+Добавьте краткое описание (summary) ко всем операциям API.
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+paths:
+  /v1/users:
+    get:
+      summary: Получить список пользователей
+      description: Возвращает список всех пользователей системы с возможностью фильтрации и пагинации.
+      responses:
+        '200':
+          description: Список пользователей
+```
+
+##### Неправильно
+```yaml
+paths:
+  /users:
+    get:
+      # Отсутствует краткое описание операции
+      description: Возвращает список всех пользователей системы с возможностью фильтрации и пагинации.
+      responses:
+        '200':
+          description: Список пользователей
+```
+
+---
+
+### operation-must-have-tag
+
+| Severity | Description                                      |
+|----------|--------------------------------------------------|
+| WARNING    | Каждая операция (endpoint) должна быть снабжена тегом |
+
+#### Описание
+
+Каждая операция API должна иметь хотя бы один тег, который используется для группировки операций в документации. Это улучшает навигацию и понимание структуры API.
+
+#### Решение
+
+```textmate
+Добавьте хотя бы один тег к каждой операции API.
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+paths:
+  /v1/users:
+    get:
+      tags:
+        - Users
+      summary: Получить список пользователей
+      description: Возвращает список всех пользователей системы.
+      responses:
+        '200':
+          description: Список пользователей
+```
+
+##### Неправильно
+```yaml
+paths:
+  /users:
+    get:
+      # Отсутствует тег операции
+      summary: Получить список пользователей
+      description: Возвращает список всех пользователей системы.
+      responses:
+        '200':
+          description: Список пользователей
+```
+
+---
+
+### operation-must-have-security
+
+| Severity | Description                                         |
+|----------|-----------------------------------------------------|
+| INFO     | Каждая операция должна ссылаться минимум на один security scheme |
+
+#### Описание
+
+Для AI Ready желательно, чтобы все операции содержали security scheme. Это правило проверяет, что каждая операция либо имеет свою секцию security, либо используется глобальная секция security в корне документа.
+
+#### Решение
+
+```textmate
+Добавьте секцию security к каждой операции или определите глобальную секцию security в корне документа.
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+# С глобальной секцией security
+openapi: 3.0.3
+info:
+  title: Example API
+  version: 1.0.0
+security:
+  - api_key: []
+paths:
+  /v1/users:
+    get:
+      responses:
+        '200':
+          description: Список пользователей
+
+# С локальной секцией security в операции
+openapi: 3.0.3
+info:
+  title: Example API
+  version: 1.0.0
+paths:
+  /v1/users:
+    get:
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: Список пользователей
+```
+
+##### Неправильно
+```yaml
+# Без секции security
+openapi: 3.0.3
+info:
+  title: Example API
+  version: 1.0.0
+paths:
+  /v1/users:
+    get:
+      responses:
+        '200':
+          description: Список пользователей
+```
+---
+
+### url-versioning
+
+| Severity | Description                                                              |
+|----------|--------------------------------------------------------------------------|
+| ERROR    | Версия должна быть указана в пути запроса, в начале метода, в формате /beta, /v1, /v2 и т.д. |
+
+#### Описание правила в API Guide
+
+[Ссылка на описания правила](../../../rules/rules.md#используй-версионирование-в-url) 
+
+#### Описание
+
+Версия API должна быть указана в пути запроса в начале, в формате /beta, /v1, /v2 и т.д. Это позволяет легко управлять версиями API и обеспечивает единообразие.
+
+#### Решение
+
+```textmate
+Добавьте версию API в начало всех путей.
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+paths:
+  /v1/users:
+    get:
+      summary: Получить список пользователей
+      operationId: getUsers
+      responses:
+        '200':
+          description: Список пользователей
+```
+
+##### Неправильно
+```yaml
+paths:
+  /users:    # Отсутствует версия в пути
+    get:
+      responses:
+        '200':
+          description: Список пользователей
+```
+---
+
+
+### body-fields-camel-case
+
+| Severity | Description                                         |
+|----------|-----------------------------------------------------|
+| ERROR    | Поля в requestBody и responseBody должны быть в camelCase |
+
+#### Описание правила в API Guide
+
+[Ссылка на описания правила](../../../rules/rules.md#используем-для-именования-полей-тела-запроса-camelcase) 
+
+#### Описание
+
+Все поля в телах запросов и ответов должны быть в формате camelCase. Это правило проверяет, что имена полей в схемах requestBody, responseBody и компонентах следуют стилю именования camelCase, что является стандартом для большинства API.
+
+#### Решение
+
+```textmate
+Измените имена полей в схемах на формат camelCase (например, firstName вместо first_name или FirstName).
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        emailAddress:
+          type: string
+          example: john.doe@example.com
+paths:
+  /v1/users:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+```
+
+##### Неправильно
+```yaml
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+        first_name:  # snake_case вместо camelCase
+          type: string
+          example: John
+        LastName:    # PascalCase вместо camelCase
+          type: string
+          example: Doe
+        email_address:  # snake_case вместо camelCase
+          type: string
+          example: john.doe@example.com
+```
+
+---
+
+### query-params-camel-case
+
+| Severity | Description                       |
+|----------|-----------------------------------|
+| ERROR    | Params должны быть в camelCase формате |
+
+#### Описание правила в API Guide
+
+[Ссылка на описания правила](../../../rules/rules.md#используем-для-именования-параметров-запроса-camelcase) 
+
+#### Описание
+
+Все параметры запроса (query parameters) должны следовать формату camelCase. Это правило обеспечивает единообразие именования параметров в API.
+
+#### Решение
+
+```textmate
+Измените имена параметров запроса на формат camelCase (например, userId вместо user_id или UserId).
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+paths:
+  /v1/users:
+    summary: Получить список пользователей
+    operationId: getUsers
+    get:
+      parameters:
+        - name: userId      # camelCase
+          in: query
+          description: Идентификатор пользователя
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Список пользователей
+```
+
+##### Неправильно
+```yaml
+paths:
+  /users:
+    get:
+      parameters:
+        - name: user_id     # snake_case вместо camelCase
+          in: query
+          description: Идентификатор пользователя
+          schema:
+            type: integer
+        - name: PageSize    # PascalCase вместо camelCase
+          in: query
+          description: Размер страницы
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Список пользователей
+```
+
+---
+
+
+### provide-head-method
+
+| Severity | Description                                                   |
+|----------|---------------------------------------------------------------|
+| WARN     | API для скачивания файлов должно поддерживать метод **HEAD**  |
+
+#### Описание правила в API Guide
+
+[Ссылка на описания правила](../../../rules/rules.md#api-для-скачивания-файлов-обязано-поддерживать-head-запрос) 
+
+#### Описание
+
+Если API предоставляет возможность скачивания файлов (например, PDF, Excel, ZIP и т.д.), то для соответствующего GET-метода должен быть реализован соответствующий HEAD-метод. Это позволяет клиентам получать метаинформацию о файле (размер, тип и т.д.) без необходимости загружать сам файл.
+
+#### Решение
+
+```textmate
+Для каждого GET-метода, который возвращает файл (на основе MIME-типа в ответе), добавьте соответствующий HEAD-метод с аналогичной сигнатурой, но без тела ответа.
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+paths:
+  /v1/files:
+    get:
+      summary: Скачать файл
+      operationId: downloadFile
+      responses:
+        '200':
+          description: Файл
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+    head:
+      summary: Получить метаинформацию о файле
+      operationId: downloadFileHead
+      responses:
+        '200':
+          description: Метаинформация о файле
+          headers:
+            Content-Length:
+              description: Размер файла в байтах
+              schema:
+                type: integer
+                example: 1
+            Content-Type:
+              description: MIME-тип файла
+              schema:
+                type: string
+                example: application/pdf
+```
+
+##### Неправильно
+```yaml
+paths:
+  /v1/files:
+    get:
+      summary: Скачать файл
+      operationId: downloadFile
+      responses:
+        '200':
+          description: Файл
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+# Отсутствует HEAD-метод
+```
+
+---
+
+### enum-discriminator-upper-snake-case
+
+| Severity | Description                                                              |
+|----------|--------------------------------------------------------------------------|
+| ERROR    | Перечисления и значения маппинга для дискриминаторов именуются UPPER_SNAKE_CASE |
+
+#### Описание правила в API Guide
+
+[Ссылка на описания правила](../../../rules/rules.md#используем-upper_snake_case-для-enum-и-mapping-для-discriminator) 
+
+#### Описание
+
+Все значения в перечислениях (enum) и маппингах для discriminator должны следовать формату UPPER_SNAKE_CASE. Это правило обеспечивает единообразие именования в спецификации API.
+
+#### Решение
+
+```textmate
+Измените имена значений enum и discriminator на формат UPPER_SNAKE_CASE (например, USER_ADMIN вместо userAdmin или UserAdmin).
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+components:
+  schemas:
+    Pet:
+      type: object
+      discriminator:
+        propertyName: petType
+        mapping:
+          DOG: '#/components/schemas/Dog'
+          CAT: '#/components/schemas/Cat'
+      properties:
+        petType:
+          type: string
+          enum:
+            - DOG
+            - CAT
+    UserStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - INACTIVE
+        - PENDING_APPROVAL
+```
+
+##### Неправильно
+```yaml
+components:
+  schemas:
+    Pet:
+      type: object
+      discriminator:
+        propertyName: petType
+        mapping:
+          dog: '#/components/schemas/Dog'      # Должно быть DOG
+          Cat: '#/components/schemas/Cat'      # Должно быть CAT
+      properties:
+        petType:
+          type: string
+          enum:
+            - dog      # Должно быть DOG
+            - Cat      # Должно быть CAT
+    UserStatus:
+      type: string
+      enum:
+        - active       # Должно быть ACTIVE
+        - Inactive     # Должно быть INACTIVE
+        - pendingApproval  # Должно быть PENDING_APPROVAL
+```
+
+---
+
+### not-use-redirection-codes
+
+| Severity | Description                                  |
+|----------|----------------------------------------------|
+| ERROR    | Не используйте коды перенаправления в responses |
+
+#### Описание правила в API Guide
+
+[Ссылка на описания правила](../../../rules/rules.md#не-используй-статусы-перенаправления-запроса) 
+
+
+#### Описание
+
+В спецификации API не рекомендуется использовать коды перенаправления HTTP (3xx), кроме 304 (Not Modified). Клиенты API должны получать прямые ответы, а не перенаправления.
+
+#### Решение
+
+```textmate
+Избегайте использования кодов перенаправления в API. Возвращайте прямые ответы с данными.
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+paths:
+  /v1/users/{id}:
+    get:
+      responses:
+        '200':
+          description: Информация о пользователе
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Пользователь не найден
+```
+
+##### Неправильно
+```yaml
+paths:
+  /users/{id}:
+    get:
+      responses:
+        '301':  # Код перенаправления
+          description: Пользователь перемещен
+          headers:
+            Location:
+              description: Новый URL пользователя
+              schema:
+                type: string
+        '302':  # Код перенаправления
+          description: Пользователь временно перемещен
+          headers:
+            Location:
+              description: Временный URL пользователя
+              schema:
+                type: string
+```
+
+---
+
+### use-most-common-http-codes
+
+| Severity | Description                                         |
+|----------|-----------------------------------------------------|
+| ERROR    | Используйте только наиболее распространенные коды состояния HTTP |
+
+#### Описание правила в API Guide
+
+[Ссылка на описания правила](../../../rules/rules.md#используй-только-наиболее-распространенные-коды-состояния-http) 
+
+#### Описание
+
+В API следует использовать только наиболее распространенные коды состояния HTTP. Это правило запрещает использование редко используемых кодов состояния, которые могут быть непонятны разработчикам или неправильно интерпретированы клиентами.
+
+#### Решение
+
+```textmate
+Используйте только распространенные коды состояния HTTP. Такие коды как 205,206,207,301,302,303,307,308,408,417,418,422,424,431,505,507,511 запрещены
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+paths:
+  /v1/users:
+    get:
+      operationId: getUsers
+      responses:
+        '200':  # Распространенный код
+          description: Список пользователей
+        '400':  # Распространенный код
+          description: Неверный запрос
+        '500':  # Распространенный код
+          description: Внутренняя ошибка сервера
+```
+
+##### Неправильно
+```yaml
+paths:
+  /v1/users:
+    get:
+      operationId: getUsers
+      responses:
+        '205':  # Редко используемый код
+          description: Сброс содержимого
+        '418':  # Редко используемый код (I'm a teapot)
+          description: Я чайник
+        '505':  # Редко используемый код
+          description: Версия HTTP не поддерживается
+```
+
+---
+
+### path-kebab-case
+
+| Severity | Description                              |
+|----------|------------------------------------------|
+| ERROR    | Path должны быть в kebabCase формате     |
+
+#### Описание правила в API Guide
+
+[Ссылка на описания правила](../../../rules/rules.md#использование-kebab-case-для-пути) 
+
+#### Описание
+
+Все пути в API должны следовать формату kebab-case, где слова разделены дефисами и состоят только из строчных букв и цифр. Это правило проверяет, что все сегменты пути соответствуют этому формату.
+
+#### Решение
+
+```textmate
+Измените пути так, чтобы все сегменты следовали формату kebab-case (например, /user-profiles вместо /user_profiles или /UserProfiles).
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+paths:
+  /v1/user-profiles:  # kebab-case
+    get:
+      summary: Получить список профилей пользователей
+      operationId: getUserProfiles
+      responses:
+        '200':
+          description: Список профилей пользователей
+```
+
+##### Неправильно
+```yaml
+paths:
+  /v1/user_profiles:  # snake_case вместо kebab-case
+    get:
+      operationId: getUserProfiles
+      responses:
+        '200':
+          description: Список профилей пользователей
+  /v1/userProfiles:   # camelCase вместо kebab-case
+    get:
+      operationId: getUserProfiles2
+      responses:
+        '200':
+          description: Список профилей пользователей
+  /v1/UserProfiles:   # PascalCase вместо kebab-case
+    get:
+      operationId: getUserProfiles3
+      responses:
+        '200':
+          description: Список профилей пользователей
+```
+
+---
+
+
+### path-no-redundant-prefixes
+
+| Severity | Description                                                              |
+|----------|--------------------------------------------------------------------------|
+| ERROR    | В paths запрещено использовать сегменты api, openapi, http, service      |
+
+#### Описание правила в API Guide
+
+[Ссылка на описания правила](../../../rules/rules.md#избегать-избыточных-префиксов-в-пути) 
+
+#### Описание
+
+В путях API запрещено использовать избыточные префиксы, такие как `api`, `openapi`, `http` и `service`. Эти префиксы считаются избыточными, так как они не добавляют смысловой нагрузки и могут привести к неоднозначности в структуре API.
+
+#### Решение
+
+```textmate
+Удалите избыточные префиксы из путей API.
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+paths:
+  /v1/users:  # Правильно: без избыточных префиксов
+    get:
+      summary: Получить список пользователей
+      operationId: getUsers
+      responses:
+        '200':
+          description: Список пользователей
+```
+
+##### Неправильно
+```yaml
+paths:
+  /api/v1/users:  # Недопустимо: избыточный префикс api
+    get:
+      operationId: getUsers
+      responses:
+        '200':
+          description: Список пользователей
+  /openapi/v1/orders:  # Недопустимо: избыточный префикс openapi
+    get:
+      operationId: getOrders
+      responses:
+        '200':
+          description: Список заказов
+```
+
+---
+
+### names-should-be-in-english
+
+| Severity | Description                                                              |
+|----------|--------------------------------------------------------------------------|
+| ERROR    | Названия полей, параметров и операций должны быть на английском языке    |
+
+#### Описание
+
+Все названия в API должны быть на английском языке. Это правило проверяет, что идентификаторы полей, параметров, операций и других элементов API написаны латинскими буквами и не содержат кириллических символов.
+
+#### Решение
+
+```textmate
+Переименуйте все элементы API, используя только английские слова и термины.
+```
+
+#### Примеры
+
+##### Правильно
+```yaml
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+paths:
+  /v1/users:
+    get:
+      operationId: getUsers
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: integer
+```
+
+##### Неправильно
+```yaml
+components:
+  schemas:
+    Пользователь:  # Недопустимо: кириллица в названии схемы
+      type: object
+      properties:
+        id:
+          type: integer
+        имя:  # Недопустимо: кириллица в названии поля
+          type: string
+        фамилия:  # Недопустимо: кириллица в названии поля
+          type: string
+paths:
+  /v1/пользователи:  # Недопустимо: кириллица в пути
+    get:
+      operationId: получитьПользователей  # Недопустимо: кириллица в operationId
+      parameters:
+        - name: идентификаторПользователя  # Недопустимо: кириллица в названии параметра
+          in: query
+          schema:
+            type: integer
+```

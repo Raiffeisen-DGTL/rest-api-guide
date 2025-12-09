@@ -7,7 +7,7 @@ let linter: Spectral
 
 describe('All-off-types-consistency rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/all-off-types-consistency.yaml'
+    const rulesFile = './rules/openapi/all-off-types-consistency.yaml'
     linter = await setupSpectral(rulesFile)
   })
 
