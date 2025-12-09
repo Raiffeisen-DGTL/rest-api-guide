@@ -13,37 +13,34 @@ beforeAll(async () => {
 })
 
 describe('Final ruleset validation', () => {
-  test('should contain all rules from required directory and not contain extra rules', () => {
+  test('should contain all rules with base tag and not contain extra rules', () => {
     // Read the final ruleset file
     const finalRulesetPath = join(__dirname, '../../base-ruleset.yaml')
     const finalRulesetContent = readFileSync(finalRulesetPath, 'utf8')
     const finalRuleset = yaml.load(finalRulesetContent)
 
-    // Read all rule files from the required directory
-    const requiredRulesDir = join(__dirname, '../../rules/openapi/required/')
-    const baseRulesDir = join(__dirname, '../../rules/openapi/base')
+    // Read all rule files from the openapi directory
+    const openapiRulesDir = join(__dirname, '../../rules/openapi')
 
-    // Get all YAML files in the required directory
-    const ruleFiles = readdirSync(requiredRulesDir)
+    // Get all YAML files in the openapi directory
+    const ruleFiles = readdirSync(openapiRulesDir)
       .filter((file) => file.endsWith('.yaml') || file.endsWith('.yml'))
-      .map((value) => join(requiredRulesDir, value))
-
-    readdirSync(baseRulesDir)
-      .filter((file) => file.endsWith('.yaml') || file.endsWith('.yml'))
-      .map((value) => join(baseRulesDir, value))
-      .forEach((value) => ruleFiles.push(value))
+      .map((value) => join(openapiRulesDir, value))
 
     const expectedRules = new Set<string>()
 
-    // Extract rule names from each rule file
+    // Extract rule names from each rule file that has base tag
     ruleFiles.forEach((ruleFilePath) => {
       const ruleFileContent = readFileSync(ruleFilePath, 'utf8')
       const ruleFile = yaml.load(ruleFileContent)
 
-      if (ruleFile.rules) {
-        Object.keys(ruleFile.rules).forEach((ruleName) => {
-          expectedRules.add(ruleName)
-        })
+      // Check if the rule has base tag
+      if (ruleFile['x-rulesets'] && ruleFile['x-rulesets'].includes('base')) {
+        if (ruleFile.rules) {
+          Object.keys(ruleFile.rules).forEach((ruleName) => {
+            expectedRules.add(ruleName)
+          })
+        }
       }
     })
 
@@ -115,11 +112,25 @@ describe('Final ruleset validation', () => {
             tags: ['test1'],
             summary: 'Test operation',
             operationId: 'getTest',
+            security: [
+              {
+                api_key: [],
+              },
+            ],
             responses: {
               '200': {
                 description: 'OK',
               },
             },
+          },
+        },
+      },
+      components: {
+        securitySchemes: {
+          api_key: {
+            type: 'apiKey',
+            in: 'header',
+            name: 'X-API-Key',
           },
         },
       },

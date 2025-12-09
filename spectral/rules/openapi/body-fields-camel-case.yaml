@@ -1,0 +1,18 @@
+x-rulesets: [ base ]
+rules:
+  body-fields-camel-case:
+    description: Поля в requestBody и responseBody должны быть в camelCase
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#body-fields-camel-case
+    severity: error
+    given:
+      - '$.paths.*.*.requestBody.content.*.schema..properties.*~'
+      - '$.paths.*.requestBody.content.*.schema..properties.*~'
+      - '$.paths.*.*.responses.*.content.*.schema..properties.*~'
+      - '$.paths.*.responses.*.content.*.schema..properties.*~'
+      - '$.components.schemas.*..properties.*~'
+      - '$.components.requestBodies.*.content.*.schema..properties.*~'
+      - '$.components.responses.*.content.*.schema..properties.*~'
+    then:
+      function: casing
+      functionOptions:
+        type: camel

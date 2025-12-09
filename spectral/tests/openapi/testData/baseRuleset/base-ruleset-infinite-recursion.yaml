@@ -18,6 +18,8 @@ paths:
     post:
       tags:
         - test
+      security:
+        - bearerAuth: []
       description: Test path
       summary: Get commissions
       operationId: getMarketCommissions
@@ -48,6 +50,7 @@ components:
   schemas:
     PreCalculatedCommissionsDto:
       type: object
+      description: Pre-calculated commissions data
       example:
         volume: 344
         currency: "USD"
@@ -90,9 +93,11 @@ components:
         volume:
           type: integer
           format: int64
+          description: Transaction volume
           example: 344
         currency:
           type: string
+          description: Currency code
           enum:
             - RUB
             - USD
@@ -101,6 +106,7 @@ components:
           example: USD
         commissions:
           type: array
+          description: List of commission values
           items:
             $ref: "#/components/schemas/CommissionValueDto"
           example:
@@ -140,35 +146,45 @@ components:
                 chargingDate: "2023-01-01"
     Rate:
       type: object
+      description: Rate information
       properties:
         product:
           type: string
+          description: Product type
           enum:
             - REPO
             - SWAP
           example: REPO
         secboard:
           type: string
+          description: Security board
           example: "TQBR"
         symbol:
           type: string
+          description: Security symbol
           example: "SBER"
         rate:
           type: number
+          description: Commission rate
           example: 0.05
         price:
           type: number
+          description: Security price
           example: 100.50
     PreCalculatedCommissionDto:
       type: object
+      description: Pre-calculated commission details
       properties:
         brkgCommission:
           $ref: "#/components/schemas/CommissionValueDto"
+          description: Broker commission details
         exchCommission:
           $ref: "#/components/schemas/CommissionValueDto"
+          description: Exchange commission details
         chargingDate:
           type: string
           format: date
+          description: Commission charging date
           example: "2023-01-01"
     CalculateCommissionsRequest:
       required:
@@ -176,16 +192,20 @@ components:
         - currency
         - rates
       type: object
+      description: Request for calculating commissions
       properties:
         clientId:
           type: string
+          description: Client identifier
           example: "client123"
         volume:
           type: integer
           format: int64
+          description: Transaction volume
           example: 1000
         currency:
           type: string
+          description: Currency code
           enum:
             - RUB
             - USD
@@ -194,6 +214,7 @@ components:
           example: "USD"
         rates:
           type: array
+          description: List of rates for commission calculation
           items:
             $ref: "#/components/schemas/Rate"
           example:
@@ -204,16 +225,21 @@ components:
               price: 100.50
     CommissionValueDto:
       type: object
+      description: Commission value details
       properties:
         rate:
           $ref: "#/components/schemas/Rate"
+          description: Rate information
         commissions:
           $ref: "#/components/schemas/PreCalculatedCommissionDto"
+          description: Commission details
     SingleDataWrapperPreCalculatedCommissionsResponse:
       type: object
+      description: Response wrapper for pre-calculated commissions
       properties:
         data:
           $ref: "#/components/schemas/PreCalculatedCommissionsDto"
+          description: Pre-calculated commissions data
   parameters:
     IdToken:
       name: Id-Token

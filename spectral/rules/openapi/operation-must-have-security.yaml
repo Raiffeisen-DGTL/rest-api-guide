@@ -1,0 +1,13 @@
+x-rulesets: [ base, documentation, ai-ready ]
+functions:
+  - operationMustHaveSecurity
+functionsDir: "../../functions"
+rules:
+  operation-must-have-security:
+    description: 'Каждая операция должна ссылаться минимум на один security scheme'
+    message: 'Для AI Ready желательно, чтобы все операции содержали security scheme'
+    severity: info
+    given:
+      - '$.paths[*][?(@property.match(/^(get|put|post|delete|patch|options|head|trace)$/))]'
+    then:
+      function: operationMustHaveSecurity

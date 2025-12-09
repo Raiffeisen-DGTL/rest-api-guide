@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Path not include query rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/path-not-include-query.yaml'
+    const rulesFile = './rules/openapi/path-not-include-query.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

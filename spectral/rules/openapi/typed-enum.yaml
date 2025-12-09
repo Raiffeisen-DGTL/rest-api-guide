@@ -1,0 +1,12 @@
+x-rulesets: [ base, documentation, ai-ready ]
+functions:
+  - typedEnum
+functionsDir: "../../functions"
+rules:
+  typed-enum:
+    description: Каждый элемент Enum должен соответствовать указанному типу
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#typed-enum
+    severity: error
+    given: '$..[?(@ && @.enum && @.type)]'
+    then:
+      function: typedEnum

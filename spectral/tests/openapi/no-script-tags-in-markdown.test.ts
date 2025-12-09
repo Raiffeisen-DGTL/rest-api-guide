@@ -4,7 +4,7 @@ import { Spectral } from '@stoplight/spectral-core'
 let linter: Spectral
 
 beforeAll(async () => {
-  const rulesFile = './rules/openapi/base/no-script-tags-in-markdown.yaml'
+  const rulesFile = './rules/openapi/no-script-tags-in-markdown.yaml'
   linter = await setupSpectral(rulesFile)
 })
 

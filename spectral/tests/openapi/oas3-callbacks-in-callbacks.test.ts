@@ -5,7 +5,7 @@ let linter: Spectral
 
 describe('oas3_callbacks_in_callbacks rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/oas3-callbacks-in-callbacks.yaml'
+    const rulesFile = './rules/openapi/oas3-callbacks-in-callbacks.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

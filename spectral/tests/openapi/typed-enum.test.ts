@@ -5,7 +5,7 @@ import { Severity } from '../utils/severity'
 let linter: Spectral
 
 beforeAll(async () => {
-  const rulesFile = './rules/openapi/base/typed-enum.yaml'
+  const rulesFile = './rules/openapi/typed-enum.yaml'
   linter = await setupSpectral(rulesFile)
 })
 

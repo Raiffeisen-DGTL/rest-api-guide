@@ -1,0 +1,11 @@
+x-rulesets: [ base, documentation, ai-ready ]
+rules:
+  description-required-for-schema-fields:
+    description: 'У каждого поля в схеме должен быть description'
+    severity: error
+    given:
+      - '$..properties.*'
+      - '$.components.schemas.*.enum[*]'
+    then:
+      - field: 'description'
+        function: truthy

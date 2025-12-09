@@ -1,0 +1,13 @@
+x-rulesets: [ base, documentation, ai-ready ]
+rules:
+  operation-must-have-tag:
+    description: 'Каждая операция (endpoint) должна быть снабжена тегом'
+    severity: warn
+    given: '$.paths[*][?(@property.match(/^(get|put|post|delete|patch|options|head|trace)$/))]'
+    then:
+      - field: tags
+        function: truthy
+      - field: tags
+        function: length
+        functionOptions:
+          min: 1

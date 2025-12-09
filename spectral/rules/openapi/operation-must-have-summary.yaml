@@ -1,0 +1,9 @@
+x-rulesets: [ base, documentation, ai-ready ]
+rules:
+  operation-must-have-summary:
+    description: 'Каждая операция должна содержать поле summary'
+    severity: error
+    given: '$.paths[*][?(@property.match(/^(get|put|post|delete|patch|options|head|trace)$/))]'
+    then:
+      - field: summary
+        function: truthy

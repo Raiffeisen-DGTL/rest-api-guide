@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Blank strings forbidden rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/blank-strings-forbidden.yaml'
+    const rulesFile = './rules/openapi/blank-strings-forbidden.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

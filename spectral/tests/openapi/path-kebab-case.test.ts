@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Path Kebab Case rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/path-kebab-case.yaml'
+    const rulesFile = './rules/openapi/path-kebab-case.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

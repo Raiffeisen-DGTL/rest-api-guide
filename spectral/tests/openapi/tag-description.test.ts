@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('tag-description rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/tag-description.yaml'
+    const rulesFile = './rules/openapi/tag-description.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

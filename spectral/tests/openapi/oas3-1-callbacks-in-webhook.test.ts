@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('oas3_1_callbacks_in_webhook rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/oas3-1-callbacks-in-webhook.yaml'
+    const rulesFile = './rules/openapi/oas3-1-callbacks-in-webhook.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

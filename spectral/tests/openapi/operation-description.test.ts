@@ -5,7 +5,7 @@ let linter: Spectral
 
 describe('Operation Description Rule Tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/operation-description.yaml'
+    const rulesFile = './rules/openapi/operation-description.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

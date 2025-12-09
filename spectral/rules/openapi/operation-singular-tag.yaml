@@ -1,0 +1,17 @@
+x-rulesets: [ base, documentation, ai-ready ]
+aliases:
+  PathItem:
+    - '$.paths[*]'
+  OperationObject:
+    - '#PathItem[get,put,post,delete,options,head,patch,trace]'
+rules:
+  operation-singular-tag:
+    description: Метод должен иметь не более одного тега
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-singular-tag
+    severity: error
+    given: '#OperationObject'
+    then:
+      field: 'tags'
+      function: length
+      functionOptions:
+        max: 1

@@ -1,0 +1,6 @@
+get:
+  security:
+    - api_key: [ ]
+  responses:
+    '200':
+      description: Success

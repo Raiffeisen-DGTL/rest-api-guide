@@ -4,7 +4,7 @@ import { Spectral } from '@stoplight/spectral-core'
 let linter: Spectral
 
 beforeAll(async () => {
-  const rulesFile = './rules/openapi/base/path-declarations-must-exist.yaml'
+  const rulesFile = './rules/openapi/path-declarations-must-exist.yaml'
   linter = await setupSpectral(rulesFile)
 })
 

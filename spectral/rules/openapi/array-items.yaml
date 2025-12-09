@@ -1,0 +1,25 @@
+x-rulesets: [ base, documentation, ai-ready ]
+aliases:
+  ArrayProperties:
+    targets:
+      - formats:
+          - oas3_0
+        given:
+          - '$..[?(@ && @.type=="array")]'
+      - formats:
+          - oas3_1
+        given:
+          - '$..[?(@ && @.type=="array")]'
+          - '$..[?(@ && @.type && @.type.constructor.name === "Array" && @.type.includes("array"))]'
+functions:
+  - arrayItems
+functionsDir: "../../functions"
+rules:
+  array-items:
+    description: Объекты типа Array должны содержать массив элементов
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#array-items
+    formats: [oas3_0,oas3_1]
+    severity: error
+    given: '#ArrayProperties'
+    then:
+      function: arrayItems

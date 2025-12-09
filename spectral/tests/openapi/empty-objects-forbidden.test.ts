@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Empty objects forbidden rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/empty-objects-forbidden.yaml'
+    const rulesFile = './rules/openapi/empty-objects-forbidden.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when spec does not have empty objects', async () => {

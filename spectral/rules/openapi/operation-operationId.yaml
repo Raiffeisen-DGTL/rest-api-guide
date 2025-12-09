@@ -1,0 +1,10 @@
+x-rulesets: [ base, documentation, ai-ready ]
+rules:
+  operation-operationId:
+    description: Каждый path должен иметь operationId
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-operationId
+    severity: error
+    given: '$.paths[*][get,put,post,delete,options,head,patch,trace]'
+    then:
+      field: 'operationId'
+      function: truthy

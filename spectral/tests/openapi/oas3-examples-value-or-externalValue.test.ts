@@ -5,7 +5,7 @@ let linter: Spectral
 
 describe('oas3-examples-value-or-externalValue rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/oas3-examples-value-or-externalValue.yaml'
+    const rulesFile = './rules/openapi/oas3-examples-value-or-externalValue.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

@@ -4,7 +4,7 @@ import { Spectral } from '@stoplight/spectral-core'
 describe('Tests for contact-x-team-id-required.yaml rulesets ', () => {
   let linter: Spectral
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/required//contact-x-team-id-required.yaml'
+    const rulesFile = './rules/openapi/contact-x-team-id-required.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

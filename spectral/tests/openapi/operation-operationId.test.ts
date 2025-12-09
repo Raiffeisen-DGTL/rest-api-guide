@@ -4,7 +4,7 @@ import { Spectral } from '@stoplight/spectral-core'
 let linter: Spectral
 describe('Operation OperationId Rule Tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/operation-operationId.yaml'
+    const rulesFile = './rules/openapi/operation-operationId.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

@@ -1,0 +1,18 @@
+openapi: 3.0.3
+info:
+  title: Test Spec with Refs
+  version: 0.0.1
+paths:
+  /v1/api/test:
+    get:
+      tags:
+        - testing endpoint
+      summary: Для тестирования правил
+      operationId: getTest
+      responses:
+        '200':
+          description: 'some description'
+          content:
+            application/json:
+              schema:
+                $ref: './components-without-descriptions.yaml#/components/schemas/User'

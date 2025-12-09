@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('oas3-parameter-description rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/oas3-parameter-description.yaml'
+    const rulesFile = './rules/openapi/oas3-parameter-description.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('No eval in markdown rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/no-eval-in-markdown.yaml'
+    const rulesFile = './rules/openapi/no-eval-in-markdown.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

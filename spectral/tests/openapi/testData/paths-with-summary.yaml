@@ -1,0 +1,5 @@
+get:
+  summary: Get test resource
+  responses:
+    '200':
+      description: Success

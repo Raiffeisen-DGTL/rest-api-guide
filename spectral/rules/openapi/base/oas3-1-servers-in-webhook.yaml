@@ -1,9 +1,0 @@
-rules:
-  oas3-1-servers-in-webhook:
-    description: Webhooks не должны включать в себя servers
-    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#oas3_1-servers-in-webhook
-    severity: error
-    formats: [ oas3_1 ]
-    given: [ '$.webhooks.servers', '$.webhooks[*][*].servers' ]
-    then:
-      function: undefined

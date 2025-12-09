@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('oas3-server-variables rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/oas3-server-variables.yaml'
+    const rulesFile = './rules/openapi/oas3-server-variables.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when servers have valid variables', async () => {

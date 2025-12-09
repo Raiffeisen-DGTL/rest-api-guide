@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('OpenAPI Tags Uniqueness Rule Tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/openapi-tags-uniqueness.yaml'
+    const rulesFile = './rules/openapi/openapi-tags-uniqueness.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

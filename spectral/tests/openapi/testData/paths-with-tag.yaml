@@ -1,0 +1,6 @@
+get:
+  tags:
+    - Test Resource
+  responses:
+    '200':
+      description: Success

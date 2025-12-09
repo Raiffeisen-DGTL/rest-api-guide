@@ -1,0 +1,18 @@
+x-rulesets: [ base, documentation ]
+aliases:
+  PathItem:
+    - '$.paths[*]'
+  OperationObject:
+    - '#PathItem[get,put,post,delete,options,head,patch,trace]'
+functions:
+  - oasOpSuccessResponse
+functionsDir: "../../functions"
+rules:
+  operation-success-response:
+    description: Метод должен иметь 2хх либо 3хх ответ
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-success-response
+    severity: error
+    given: '#OperationObject'
+    then:
+      field: 'responses'
+      function: oasOpSuccessResponse

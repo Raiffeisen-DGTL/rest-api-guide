@@ -6,7 +6,7 @@ describe('Operation Success Response Rule Tests', () => {
   let linter: Spectral
 
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/operation-success-response.yaml'
+    const rulesFile = './rules/openapi/operation-success-response.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

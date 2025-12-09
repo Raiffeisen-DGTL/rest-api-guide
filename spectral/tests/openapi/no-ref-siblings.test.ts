@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('No Ref Siblings rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/no-ref-siblings.yaml'
+    const rulesFile = './rules/openapi/no-ref-siblings.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when there are no $ref siblings', async () => {

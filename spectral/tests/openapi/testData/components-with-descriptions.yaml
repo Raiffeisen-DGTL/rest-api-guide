@@ -1,0 +1,11 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: User identifier
+        name:
+          type: string
+          description: User name

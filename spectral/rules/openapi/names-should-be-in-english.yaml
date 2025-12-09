@@ -1,0 +1,19 @@
+x-rulesets: [ base, ai-ready ]
+rules:
+  names-should-be-in-english:
+    description: Названия полей, параметров и операций должны быть на английском языке
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#names-should-be-in-english
+    severity: error
+    given:
+      - '$..enum[*]'
+      - '$.paths[*][get,put,post,delete,options,head,patch,trace].operationId'
+      - '$.paths[*][get,put,post,delete,options,head,patch,trace].parameters[*].name'
+      - '$.components.parameters[*].name'
+      - '$.components.schemas.*~'
+      - '$.components.schemas.*.properties.*~'
+      - '$.paths[*][get,put,post,delete,options,head,patch,trace].requestBody.content.*.schema.properties.*~'
+      - '$.paths[*][get,put,post,delete,options,head,patch,trace].responses.*.content.*.schema.properties.*~'
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-zA-Z0-9\s\-_.,:;!?()"\[\]{}@#$%^&*+=<>|/~`]+$'

@@ -1,0 +1,10 @@
+x-rulesets: [ base, documentation, ai-ready ]
+rules:
+  tag-description:
+    description: Блок tags должен содержать description
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#tag-description
+    severity: warn
+    given: '$.tags[*]'
+    then:
+      field: 'description'
+      function: truthy

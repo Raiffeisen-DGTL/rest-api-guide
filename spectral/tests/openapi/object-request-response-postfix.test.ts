@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('object-request-response-postfix rule tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/object-request-response-postfix.yaml'
+    const rulesFile = './rules/openapi/object-request-response-postfix.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

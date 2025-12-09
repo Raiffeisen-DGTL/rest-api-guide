@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('Operation OperationId Unique Rule Tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/operation-operationId-unique.yaml'
+    const rulesFile = './rules/openapi/operation-operationId-unique.yaml'
     linter = await setupSpectral(rulesFile)
   })
 

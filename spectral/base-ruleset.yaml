@@ -45,6 +45,7 @@ functions:
   - "oasExample"
   - "objectRequestResponsePostfix"
   - "uniquenessTags"
+  - "operationMustHaveSecurity"
   - "oasOpIdUnique"
   - "oasOpParams"
   - "oasOpSuccessResponse"
@@ -112,6 +113,15 @@ rules:
     then:
       field: "contact.x-team-id"
       function: "truthy"
+  description-required-for-schema-fields:
+    description: "У каждого поля в схеме должен быть description"
+    given:
+      - "$..properties.*"
+      - "$.components.schemas.*.enum[*]"
+    severity: "error"
+    then:
+      - field: "description"
+        function: "truthy"
   duplicated-entry-in-enum:
     description: "Значения в ENUM должны быть уникальны."
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#duplicated-entry-in-enum"
@@ -184,6 +194,23 @@ rules:
     severity: "error"
     then:
       function: "methodRequestResponseComponents"
+  names-should-be-in-english:
+    description: "Названия полей, параметров и операций должны быть на английском языке"
+    documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#names-should-be-in-english"
+    given:
+      - "$..enum[*]"
+      - "$.paths[*][get,put,post,delete,options,head,patch,trace].operationId"
+      - "$.paths[*][get,put,post,delete,options,head,patch,trace].parameters[*].name"
+      - "$.components.parameters[*].name"
+      - "$.components.schemas.*~"
+      - "$.components.schemas.*.properties.*~"
+      - "$.paths[*][get,put,post,delete,options,head,patch,trace].requestBody.content.*.schema.properties.*~"
+      - "$.paths[*][get,put,post,delete,options,head,patch,trace].responses.*.content.*.schema.properties.*~"
+    severity: "error"
+    then:
+      function: "pattern"
+      functionOptions:
+        match: "^[a-zA-Z0-9\\s\\-_.,:;!?()\"\\[\\]{}@#$%^&*+=<>|/~`]+$"
   no-eval-in-markdown:
     description: "Блок description и title не должен содержать eval()"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#no-eval-in-markdown"
@@ -429,6 +456,32 @@ rules:
     then:
       field: "description"
       function: "truthy"
+  operation-must-have-security:
+    description: "Каждая операция должна ссылаться минимум на один security scheme"
+    given:
+      - "$.paths[*][?(@property.match(/^(get|put|post|delete|patch|options|head|trace)$/))]"
+    message: "Для AI Ready желательно, чтобы все операции содержали security scheme"
+    severity: "info"
+    then:
+      function: "operationMustHaveSecurity"
+  operation-must-have-summary:
+    description: "Каждая операция должна содержать поле summary"
+    given: "$.paths[*][?(@property.match(/^(get|put|post|delete|patch|options|head|trace)$/))]"
+    severity: "error"
+    then:
+      - field: "summary"
+        function: "truthy"
+  operation-must-have-tag:
+    description: "Каждая операция (endpoint) должна быть снабжена тегом"
+    given: "$.paths[*][?(@property.match(/^(get|put|post|delete|patch|options|head|trace)$/))]"
+    severity: "warn"
+    then:
+      - field: "tags"
+        function: "truthy"
+      - field: "tags"
+        function: "length"
+        functionOptions:
+          min: 1
   operation-operationId:
     description: "Каждый path должен иметь operationId"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#operation-operationId"

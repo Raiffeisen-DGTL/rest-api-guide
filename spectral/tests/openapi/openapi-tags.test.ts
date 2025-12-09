@@ -6,7 +6,7 @@ let linter: Spectral
 
 describe('OpenAPI Tags Rule Tests', () => {
   beforeAll(async () => {
-    const rulesFile = './rules/openapi/base/openapi-tags.yaml'
+    const rulesFile = './rules/openapi/openapi-tags.yaml'
     linter = await setupSpectral(rulesFile)
   })
   test('should not report an error when tags array has at least one item', async () => {
