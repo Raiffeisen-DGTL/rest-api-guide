@@ -87,14 +87,25 @@ function uniqueDefinitionMessage(name) {
 /**
  * Обрабатывает параметры на уровне пути или операции
  */
-function processParameters(parameters, basePath, results, seenParams) {
+function processParameters(parameters, basePath, results, seenParams, context) {
   const processedParams = {}
   if (Array.isArray(parameters)) {
     for (const [i, value] of parameters.entries()) {
-      if (!isObject(value)) continue
+      let parameterValue = parameters[i]
+
+      // Если параметр является ссылкой, разрешаем её
+      if (isObject(parameterValue) && parameterValue.$ref) {
+        const resolvedPath = resolveReference(parameterValue.$ref, ['parameters', value], context)
+        if (resolvedPath === null) continue
+        parameterValue = resolvedPath
+      }
+
+      if (!isObject(parameterValue)) continue
+
       const fullParameterPath = [...basePath, i]
-      if (isUnknownNamedPathParam(value, fullParameterPath, results, processedParams)) {
-        processedParams[value.name] = fullParameterPath
+
+      if (isUnknownNamedPathParam(parameterValue, fullParameterPath, results, processedParams)) {
+        processedParams[parameterValue.name] = fullParameterPath
       }
     }
   }
@@ -242,6 +253,7 @@ export default createRulesetFunction(
             [...operationPath, 'parameters'],
             results,
             {},
+            context,
           )
 
           // Объединяем параметры уровня пути и операции
