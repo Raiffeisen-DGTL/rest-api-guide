@@ -143,4 +143,44 @@ describe('Path-params rule tests', () => {
     expect(results[0].message).toBe('Параметры пути должны быть описаны и использованы')
     expect(results[0].severity).toBe(Severity.error)
   })
+
+  test('should not report an error when path parameters defined via reference', async () => {
+    const specFile = {
+      openapi: '3.0.3',
+      info: {
+        title: 'Test Spec',
+        version: '0.0.2',
+      },
+      paths: {
+        '/users/{id}': {
+          get: {
+            parameters: [
+              {
+                $ref: '#/components/parameters/Id',
+              },
+            ],
+            responses: {
+              '200': {
+                description: 'OK',
+              },
+            },
+          },
+        },
+      },
+      components: {
+        parameters: {
+          Id: {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: {
+              type: 'string',
+            },
+          },
+        },
+      },
+    }
+    const results = await linter.run(specFile)
+    expect(results.length).toBe(0)
+  })
 })
