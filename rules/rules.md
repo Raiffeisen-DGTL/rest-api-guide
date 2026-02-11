@@ -435,12 +435,80 @@ properties:
 
 ### Пагинация
 
+#### Структура пагинации в отдельном объекте
+| ID                        | Severity | Дата принятия |
+|---------------------------|----------|---------------|
+| pagination-separate-object| MUST     | 17.10.2025    |
+
+#### Описание правила
+Все параметры пагинации должны быть вынесены в отдельный объект `paging` для четкого разделения данных и метаинформации о пагинации.
+
+Свойство `totalCount` является необязательным параметром и может отсутствовать.
+
+Правильно:
+
+```json
+{
+  "posts": [
+    {
+      "id": 456,
+      "title": "Article Title"
+    }
+  ],
+  "paging": {
+    "offset": 20,
+    "limit": 10,
+  },
+}
+
+```
+
+```json
+{
+  "posts": [
+    {
+      "id": 456,
+      "title": "Article Title"
+    }
+  ],
+  "paging": {
+    "offset": 20,
+    "limit": 10,
+    "totalCount": 157
+  },
+}
+```
+
+Неправильно:
+```json
+{
+  "posts": [
+    {
+      "id": 124
+    }
+  ],
+  "offset": 0,        // Параметры пагинации смешаны с другими полями
+  "limit": 20,
+  "totalCount": 35
+}
+```
+
+
+#### Обоснование
+
+1. **Четкое разделение ответственности**: Метаинформации о пагинации (`paging`) выделена в отдельный блок
+2. **Расширяемость**: Легко добавлять новые поля пагинации без загрязнения корневого уровня
+3. **Читаемость**: Разработчикам проще понимать структуру ответа
+4. **Совместимость с другими метаданными**: Не конфликтует с полями типа `metadata`, `errors`, `warnings`
+
+---
+
 #### offset-пагинация
 | ID                 | Severity | Дата принятия |
 |--------------------|----------|---------------|
 | offset-pagination  | MUST     | 13.03.2025    |
 
-##### Описание правила
+#### Описание правила
 
 Пагинацию можно не использовать, если размер ответа не превышает 1Мб и количество элементов не больше 100. В ином случае, рекомендуется использовать курсор-пагинацию.
 
@@ -454,16 +522,18 @@ properties:
 GET /v1/documents?limit=20
 ```
 
-```
+```json
 {
-  "data": [
+  "documents": [
     {
       "id": 124
     }
   ],
-  "offset": 0,
-  "limit": 20,
-  "totalCount": 35
+  "paging": {
+    "offset": 0,
+    "limit": 20,
+    "totalCount": 35
+  }
 }
 ```
 
@@ -475,18 +545,22 @@ GET /v1/documents?limit=20&offset=20
 
 Если записей больше нет, totalCount будет меньше или равен offset + limit:
 
-```
+```json
 {
-  "data": [
+  "documents": [
     {
       "id": 304
     }
   ],
-  "offset": 20,
-  "limit": 20,
-  "totalCount": 35
+  "paging": {
+    "offset": 20,
+    "limit": 20,
+    "totalCount": 35
+  }
 }
 ```
+
+Свойство `totalCount` является необязательным параметром и может отсутствовать.
 
 ---
 
@@ -495,7 +569,7 @@ GET /v1/documents?limit=20&offset=20
 |--------------------|----------|---------------|
 | cursor-pagination  | MUST     | 13.03.2025    |
 
-##### Описание правила
+#### Описание правила
 
 Для больших или быстро меняющихся наборов данных, лучше использовать cursor-пагинацию.
 
@@ -516,7 +590,9 @@ GET /sbp/v1/products?limit=20
       "id": 122
     }
   ],
-  "nextCursor": "ewogICAgICAiaWQiOiAxMjMKfQ=="
+  "paging": {
+    "nextCursor": "ewogICAgICAiaWQiOiAxMjMKfQ=="
+  }
   // Содержит 
   // {
   //       "id": 123
@@ -537,7 +613,9 @@ GET /sbp/v1/products?cursor=ewogICAgICAiaWQiOiAxMjMKfQ==&limit=1
       "id": 123
     }
   ],
-  "nextCursor": "ewogICAgICAiaWQiOiAxMjQKfQ=="
+  "paging": {
+    "nextCursor": "ewogICAgICAiaWQiOiAxMjQKfQ=="
+  }
   // Содержит 
   // {
   //       "id": 124
@@ -548,7 +626,9 @@ GET /sbp/v1/products?cursor=ewogICAgICAiaWQiOiAxMjMKfQ==&limit=1
 ```json
 {
   "content": [],
-  "nextCursor": null
+  "paging": {
+    "nextCursor": null
+  }
 }
 ```
 
@@ -566,7 +646,9 @@ GET /sbp/v1/products?sortBy=price,name&limit=20
       "createdAt": "2023-07-22T09:14:38+03:00"
     }
   ],
-  "nextCursor": "ewogICJpZCI6IDEyNCwKICAiY3JlYXRlZEF0IjogIjIwMjMtMDctMjJUMTA6MTQ6MzgrMDM6MDAiCn0="
+  "paging": {
+    "nextCursor": "ewogICJpZCI6IDEyNCwKICAiY3JlYXRlZEF0IjogIjIwMjMtMDctMjJUMTA6MTQ6MzgrMDM6MDAiCn0="
+  }
 }
 ```
 
