@@ -52,6 +52,7 @@ functions:
   - "oasTagDefined"
   - "oasPathParam"
   - "provideHeadMethod"
+  - "responseErrorStructure"
   - "typedEnum"
   - "validSchemaExample"
 rules:
@@ -617,6 +618,14 @@ rules:
       function: "casing"
       functionOptions:
         type: "camel"
+  response-error-structure:
+    description: "Все ответы с ошибками API должны следовать единой структуре с обязательным полем error и детализированной информацией об ошибках"
+    documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#response-error-structure"
+    given: "$"
+    message: "{{error}}"
+    severity: "error"
+    then:
+      function: "responseErrorStructure"
   supported-schema-version:
     description: "Спецификация должна быть версии 3+"
     documentationUrl: "https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#supported-schema-version"
