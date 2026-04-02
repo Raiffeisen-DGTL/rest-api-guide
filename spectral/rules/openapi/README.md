@@ -63,6 +63,7 @@
     - [path-kebab-case](#path-kebab-case)
     - [path-no-redundant-prefixes](#path-no-redundant-prefixes)
     - [names-should-be-in-english](#names-should-be-in-english)
+    - [response-error-structure](#response-error-structure)
 
 ## Required ruleset
 Cодержит правила необходимые для публикации на портал 
@@ -3603,4 +3604,127 @@ paths:
           in: query
           schema:
             type: integer
+```
+
+---
+
+### response-error-structure
+
+| Severity | Description                                                              |
+|----------|--------------------------------------------------------------------------|
+| ERROR    | Все ответы с ошибками API должны следовать единой структуре              |
+
+#### Описание
+
+Все ответы с кодами 4xx/5xx должны содержать объект `error` с обязательными полями `code` (строка) и `message` (строка). При наличии поля `details` оно должно быть массивом объектов с полями `param` и `message`. Все перечисленные поля должны быть объявлены в `required`.
+
+#### Решение
+
+```textmate
+Приведите схемы ошибочных ответов к стандартной структуре с обязательным объектом error.
+```
+
+#### Примеры
+
+##### Правильно
+
+Минимальный ответ с ошибкой:
+```yaml
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Ресурс не найден
+          required:
+            - code
+            - message
+      required:
+        - error
+```
+
+Ответ с деталями валидации:
+```yaml
+components:
+  schemas:
+    ValidationErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Переданы некорректные данные
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  param:
+                    type: string
+                    example: body.email
+                  message:
+                    type: string
+                    example: Email имеет некорректный формат
+                  code:
+                    type: string
+                    example: INVALID_FORMAT
+                required:
+                  - param
+                  - message
+          required:
+            - code
+            - message
+      required:
+        - error
+```
+
+##### Неправильно
+
+```yaml
+# Отсутствует обёртка error
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        text:
+          type: string   # Должно быть message
+
+# Некорректная структура details
+components:
+  schemas:
+    ValidationErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:    # Должно быть param
+                    type: string
+                  error:    # Должно быть message
+                    type: string
 ```

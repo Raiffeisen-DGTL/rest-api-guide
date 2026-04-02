@@ -1,0 +1,13 @@
+x-rulesets: [ base ]
+functions:
+  - responseErrorStructure
+functionsDir: "../../functions"
+rules:
+  response-error-structure:
+    description: Все ответы с ошибками API должны следовать единой структуре с обязательным полем error и детализированной информацией об ошибках
+    documentationUrl: https://gitlabci.raiffeisen.ru/cib/api-guide/-/tree/master/spectral/rules/openapi?ref_type=heads#response-error-structure
+    severity: error
+    message: "{{error}}"
+    given: "$"
+    then:
+      function: responseErrorStructure
